@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NutrionAll</string>
+    <string name="botao_logar">Login</string>
+    <string name="crie_conta">Crie uma conta</string>
+    <string name="Label_Sexo">Sexo:</string>
+    <string name="radio_masculino">Masculino</string>
+    <string name="radio_feminino">Feminino</string>
+    <string name="data_nascimento">Data de nascimento:</string>
+    <string name="button_cadastrar">Cadastrar</string>
 </resources>
