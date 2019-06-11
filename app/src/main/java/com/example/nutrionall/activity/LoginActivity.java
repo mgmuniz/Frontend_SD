@@ -4,12 +4,14 @@ import com.example.nutrionall.utils.Validate;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.View;
 
 import com.example.nutrionall.R;
 
@@ -40,5 +42,10 @@ public class LoginActivity extends AppCompatActivity {
                 Validate.validateNotExistFieldOrError(password, "Preencha sua senha!", c)){
             Log.d("login", "login: sucess");
         }
+    }
+
+    public void abrirCadastroUsuario(View view){
+        Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
+        startActivity(intent);
     }
 }
