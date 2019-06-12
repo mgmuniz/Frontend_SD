@@ -4,6 +4,7 @@ import com.example.nutrionall.api.AuthService;
 import com.example.nutrionall.models.AuthUser;
 import com.example.nutrionall.models.UserLogin;
 import com.example.nutrionall.utils.Validate;
+import com.example.nutrionall.utils.Consts;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,13 +15,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.view.View;
 
 import com.example.nutrionall.R;
 
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,15 +29,15 @@ public class LoginActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private EditText email;
     private EditText password;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final String API_BASE_URL = "https://backend-sd.herokuapp.com/";
         retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
+                .baseUrl(Consts.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
@@ -51,9 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.editLoginPassword);
 
         // arquivo de preferências do usuário
-        final String ARQUIVO_PREFERENCIAS = String.valueOf(R.string.ARQUIVO_PREFERENCIAS);
-        SharedPreferences preferences = getSharedPreferences(ARQUIVO_PREFERENCIAS,0);
-        final SharedPreferences.Editor editor = preferences.edit();
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS,0);
+        editor = preferences.edit();
 
         // valida email e senha
         Context c = getApplicationContext();
@@ -83,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token", authUser.getToken());
                         editor.putBoolean("isPremium", authUser.getPremium());
                         editor.commit();
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }
 

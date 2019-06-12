@@ -7,7 +7,4 @@
     <string name="radio_feminino">Feminino</string>
     <string name="data_nascimento">Data de nascimento:</string>
     <string name="button_cadastrar">Cadastrar</string>
-    <string name="ARQUIVO_PREFERENCIAS">NutritionAllArquivoPreferencias</string>
-    <string name="label_nome">Nome:</string>
-    <string name="label_email">Email:</string>
 </resources>
