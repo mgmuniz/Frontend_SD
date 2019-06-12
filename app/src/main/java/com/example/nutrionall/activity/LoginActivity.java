@@ -1,5 +1,8 @@
 package com.example.nutrionall.activity;
 
+import com.example.nutrionall.api.AuthService;
+import com.example.nutrionall.models.AuthUser;
+import com.example.nutrionall.models.UserLogin;
 import com.example.nutrionall.utils.Validate;
 
 import android.content.Context;
@@ -15,8 +18,18 @@ import android.view.View;
 
 import com.example.nutrionall.R;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class LoginActivity extends AppCompatActivity {
 
+    private Retrofit retrofit;
     private EditText email;
     private EditText password;
 
@@ -24,6 +37,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.100.4:3001")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
     public void login(View view) {
@@ -34,13 +53,42 @@ public class LoginActivity extends AppCompatActivity {
         // arquivo de preferências do usuário
         final String ARQUIVO_PREFERENCIAS = String.valueOf(R.string.ARQUIVO_PREFERENCIAS);
         SharedPreferences preferences = getSharedPreferences(ARQUIVO_PREFERENCIAS,0);
-        SharedPreferences.Editor editor = preferences.edit();
+        final SharedPreferences.Editor editor = preferences.edit();
 
         // valida email e senha
         Context c = getApplicationContext();
         if( Validate.validateNotExistFieldOrError(email, "Preencha seu email!", c) &&
                 Validate.validateNotExistFieldOrError(password, "Preencha sua senha!", c)){
-            Log.d("login", "login: sucess");
+
+
+            UserLogin newUserLogin = new UserLogin();
+            newUserLogin.setEmail(email.getText().toString());
+            newUserLogin.setPassword(password.getText().toString());
+
+            AuthService serviceLogin = retrofit.create(AuthService.class);
+            Call<AuthUser> call = serviceLogin.login(newUserLogin);
+
+            call.enqueue(new Callback<AuthUser>() {
+                @Override
+                public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
+                    if(response.isSuccessful()){
+                        AuthUser authUser = response.body();
+
+                        // salva os dados do usuário no arquivo de preferencias
+                        editor.putString("name", authUser.getName());
+                        editor.putString("email", authUser.getEmail());
+                        editor.putString("_id", authUser.get_id());
+                        editor.putString("token", authUser.getToken());
+                        editor.putBoolean("isPremium", authUser.getPremium());
+                        editor.commit();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AuthUser> call, Throwable t) {
+                    Log.d("login", "onFailure: " + t.toString());
+                }
+            });
         }
     }
 
