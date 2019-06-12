@@ -18,6 +18,11 @@ import android.widget.Toast;
 
 import com.example.nutrionall.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,13 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.editLoginPassword);
 
         // arquivo de preferências do usuário
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS,0);
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         editor = preferences.edit();
 
         // valida email e senha
         Context c = getApplicationContext();
-        if( Validate.validateNotExistFieldOrError(email, "Preencha seu email!", c) &&
-                Validate.validateNotExistFieldOrError(password, "Preencha sua senha!", c)){
+        if (Validate.validateNotExistFieldOrError(email, "Preencha seu email!", c) &&
+                Validate.validateNotExistFieldOrError(password, "Preencha sua senha!", c)) {
 
 
             UserLogin newUserLogin = new UserLogin();
@@ -67,10 +72,10 @@ public class LoginActivity extends AppCompatActivity {
             call.enqueue(new Callback<AuthUser>() {
                 @Override
                 public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         AuthUser authUser = response.body();
 
-                        Toast.makeText(getApplicationContext(), "Bem-Vindo "+ authUser.getName(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Bem-Vindo " + authUser.getName(), Toast.LENGTH_LONG).show();
 
                         // salva os dados do usuário no arquivo de preferencias
                         editor.putString("name", authUser.getName());
@@ -82,18 +87,29 @@ public class LoginActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                    } else {
+                        try {
+                            // informa o usuário da requisição
+                            JSONObject x = new JSONObject(response.errorBody().string());
+                            Toast.makeText(getApplicationContext(), x.getString("msg"), Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<AuthUser> call, Throwable t) {
+
                     Log.d("login", "onFailure: " + t.toString());
                 }
             });
         }
     }
 
-    public void abrirCadastroUsuario(View view){
+    public void abrirCadastroUsuario(View view) {
         Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
         startActivity(intent);
     }

@@ -1,6 +1,7 @@
 package com.example.nutrionall.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.api.AuthService;
@@ -17,6 +19,11 @@ import com.example.nutrionall.models.UserCadastro;
 import com.example.nutrionall.models.UserLogin;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Validate;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,9 +78,24 @@ public class CadastroActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<UserCadastro> call, Response<UserCadastro> response) {
                     if (response.isSuccessful()) {
-                        Log.d("cadastro", "onResponse: " + response.message());
-                        Log.d("cadastro", "onResponse: " + response.body().toString());
-                        Log.d("cadastro", "onResponse: " + response.body().getMsg());
+                        Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent(CadastroActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }else{
+                        try {
+                            // mensagens do servidor
+                            JSONObject x = new JSONObject(response.errorBody().string());
+                            Toast.makeText(getApplicationContext(), x.getString("msg"), Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
