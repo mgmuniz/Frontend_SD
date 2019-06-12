@@ -38,9 +38,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        final String API_BASE_URL = "https://backend-sd.herokuapp.com/";
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.100.4:3001")
+                .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
@@ -73,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
                     if(response.isSuccessful()){
                         AuthUser authUser = response.body();
+
+                        Toast.makeText(getApplicationContext(), "Bem-Vindo "+ authUser.getName(), Toast.LENGTH_LONG).show();
 
                         // salva os dados do usuário no arquivo de preferencias
                         editor.putString("name", authUser.getName());
