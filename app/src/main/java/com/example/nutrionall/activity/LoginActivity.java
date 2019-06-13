@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putBoolean("isPremium", authUser.getPremium());
                         editor.commit();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                     } else {
                         try {
