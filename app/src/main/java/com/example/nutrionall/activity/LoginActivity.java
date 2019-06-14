@@ -45,6 +45,12 @@ public class LoginActivity extends AppCompatActivity {
                 .baseUrl(Consts.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+
+        if(preferences.contains("token")){
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void login(View view) {

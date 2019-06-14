@@ -1,5 +1,6 @@
 package com.example.nutrionall.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
+import com.example.nutrionall.utils.Consts;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
@@ -32,6 +34,8 @@ public class HomeActivity extends AppCompatActivity
 
 
     private TextView titulo;
+    private TextView textNavHeaderEmail;
+    private TextView textNavHeaderName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-
     }
 
     @Override
@@ -81,6 +84,16 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
+        // Adiciona informações ao perfil do usuario
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        Log.d("home", "onCreate: " + preferences.contains("email"));
+
+        textNavHeaderEmail = findViewById(R.id.textNavHeaderEmail);
+        textNavHeaderName = findViewById(R.id.textNavHeaderName);
+
+        textNavHeaderEmail.setText(preferences.getString("email", ""));
+        textNavHeaderName.setText(preferences.getString("name", ""));
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
