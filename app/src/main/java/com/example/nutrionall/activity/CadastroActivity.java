@@ -1,8 +1,12 @@
 package com.example.nutrionall.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +55,41 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
         retrofit = Consts.connection();
 
         getReferencesComponentes();
+    }
+
+    public void loadImg(View view){
+        // Intent para obter uma foto a partir da galeria
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // Recuperar imagem que o usuário escolheu | O requestCode indica o ponto de requisição (só temos 1 nesse caso)
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Testar retorno dos dados
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+            // Recuperar local do recurso:
+            Uri localImagem = data.getData();
+
+            // Recuperar imagem
+            try {
+                Bitmap img = MediaStore.Images.Media.getBitmap(getContentResolver(), localImagem);
+
+                // Comprimir no formato JPEG - Para remover transparência
+
+                //Objeto para receber a imagem
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.JPEG,100,stream);
+
+                editCadastroImgUser.setImageBitmap(img);
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private byte[] imgToString() {
