@@ -33,6 +33,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.nutrionall.R.id.Main_Email;
+import static com.example.nutrionall.R.id.textLoginValidateToken;
+
 public class LoginActivity extends AppCompatActivity implements Methods {
 
     private Retrofit retrofit;
