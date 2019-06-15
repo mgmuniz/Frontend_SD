@@ -140,7 +140,6 @@ public class LoginActivity extends AppCompatActivity implements Methods {
                             JSONObject x = new JSONObject(response.errorBody().string());
                             textLoginValidateToken.setText(x.getString("msg"));
                             progressLoginValidateToken.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getApplicationContext(), x.getString("msg"), Toast.LENGTH_LONG).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {
