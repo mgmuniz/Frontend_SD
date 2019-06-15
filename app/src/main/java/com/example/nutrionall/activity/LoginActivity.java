@@ -47,9 +47,37 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
 
         if(preferences.contains("token")){
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
+            verifyToken(preferences.getString("token", ""));
         }
+    }
+
+
+    private void verifyToken(String token){
+        // função que verifica se o token do usuário ainda é válido
+        String TAG = "validateToken";
+        AuthUser userAuthenticated = new AuthUser();
+        userAuthenticated.setToken(token);
+
+        AuthService serviceAuth = retrofit.create(AuthService.class);
+        Call<AuthUser> call = serviceAuth.validateToken(userAuthenticated);
+
+        call.enqueue(new Callback<AuthUser>() {
+            @Override
+            public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
+                if(response.isSuccessful()){
+                    Boolean test = response.body().getValidToken();
+                    if(test){
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthUser> call, Throwable t) {
+                Log.d("validateToken", "onFailure: " + t.toString());
+            }
+        });
     }
 
     public void login(View view) {

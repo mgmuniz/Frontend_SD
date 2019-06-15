@@ -6,6 +6,15 @@ public class AuthUser {
     String email;
     Boolean isPremium;
     String token;
+    Boolean validToken;
+
+    public Boolean getValidToken() {
+        return validToken;
+    }
+
+    public void setValidToken(Boolean validToken) {
+        this.validToken = validToken;
+    }
 
     public String get_id() {
         return _id;
