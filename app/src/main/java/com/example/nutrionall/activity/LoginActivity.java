@@ -3,6 +3,7 @@ package com.example.nutrionall.activity;
 import com.example.nutrionall.api.AuthService;
 import com.example.nutrionall.models.AuthUser;
 import com.example.nutrionall.models.UserLogin;
+import com.example.nutrionall.utils.Methods;
 import com.example.nutrionall.utils.Validate;
 import com.example.nutrionall.utils.Consts;
 
@@ -11,9 +12,12 @@ import android.content.SharedPreferences;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrionall.R;
@@ -29,11 +33,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements Methods {
 
     private Retrofit retrofit;
     private EditText email;
     private EditText password;
+    private ProgressBar progressLoginValidateToken;
+    private TextView textLoginValidateToken;
     SharedPreferences.Editor editor;
 
     @Override
@@ -45,15 +51,19 @@ public class LoginActivity extends AppCompatActivity {
         retrofit = Consts.connection();
 
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        getReferencesComponentes();
 
-        if(preferences.contains("token")){
+        if (preferences.contains("token")) {
             verifyToken(preferences.getString("token", ""));
         }
     }
 
-
-    private void verifyToken(String token){
+    private void verifyToken(String token) {
         // função que verifica se o token do usuário ainda é válido
+
+
+        textLoginValidateToken.setText("Validando informações anteriores, aguarde enquanto fazemos tudo por você =D ...");
+
         String TAG = "validateToken";
         AuthUser userAuthenticated = new AuthUser();
         userAuthenticated.setToken(token);
@@ -64,11 +74,14 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<AuthUser>() {
             @Override
             public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Boolean test = response.body().getValidToken();
-                    if(test){
+                    if (test) {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
+                    } else {
+                        textLoginValidateToken.setText("Faça login novamente por favor =D");
+                        progressLoginValidateToken.setVisibility(View.INVISIBLE);
                     }
                 }
             }
@@ -82,8 +95,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view) {
         // recupera email e senha dos campos digitados pelo usuário
-        email = findViewById(R.id.editLoginEmail);
-        password = findViewById(R.id.editLoginPassword);
 
         // arquivo de preferências do usuário
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
@@ -94,6 +105,9 @@ public class LoginActivity extends AppCompatActivity {
         if (Validate.validateNotExistFieldOrError(email, "Preencha seu email!", c) &&
                 Validate.validateNotExistFieldOrError(password, "Preencha sua senha!", c)) {
 
+            progressLoginValidateToken.setVisibility(View.VISIBLE);
+            textLoginValidateToken.setVisibility(View.VISIBLE);
+            textLoginValidateToken.setText("Aguarde enquanto resolvemos tudo ...");
 
             UserLogin newUserLogin = new UserLogin();
             newUserLogin.setEmail(email.getText().toString());
@@ -124,6 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             // informa o usuário da requisição
                             JSONObject x = new JSONObject(response.errorBody().string());
+                            textLoginValidateToken.setText(x.getString("msg"));
+                            progressLoginValidateToken.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), x.getString("msg"), Toast.LENGTH_LONG).show();
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -145,5 +161,13 @@ public class LoginActivity extends AppCompatActivity {
     public void abrirCadastroUsuario(View view) {
         Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void getReferencesComponentes() {
+        textLoginValidateToken = findViewById(R.id.textLoginValidateToken);
+        progressLoginValidateToken = findViewById(R.id.progressLoginValidateToken);
+        email = findViewById(R.id.editLoginEmail);
+        password = findViewById(R.id.editLoginPassword);
     }
 }
