@@ -2,8 +2,8 @@ package com.example.nutrionall.activity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +14,7 @@ import com.example.nutrionall.R;
 import com.example.nutrionall.api.UserService;
 import com.example.nutrionall.models.UserCadastro;
 import com.example.nutrionall.utils.Consts;
+import com.example.nutrionall.utils.Methods;
 import com.example.nutrionall.utils.Validate;
 
 import org.json.JSONException;
@@ -32,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class CadastroActivity extends AppCompatActivity {
+public class CadastroActivity extends AppCompatActivity implements Methods {
 
     private Retrofit retrofit;
     private EditText editCadastroName;
@@ -49,19 +50,14 @@ public class CadastroActivity extends AppCompatActivity {
         // estabelece comunicação com a api
         retrofit = Consts.connection();
 
-        // inicializa variáveis dos componentes
-        editCadastroName = findViewById(R.id.editCadastroName);
-        editCadastroPassword = findViewById(R.id.editCadastroPassword);
-        editCadastroEmail = findViewById(R.id.editCadastroEmail);
-        editCadastroDataNascimento = findViewById(R.id.editCadastroDataNascimento);
-        editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
+        getReferencesComponentes();
     }
 
-    private byte[] imgToString(){
+    private byte[] imgToString() {
         editCadastroImgUser.setDrawingCacheEnabled(true);
         editCadastroImgUser.buildDrawingCache();
 
-            // recupera o bitmap da imagemd a ser enviada
+        // recupera o bitmap da imagemd a ser enviada
         Bitmap bitmap = editCadastroImgUser.getDrawingCache();
 
         // comprime o bitmap para algum formato de imagem
@@ -74,7 +70,7 @@ public class CadastroActivity extends AppCompatActivity {
         return imgByte;
     }
 
-    private UserCadastro getUserCadastro(){
+    private UserCadastro getUserCadastro() {
         UserCadastro newUser = new UserCadastro();
         newUser.setName(editCadastroName.getText().toString());
         newUser.setEmail(editCadastroEmail.getText().toString());
@@ -153,5 +149,15 @@ public class CadastroActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void getReferencesComponentes() {
+        // inicializa variáveis dos componentes
+        editCadastroName = findViewById(R.id.editCadastroName);
+        editCadastroPassword = findViewById(R.id.editCadastroPassword);
+        editCadastroEmail = findViewById(R.id.editCadastroEmail);
+        editCadastroDataNascimento = findViewById(R.id.editCadastroDataNascimento);
+        editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
     }
 }
