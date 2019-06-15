@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity implements Methods {
     private void verifyToken(String token) {
         // função que verifica se o token do usuário ainda é válido
 
-
+        progressLoginValidateToken.setVisibility(View.VISIBLE);
+        textLoginValidateToken.setVisibility(View.VISIBLE);
         textLoginValidateToken.setText("Validando informações anteriores, aguarde enquanto fazemos tudo por você =D ...");
 
         String TAG = "validateToken";
