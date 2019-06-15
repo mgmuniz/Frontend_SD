@@ -49,10 +49,8 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Consts.API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        // estabelece comunicação com a api
+        retrofit = Consts.connection();
 
         // inicializa variáveis dos componentes
         editCadastroName = findViewById(R.id.editCadastroName);

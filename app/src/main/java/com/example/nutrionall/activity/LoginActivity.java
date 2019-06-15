@@ -41,10 +41,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Consts.API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        // estabelece comunicação com a api
+        retrofit = Consts.connection();
+
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
 
         if(preferences.contains("token")){
