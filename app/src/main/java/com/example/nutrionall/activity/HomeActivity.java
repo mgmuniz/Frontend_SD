@@ -138,6 +138,10 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_premium) {
 
+        } else if(id == R.id.navLogout){
+            logout();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -166,5 +170,18 @@ public class HomeActivity extends AppCompatActivity
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+    }
+
+    private void logout(){
+        // Remove as preferencias do usuário
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        SharedPreferences.Editor editor= preferences.edit();
+        editor.remove("name");
+        editor.remove("email");
+        editor.remove("token");
+        editor.remove("_id");
+        editor.remove("isPremium");
+        editor.remove("urlImg");
+        editor.commit();
     }
 }

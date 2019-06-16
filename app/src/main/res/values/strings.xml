@@ -24,6 +24,7 @@
     <string name="menu_Conta">Sua conta</string>
     <string name="Buscar">Buscar</string>
     <string name="premium">Torne-se Premium</string>
+    <string name="logout">Fazer logout</string>
     <string name="Refeicoes">Refeições</string>
     <string name="Refeicao_Classificacao">Classificação da Refeição:</string>
     <string name="Refeicao_Categoria">Categoria:</string>
