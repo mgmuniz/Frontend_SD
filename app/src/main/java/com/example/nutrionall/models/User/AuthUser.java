@@ -1,4 +1,4 @@
-package com.example.nutrionall.models;
+package com.example.nutrionall.models.User;
 
 public class AuthUser {
     String _id;

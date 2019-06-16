@@ -15,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.nutrionall.R;
-import com.example.nutrionall.api.UserService;
-import com.example.nutrionall.models.UserCadastro;
+import com.example.nutrionall.api.User.UserService;
+import com.example.nutrionall.models.User.UserCadastro;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.example.nutrionall.utils.Validate;

@@ -1,7 +1,7 @@
-package com.example.nutrionall.api;
+package com.example.nutrionall.api.User;
 
-import com.example.nutrionall.models.AuthUser;
-import com.example.nutrionall.models.UserLogin;
+import com.example.nutrionall.models.User.AuthUser;
+import com.example.nutrionall.models.User.UserLogin;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
