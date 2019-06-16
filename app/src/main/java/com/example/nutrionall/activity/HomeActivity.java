@@ -1,5 +1,6 @@
 package com.example.nutrionall.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -134,7 +135,8 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_user) {
             // Handle the camera action
         } else if (id == R.id.nav_refeicoes) {
-
+            Intent intent = new Intent(HomeActivity.this, RefeicoesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_premium) {
 
         }

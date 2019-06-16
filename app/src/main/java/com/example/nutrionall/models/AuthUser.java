@@ -7,6 +7,7 @@ public class AuthUser {
     Boolean isPremium;
     String token;
     Boolean validToken;
+    String urlImg;
 
     public Boolean getValidToken() {
         return validToken;
@@ -54,5 +55,13 @@ public class AuthUser {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.token = urlImg;
     }
 }

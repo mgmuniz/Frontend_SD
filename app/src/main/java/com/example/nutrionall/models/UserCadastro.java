@@ -7,6 +7,7 @@ public class UserCadastro {
     String dateOfBirth;
     String msg;
     String password;
+    String urlImg;
 
     public String getGender() {
         return gender;
@@ -55,5 +56,13 @@ public class UserCadastro {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
     }
 }

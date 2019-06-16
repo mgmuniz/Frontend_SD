@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements Methods {
                         editor.putString("_id", authUser.get_id());
                         editor.putString("token", authUser.getToken());
                         editor.putBoolean("isPremium", authUser.getPremium());
+                        editor.putString("urlImg", authUser.getUrlImg());
                         editor.commit();
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
