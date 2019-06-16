@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.utils.Consts;
+import com.example.nutrionall.utils.Methods;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
@@ -28,11 +29,8 @@ import com.synnapps.carouselview.ImageListener;
 
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-//    private int[] mImages = new int[]{
-//            R.drawable.refeicoes_a, R.drawable.refeicoes_b, R.drawable.refeicoes_c,
-//            R.drawable.refeicoes_d,R.drawable.refeicoes_e
-//    };
+        implements NavigationView.OnNavigationItemSelectedListener, Methods {
+
     private String[] mImages = new String[]{
             "https://nit.pt/wp-content/uploads/2017/12/840b2ccfec7171179aac43a1f6919c11-754x394.jpg",
             "https://nit.pt/wp-content/uploads/2017/12/c4ca4238a0b923820dcc509a6f75849b-10-754x394.jpg",
@@ -46,16 +44,19 @@ public class HomeActivity extends AppCompatActivity
     private TextView textNavHeaderEmail;
     private TextView textNavHeaderName;
     private ImageView editCadastroImgUser;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        getReferencesComponentes();
+
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -96,15 +97,13 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 
+        getReferencesComponentes();
+
         // Adiciona informações ao perfil do usuario
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         Log.d("home", "onCreate: " + preferences.contains("email"));
 
         String defaultImg = "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/anime_spirited_away_no_face_nobody-512.png";
-
-        textNavHeaderEmail = findViewById(R.id.textNavHeaderEmail);
-        textNavHeaderName = findViewById(R.id.textNavHeaderName);
-        editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
 
         textNavHeaderEmail.setText(preferences.getString("email", ""));
         textNavHeaderName.setText(preferences.getString("name", ""));
@@ -141,7 +140,6 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -158,5 +156,15 @@ public class HomeActivity extends AppCompatActivity
         RadioButton radioNutrient = (RadioButton) findViewById(R.id.radioHomeNutriente);
         
         radioNutrient.setChecked(false);
+    }
+
+    @Override
+    public void getReferencesComponentes() {
+        textNavHeaderEmail = findViewById(R.id.textNavHeaderEmail);
+        textNavHeaderName = findViewById(R.id.textNavHeaderName);
+        editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
     }
 }
