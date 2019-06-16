@@ -3,16 +3,15 @@ package com.example.nutrionall.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,12 +19,23 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
+import com.example.nutrionall.api.Food.Search;
+import com.example.nutrionall.models.Food.Definition;
+import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -40,6 +50,7 @@ public class HomeActivity extends AppCompatActivity
     };
 
 
+    private EditText editHomeBusca;
     private TextView titulo;
     private TextView textNavHeaderEmail;
     private TextView textNavHeaderName;
@@ -47,6 +58,7 @@ public class HomeActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +93,8 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+        retrofit = Consts.connection();
+
     }
 
     @Override
@@ -107,7 +121,7 @@ public class HomeActivity extends AppCompatActivity
 
         textNavHeaderEmail.setText(preferences.getString("email", ""));
         textNavHeaderName.setText(preferences.getString("name", ""));
-        Picasso.get().load(preferences.getString("urlImg",defaultImg)).fit().centerCrop().into(editCadastroImgUser);
+        Picasso.get().load(preferences.getString("urlImg", defaultImg)).fit().centerCrop().into(editCadastroImgUser);
 
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
@@ -138,7 +152,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_premium) {
 
-        } else if(id == R.id.navLogout){
+        } else if (id == R.id.navLogout) {
             logout();
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -148,18 +162,57 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    public void desRadioAlimento(View view){
+    public void desRadioAlimento(View view) {
 
-        RadioButton radioAlimento = (RadioButton) findViewById(R.id.radioHomeAlimento);
+        RadioButton radioAlimento = findViewById(R.id.radioHomeAlimento);
 
         radioAlimento.setChecked(false);
     }
 
-    public void desRadioNutriente(View view){
+    public void desRadioNutriente(View view) {
 
-        RadioButton radioNutrient = (RadioButton) findViewById(R.id.radioHomeNutriente);
-        
+        RadioButton radioNutrient = findViewById(R.id.radioHomeNutriente);
+
         radioNutrient.setChecked(false);
+    }
+
+    public void buscar(View view) {
+        final String TAG = "search";
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        String query = editHomeBusca.getText().toString();
+
+        Food food = new Food();
+        Definition x = new Definition();
+        x.setValue(query);
+        food.setName(x);
+
+        Search serviceApi = retrofit.create(Search.class);
+        Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + preferences.getString("token", ""));
+
+        call.enqueue(new Callback<List<Food>>() {
+            @Override
+            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                if (response.isSuccessful()) {
+                    List<Food> list = new ArrayList<>();
+                    list = response.body();
+
+                    Log.d(TAG, "onResponse: " + response.toString());
+                    Log.d(TAG, "onResponse: " + "length " + list.size());
+
+                    for (int i = 0; i < list.size(); i++) {
+                        Food f = list.get(i);
+                        Log.d(TAG + " result", "name:" + f.getName().getValue() + " " + f.getEnergy().getValue() + " " + f.getEnergy().getType());
+                    }
+                } else {
+                    Log.d(TAG, "onResponse: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Food>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
     }
 
     @Override
@@ -170,12 +223,13 @@ public class HomeActivity extends AppCompatActivity
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+        editHomeBusca = findViewById(R.id.editHomeBusca);
     }
 
-    private void logout(){
+    private void logout() {
         // Remove as preferencias do usuário
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
-        SharedPreferences.Editor editor= preferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.remove("name");
         editor.remove("email");
         editor.remove("token");
