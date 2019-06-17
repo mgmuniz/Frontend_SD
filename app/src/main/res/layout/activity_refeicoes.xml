@@ -103,8 +103,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:buttonTint="#00796B"
                 android:checked="true"
-                android:clickable="true"
+                android:onClick="desRadioLessDesjejum"
                 android:text="Desjejum"
                 android:textColor="@color/vpi__background_holo_dark"
                 android:visibility="visible"
@@ -115,9 +116,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:checked="false"
+                android:buttonTint="#00796B"
+                android:onClick="desRadioLessAlmoco"
                 android:text="Almoço"
-                android:textColor="@color/vpi__background_holo_dark" />
+                android:textColor="@color/vpi__background_holo_dark"
+                android:visibility="visible"
+                tools:visibility="visible" />
         </LinearLayout>
 
         <LinearLayout
@@ -130,6 +134,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:buttonTint="#00796B"
+                android:onClick="desRadioLessLanche"
                 android:text="Lanche"
                 android:textColor="@color/vpi__background_holo_dark"
                 android:visibility="visible"
@@ -140,6 +146,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:buttonTint="#00796B"
+                android:onClick="desRadioLessJantar"
                 android:text="Jantar"
                 android:textColor="@color/vpi__background_holo_dark"
                 android:visibility="visible"
@@ -194,6 +202,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:clickable="true"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
