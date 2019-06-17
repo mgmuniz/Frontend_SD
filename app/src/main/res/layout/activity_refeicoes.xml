@@ -100,7 +100,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonDesjejum"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
@@ -131,7 +131,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonLanche"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
@@ -143,7 +143,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonJantar"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
@@ -202,10 +202,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:clickable="true"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CarouselRefeicoesFavoritos"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_add_black_24dp" />
+
 </android.support.constraint.ConstraintLayout>
