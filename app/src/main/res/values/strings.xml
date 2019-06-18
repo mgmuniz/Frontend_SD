@@ -31,4 +31,9 @@
     <string name="Refeicao_Avaliacoes">Média de avaliações:</string>
     <string name="Refeicao_Criador">Criador:</string>
     <string name="Refeicoes_melhores">Top 5 Refeições:</string>
+
+    <string-array name="titles_tab">
+        <item>Informações</item>
+        <item>Descrição</item>
+    </string-array>
 </resources>

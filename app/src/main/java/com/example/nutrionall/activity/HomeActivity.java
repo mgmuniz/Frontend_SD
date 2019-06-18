@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -86,15 +87,24 @@ public class HomeActivity extends AppCompatActivity
         });
 
 
-        carouselView.setImageClickListener(new ImageClickListener() {
-            @Override
-            public void onClick(int position) {
-//                titulo.setText(mTitles[position]);
-            }
-        });
+//        carouselView.setImageClickListener(new ImageClickListener() {
+//            @Override
+//            public void onClick(int position) {
+////                titulo.setText(mTitles[position]);
+//                Intent it = new Intent(this, CriarRefeicaoActivity.class);
+//                startActivity(it);
+//                break;
+//            }
+//        });
 
         retrofit = Consts.connection();
 
+
+    }
+
+    public void chamaOutra(int position) {
+        Intent it = new Intent(this, CriarRefeicaoActivity.class);
+        startActivity(it);
     }
 
     @Override
@@ -238,4 +248,5 @@ public class HomeActivity extends AppCompatActivity
         editor.remove("urlImg");
         editor.commit();
     }
+
 }
