@@ -48,11 +48,10 @@ public class LoginActivity extends AppCompatActivity implements Methods {
         // estabelece comunicação com a api
         retrofit = Consts.connection();
 
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         getReferencesComponentes();
 
-        if (preferences.contains("token")) {
-            verifyToken(preferences.getString("token", ""));
+        if (getPreferences().contains("token")) {
+            verifyToken(getPreferences().getString("token", ""));
         }
     }
 
@@ -96,8 +95,7 @@ public class LoginActivity extends AppCompatActivity implements Methods {
         // recupera email e senha dos campos digitados pelo usuário
 
         // arquivo de preferências do usuário
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
-        editor = preferences.edit();
+        editor = getPreferences().edit();
 
         // valida email e senha
         Context c = getApplicationContext();
@@ -168,5 +166,11 @@ public class LoginActivity extends AppCompatActivity implements Methods {
         progressLoginValidateToken = findViewById(R.id.progressLoginValidateToken);
         email = findViewById(R.id.editLoginEmail);
         password = findViewById(R.id.editLoginPassword);
+    }
+
+    @Override
+    public SharedPreferences getPreferences() {
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        return preferences;
     }
 }

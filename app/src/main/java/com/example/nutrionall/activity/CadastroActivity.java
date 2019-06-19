@@ -2,6 +2,7 @@ package com.example.nutrionall.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -198,5 +199,10 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
         editCadastroEmail = findViewById(R.id.editCadastroEmail);
         editCadastroDataNascimento = findViewById(R.id.editCadastroDataNascimento);
         editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
+    }
+
+    @Override
+    public SharedPreferences getPreferences() {
+        return null;
     }
 }

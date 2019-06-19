@@ -116,14 +116,13 @@ public class HomeActivity extends AppCompatActivity
         getReferencesComponentes();
 
         // Recupera informações do perfil do usuario
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
-        Log.d("home", "onCreate: " + preferences.contains("email"));
+        Log.d("home", "onCreate: " + getPreferences().contains("email"));
 
         String defaultImg = "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/anime_spirited_away_no_face_nobody-512.png";
 
-        textNavHeaderEmail.setText(preferences.getString("email", ""));
-        textNavHeaderName.setText(preferences.getString("name", ""));
-        Picasso.get().load(preferences.getString("urlImg", defaultImg)).fit().centerCrop().into(editCadastroImgUser);
+        textNavHeaderEmail.setText(getPreferences().getString("email", ""));
+        textNavHeaderName.setText(getPreferences().getString("name", ""));
+        Picasso.get().load(getPreferences().getString("urlImg", defaultImg)).fit().centerCrop().into(editCadastroImgUser);
 
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
@@ -189,7 +188,7 @@ public class HomeActivity extends AppCompatActivity
         food.setName(x);
 
         Search serviceApi = retrofit.create(Search.class);
-        Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + preferences.getString("token", ""));
+        Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + getPreferences().getString("token", ""));
 
         call.enqueue(new Callback<List<Food>>() {
             @Override
@@ -221,10 +220,15 @@ public class HomeActivity extends AppCompatActivity
         editHomeBusca = findViewById(R.id.editHomeBusca);
     }
 
+    @Override
+    public SharedPreferences getPreferences() {
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        return preferences;
+    }
+
     private void logout() {
         // Remove as preferencias do usuário
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
-        SharedPreferences.Editor editor = preferences.edit();
+        SharedPreferences.Editor editor = getPreferences().edit();
         editor.remove("name");
         editor.remove("email");
         editor.remove("token");
