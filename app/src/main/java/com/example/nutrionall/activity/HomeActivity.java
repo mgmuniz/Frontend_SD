@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -94,6 +95,7 @@ public class HomeActivity extends AppCompatActivity
         });
 
         retrofit = Consts.connection();
+
 
     }
 
@@ -238,4 +240,5 @@ public class HomeActivity extends AppCompatActivity
         editor.remove("urlImg");
         editor.commit();
     }
+
 }
