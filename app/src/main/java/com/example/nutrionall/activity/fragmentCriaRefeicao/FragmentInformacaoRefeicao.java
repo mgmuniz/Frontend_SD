@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import com.example.nutrionall.R;
 
@@ -16,5 +17,48 @@ public class FragmentInformacaoRefeicao extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.informacoes_cria_refeicao, container, false);
+    }
+    public void desRadioLessCriaDesjejum(View view) {
+
+        RadioButton radioAlmoco = getView().findViewById(R.id.criaRefeicaoAlmoco);
+        RadioButton radioLanche = getView().findViewById(R.id.criaRefeicaoLanche);
+        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJanta);
+
+        radioJantar.setChecked(false);
+        radioLanche.setChecked(false);
+        radioAlmoco.setChecked(false);
+    }
+
+    public void desRadioLessCriaAlmoco(View view) {
+
+        RadioButton radioDesjejum = getView().findViewById(R.id.criaRefeicaoDesjejum);
+        RadioButton radioLanche = getView().findViewById(R.id.criaRefeicaoLanche);
+        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJanta);
+
+        radioJantar.setChecked(false);
+        radioLanche.setChecked(false);
+        radioDesjejum.setChecked(false);
+    }
+
+    public void desRadioLessCriaLanche(View view) {
+
+        RadioButton radioDesjejum = getView().findViewById(R.id.criaRefeicaoDesjejum);
+        RadioButton radioAlmoco = getView().findViewById(R.id.criaRefeicaoAlmoco);
+        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJanta);
+
+        radioJantar.setChecked(false);
+        radioAlmoco.setChecked(false);
+        radioDesjejum.setChecked(false);
+    }
+
+    public void desRadioLessCriaJantar(View view) {
+
+        RadioButton radioDesjejum = getView().findViewById(R.id.criaRefeicaoDesjejum);
+        RadioButton radioAlmoco = getView().findViewById(R.id.criaRefeicaoAlmoco);
+        RadioButton radioLanche = getView().findViewById(R.id.criaRefeicaoLanche);
+
+        radioLanche.setChecked(false);
+        radioAlmoco.setChecked(false);
+        radioDesjejum.setChecked(false);
     }
 }

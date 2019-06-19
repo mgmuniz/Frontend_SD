@@ -107,20 +107,22 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton4"
+                android:id="@+id/criaRefeicaoDesjejum"
                 android:layout_width="90dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
+                android:onClick="desRadioLessCriaDesjejum"
                 android:text="Café da manhã"
                 android:textColor="@color/vpi__background_holo_dark" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/criaRefeicaoAlmoco"
                 android:layout_width="90dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
+                android:onClick="desRadioLessCriaAlmoco"
                 android:text="Almoço"
                 android:textColor="@color/vpi__background_holo_dark" />
         </LinearLayout>
@@ -131,20 +133,22 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton7"
+                android:id="@+id/criaRefeicaoLanche"
                 android:layout_width="90dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
+                android:onClick="desRadioLessCriaLanche"
                 android:text="Lanche"
                 android:textColor="@color/vpi__background_holo_dark" />
 
             <RadioButton
-                android:id="@+id/radioButton6"
+                android:id="@+id/criaRefeicaoJanta"
                 android:layout_width="90dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
+                android:onClick="desRadioLessCriaJantar"
                 android:text="Janta"
                 android:textColor="@color/vpi__background_holo_dark" />
         </LinearLayout>

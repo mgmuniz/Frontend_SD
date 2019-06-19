@@ -1,5 +1,6 @@
 package com.example.nutrionall.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -104,5 +105,10 @@ public class RefeicoesActivity extends AppCompatActivity {
         radioLanche.setChecked(false);
         radioAlmoco.setChecked(false);
         radioDesjejum.setChecked(false);
+    }
+
+    public void criaRefeicao(){
+        Intent intent = new Intent(this, CriarRefeicaoActivity.class);
+        startActivity(intent);
     }
 }
