@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity
 
         getReferencesComponentes();
 
-        // Adiciona informações ao perfil do usuario
+        // Recupera informações do perfil do usuario
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         Log.d("home", "onCreate: " + preferences.contains("email"));
 
@@ -197,14 +197,7 @@ public class HomeActivity extends AppCompatActivity
                 if (response.isSuccessful()) {
                     List<Food> list = new ArrayList<>();
                     list = response.body();
-
-                    Log.d(TAG, "onResponse: " + response.toString());
-                    Log.d(TAG, "onResponse: " + "length " + list.size());
-
-                    for (int i = 0; i < list.size(); i++) {
-                        Food f = list.get(i);
-                        Log.d(TAG + " result", "name:" + f.getName().getValue() + " " + f.getEnergy().getValue() + " " + f.getEnergy().getType());
-                    }
+                    // passagem de parâmetros aqui!
                 } else {
                     Log.d(TAG, "onResponse: " + response.message());
                 }
