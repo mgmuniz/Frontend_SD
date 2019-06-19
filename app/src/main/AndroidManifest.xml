@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.CriarRefeicaoActivity"></activity>
+        <activity
+            android:name=".activity.VisualizaRefeicaoActivity"
+            android:label="@string/title_activity_visualiza_refeicao"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activity.CriarRefeicaoActivity" />
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"

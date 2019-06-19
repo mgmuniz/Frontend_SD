@@ -36,4 +36,12 @@
         <item>Informações</item>
         <item>Descrição</item>
     </string-array>
+
+    <string-array name="titles_tab_visualiza_refeicao">
+        <item>Descrição</item>
+        <item>Ingredientes</item>
+        <item>Nutricionais</item>
+    </string-array>
+
+    <string name="title_activity_visualiza_refeicao">VisualizaRefeicaoActivity</string>
 </resources>
