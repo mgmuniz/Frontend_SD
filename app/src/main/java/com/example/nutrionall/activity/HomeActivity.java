@@ -87,24 +87,16 @@ public class HomeActivity extends AppCompatActivity
         });
 
 
-//        carouselView.setImageClickListener(new ImageClickListener() {
-//            @Override
-//            public void onClick(int position) {
-////                titulo.setText(mTitles[position]);
-//                Intent it = new Intent(this, CriarRefeicaoActivity.class);
-//                startActivity(it);
-//                break;
-//            }
-//        });
+        carouselView.setImageClickListener(new ImageClickListener() {
+            @Override
+            public void onClick(int position) {
+//                titulo.setText(mTitles[position]);
+            }
+        });
 
         retrofit = Consts.connection();
 
 
-    }
-
-    public void chamaOutra(int position) {
-        Intent it = new Intent(this, CriarRefeicaoActivity.class);
-        startActivity(it);
     }
 
     @Override
