@@ -1,5 +1,7 @@
 package com.example.nutrionall.models.Food;
 
+import java.util.List;
+
 public class Food {
     Definition name;
     Definition category;
@@ -28,6 +30,25 @@ public class Food {
     Definition pyridoxine;
     Definition niacin;
     Definition vitaminc;
+
+    Food food;
+    List<Food> lstSimilars;
+
+    public Food getFood() {
+        return food;
+    }
+
+    public void setFood(Food food) {
+        this.food = food;
+    }
+
+    public List<Food> getLstSimilars() {
+        return lstSimilars;
+    }
+
+    public void setLstSimilars(List<Food> lstSimilars) {
+        this.lstSimilars = lstSimilars;
+    }
 
     public Definition getName() {
         return name;

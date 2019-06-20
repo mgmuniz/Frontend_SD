@@ -19,9 +19,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
-import com.example.nutrionall.api.Food.Search;
-import com.example.nutrionall.models.Food.Definition;
-import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.squareup.picasso.Picasso;
@@ -29,12 +26,6 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 

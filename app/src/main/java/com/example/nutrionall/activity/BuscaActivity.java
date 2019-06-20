@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.FoodAdapter;
+import com.example.nutrionall.api.Food.FoodApi;
 import com.example.nutrionall.api.Food.Search;
 import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.utils.Consts;
@@ -53,11 +54,13 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         buscar(null);
     }
 
-
     public void buscar(View view) {
         final String TAG = "search";
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         String query = editBuscaBusca.getText().toString();
+
+        Log.d(TAG, "buscar: " + query);
+        buscarAlimento(view);
 
         JsonObject food = new JsonObject();
         food.addProperty("name", query);
@@ -89,7 +92,6 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         });
     }
 
-
     public void desRadioAlimento(View view) {
         radioAlimento.setChecked(false);
     }
@@ -110,5 +112,46 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         return preferences;
     }
 
+    public void buscarAlimento(View view) {
+        final String TAG = "searchFood";
+        String id = "5cf845fe245413a64b40500e";
 
+        Log.d(TAG, "buscarAlimento: " + id);
+
+        FoodApi serviceApi = retrofit.create(FoodApi.class);
+        Call<Food> call = serviceApi.getFood(id, "bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<Food>() {
+            @Override
+            public void onResponse(Call<Food> call, Response<Food> response) {
+                if (getPreferences().getBoolean("isPremium", false)) {
+                    if (response.isSuccessful()) {
+                        // se o usuário for premium e a resposta do server for 200OK
+                        Food resp = response.body();
+                        Log.d(TAG, "name: " + resp.getFood().getName().getValue());
+                        Log.d(TAG, "category: " + resp.getFood().getCategory().getValue());
+                        for (int i = 0; i < resp.getLstSimilars().size(); i++) {
+                            Log.d(TAG, "similar: " + resp.getLstSimilars().get(i).getName().getValue());
+                        }
+                    } else {
+                        // tratamento de erro
+                    }
+                } else {
+                    if (response.isSuccessful()) {
+                        // se o usuário NÃO for premium e a resposta do server for 200OK
+                        Food resp = response.body();
+                        Log.d(TAG, "name: " + resp.getName().getValue());
+                        Log.d(TAG, "category: " + resp.getCategory().getValue());
+                    } else {
+                        // tratamento de erro
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Food> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
 }
