@@ -17,6 +17,7 @@ import com.example.nutrionall.adapters.FoodAdapter;
 import com.example.nutrionall.api.Food.FoodApi;
 import com.example.nutrionall.api.Food.Search;
 import com.example.nutrionall.models.Food.Food;
+import com.example.nutrionall.models.Food.SearchNutrientFood;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.google.gson.JsonObject;
@@ -61,6 +62,7 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
         Log.d(TAG, "buscar: " + query);
         buscarAlimento(view);
+        buscarNutriente(view);
 
         JsonObject food = new JsonObject();
         food.addProperty("name", query);
@@ -150,6 +152,53 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
             @Override
             public void onFailure(Call<Food> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
+
+    public void buscarNutriente(View view) {
+        final String TAG = "searchNutrient";
+
+        // nutriente q deve ser alterado
+        String nutrient = "humidity";
+
+        Log.d(TAG, "buscarNutriente: " + nutrient);
+
+        Search serviceApi = retrofit.create(Search.class);
+        Call<SearchNutrientFood> call = serviceApi.searchByNutrient(
+                1, // manipulação necessária para recuperar os demais alimentos
+                10, // o limite varia de acordo com a interface
+                "desc",
+                nutrient,
+                "bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<SearchNutrientFood>() {
+            @Override
+            public void onResponse(Call<SearchNutrientFood> call, Response<SearchNutrientFood> response) {
+                if (getPreferences().getBoolean("isPremium", false)) {
+                    if (response.isSuccessful()) {
+                        // se o usuário for premium
+                        SearchNutrientFood resp = response.body();
+                        Log.d(TAG, "page: " + resp.getPage());
+                        Log.d(TAG, "limit: " + resp.getLimit());
+                        for (int i = 0; i < resp.getLimit(); i++) {
+                            Log.d(TAG, "data: " + resp.getData().get(i).getName().getValue());
+                        }
+                    } else {
+                        Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
+                    }
+                } else {
+                    if (response.isSuccessful()) {
+                        // se o usuário não for premium
+                    } else {
+                        Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchNutrientFood> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });

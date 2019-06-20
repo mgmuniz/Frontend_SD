@@ -13,4 +13,10 @@ public class Consts {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
+
+    public static String falhaReq(int code, String msg, String raw) {
+        return "Erro na requisição code: " + code + "\n" +
+                "msg: " + msg + "\n" +
+                "content: " + msg + "\n";
+    }
 }
