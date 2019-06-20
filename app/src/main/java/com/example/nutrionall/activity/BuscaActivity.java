@@ -3,8 +3,8 @@ package com.example.nutrionall.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,10 +15,10 @@ import android.widget.RadioButton;
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.FoodAdapter;
 import com.example.nutrionall.api.Food.Search;
-import com.example.nutrionall.models.Food.Definition;
 import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,16 +53,14 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         buscar(null);
     }
 
-    
+
     public void buscar(View view) {
         final String TAG = "search";
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         String query = editBuscaBusca.getText().toString();
 
-        Food food = new Food();
-        Definition x = new Definition();
-        x.setValue(query);
-        food.setName(x);
+        JsonObject food = new JsonObject();
+        food.addProperty("name", query);
 
         Search serviceApi = retrofit.create(Search.class);
         Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + getPreferences().getString("token", ""));
@@ -71,14 +69,12 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
             @Override
             public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
                 if (response.isSuccessful()) {
-                    List<Food> list = new ArrayList<>();
+                    List<Food> list;
                     list = response.body();
                     ArrayList<Food> arrayListAux = new ArrayList<>();
-//                    int a = list.size();
-//                    Log.d(TAG,Integer.toString(a));
                     arrayListAux.addAll(list);
 
-                    ArrayAdapter adapter = new FoodAdapter(context,arrayListAux);
+                    ArrayAdapter adapter = new FoodAdapter(context, arrayListAux);
                     resultadosBusca.setAdapter(adapter);
 
                 } else {
@@ -94,13 +90,17 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
     }
 
 
-    public void desRadioAlimento(View view) {radioAlimento.setChecked(false);}
+    public void desRadioAlimento(View view) {
+        radioAlimento.setChecked(false);
+    }
 
-    public void desRadioNutriente(View view) {radioNutrient.setChecked(false);}
+    public void desRadioNutriente(View view) {
+        radioNutrient.setChecked(false);
+    }
 
     public void getReferencesComponentes() {
         editBuscaBusca = findViewById(R.id.editBuscaBusca);
-        resultadosBusca = (ListView) findViewById(R.id.listBuscaResults);
+        resultadosBusca = findViewById(R.id.listBuscaResults);
         radioAlimento = findViewById(R.id.radioBuscaAlimento);
         radioNutrient = findViewById(R.id.radioBuscaNutriente);
     }
@@ -109,8 +109,6 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         return preferences;
     }
-
-
 
 
 }
