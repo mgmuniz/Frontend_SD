@@ -9,19 +9,18 @@
 
     <ImageView
         android:id="@+id/editCadastroImgUser"
-        android:layout_width="162dp"
-        android:layout_height="157dp"
+        android:layout_width="147dp"
+        android:layout_height="137dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <EditText
         android:id="@+id/editCadastroName"
@@ -46,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
@@ -63,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
@@ -80,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/Label_Sexo"
@@ -93,9 +92,9 @@
         android:id="@+id/editCadastroSexo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@+id/editCadastroDataNascimento"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
@@ -121,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="01/01/1997"
         android:inputType="date"
@@ -134,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/data_nascimento"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editCadastroPassword" />
@@ -157,15 +156,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editCadastroSexo"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintVertical_bias="0.055" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/buttonCadastroImg"
-        android:layout_width="68dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="88dp"
-        android:layout_marginRight="88dp"
+        android:layout_width="58dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginRight="92dp"
         android:clickable="true"
         android:onClick="loadImg"
         app:backgroundTint="@color/colorAccent"

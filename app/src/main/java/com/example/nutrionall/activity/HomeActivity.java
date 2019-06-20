@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -165,48 +164,23 @@ public class HomeActivity extends AppCompatActivity
 
     public void desRadioAlimento(View view) {
 
-        RadioButton radioAlimento = findViewById(R.id.radioHomeAlimento);
+        RadioButton radioAlimento = findViewById(R.id.radioBuscaAlimento);
 
         radioAlimento.setChecked(false);
     }
 
     public void desRadioNutriente(View view) {
 
-        RadioButton radioNutrient = findViewById(R.id.radioHomeNutriente);
+        RadioButton radioNutrient = findViewById(R.id.radioBuscaNutriente);
 
         radioNutrient.setChecked(false);
     }
 
     public void buscar(View view) {
-        final String TAG = "search";
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
-        String query = editHomeBusca.getText().toString();
 
-        Food food = new Food();
-        Definition x = new Definition();
-        x.setValue(query);
-        food.setName(x);
-
-        Search serviceApi = retrofit.create(Search.class);
-        Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + getPreferences().getString("token", ""));
-
-        call.enqueue(new Callback<List<Food>>() {
-            @Override
-            public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
-                if (response.isSuccessful()) {
-                    List<Food> list = new ArrayList<>();
-                    list = response.body();
-                    // passagem de parâmetros aqui!
-                } else {
-                    Log.d(TAG, "onResponse: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Food>> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
+        Intent intent = new Intent(HomeActivity.this, BuscaActivity.class);
+        intent.putExtra("termo_busca", editHomeBusca.getText().toString());
+        startActivity(intent);
     }
 
     @Override

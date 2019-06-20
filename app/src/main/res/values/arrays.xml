@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="categorias">
+        <item>@drawable/icon_categoria_carne</item>
+        <item>@drawable/icon_categoria_fruta</item>
+        <item>@drawable/icon_categoria_vegetal</item>
+        <item>@drawable/icon_categoria_cereal</item>
+        <item>@drawable/icon_categoria_seafoods</item>
+        <item>@drawable/icon_categoria_legume</item>
+        <item>@drawable/icon_categoria_comida_preparada</item>
+        <item>@drawable/icon_categoria_leiteder</item>
+        <item>@drawable/icon_categoria_doce</item>
+        <item>@drawable/icon_categoria_bebida</item>
+        <item>@drawable/icon_categoria_ovo</item>
+        <item>@drawable/icon_categoria_miscelaneas</item>
+        <item>@drawable/icon_categoria_comida_industrializada</item>
+    </array>
+</resources>
