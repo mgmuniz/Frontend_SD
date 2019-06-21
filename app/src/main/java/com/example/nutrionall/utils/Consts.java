@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Consts {
-    public static final String API_BASE_URL = "http://192.168.100.4:3001";
+    public static final String API_BASE_URL = "https://backend-sd.herokuapp.com";
     public static final String ARQUIVO_PREFERENCIAS = "NutritionAllArquivoPreferencias";
 
     public static Retrofit connection() {
