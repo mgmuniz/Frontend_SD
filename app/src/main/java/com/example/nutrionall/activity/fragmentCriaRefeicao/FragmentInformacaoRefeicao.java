@@ -22,7 +22,7 @@ public class FragmentInformacaoRefeicao extends Fragment {
 
         RadioButton radioAlmoco = getView().findViewById(R.id.criaRefeicaoAlmoco);
         RadioButton radioLanche = getView().findViewById(R.id.criaRefeicaoLanche);
-        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJanta);
+        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJantar);
 
         radioJantar.setChecked(false);
         radioLanche.setChecked(false);
@@ -33,7 +33,7 @@ public class FragmentInformacaoRefeicao extends Fragment {
 
         RadioButton radioDesjejum = getView().findViewById(R.id.criaRefeicaoDesjejum);
         RadioButton radioLanche = getView().findViewById(R.id.criaRefeicaoLanche);
-        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJanta);
+        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJantar);
 
         radioJantar.setChecked(false);
         radioLanche.setChecked(false);
@@ -44,7 +44,7 @@ public class FragmentInformacaoRefeicao extends Fragment {
 
         RadioButton radioDesjejum = getView().findViewById(R.id.criaRefeicaoDesjejum);
         RadioButton radioAlmoco = getView().findViewById(R.id.criaRefeicaoAlmoco);
-        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJanta);
+        RadioButton radioJantar = getView().findViewById(R.id.criaRefeicaoJantar);
 
         radioJantar.setChecked(false);
         radioAlmoco.setChecked(false);
