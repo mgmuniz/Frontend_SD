@@ -76,6 +76,11 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                 if (response.isSuccessful()) {
                     List<Food> list;
                     list = response.body();
+
+                    for(int i = 0; i < list.size(); i++){
+                        Log.d(TAG, "id:" + list.get(i).get_id());
+                    }
+
                     ArrayList<Food> arrayListAux = new ArrayList<>();
                     arrayListAux.addAll(list);
 

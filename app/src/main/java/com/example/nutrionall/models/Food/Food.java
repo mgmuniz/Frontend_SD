@@ -3,6 +3,7 @@ package com.example.nutrionall.models.Food;
 import java.util.List;
 
 public class Food {
+    String _id;
     Definition name;
     Definition category;
     Definition humidity;
@@ -33,6 +34,14 @@ public class Food {
 
     Food food;
     List<Food> lstSimilars;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public Food getFood() {
         return food;
