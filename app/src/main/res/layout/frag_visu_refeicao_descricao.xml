@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/ImagemVisualizaRefeicao"
         android:layout_width="373dp"
         android:layout_height="190dp"
         android:layout_marginStart="24dp"
@@ -32,7 +32,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/ImagemVisualizaRefeicao" />
 
     <TextView
         android:id="@+id/textView11"
@@ -84,4 +84,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
         tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/imageViewFavoritar"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="@android:color/holo_orange_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 </android.support.constraint.ConstraintLayout>
