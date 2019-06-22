@@ -44,4 +44,5 @@
     </string-array>
 
     <string name="title_activity_visualiza_refeicao">VisualizaRefeicaoActivity</string>
+    <string name="Similares">Alimentos Similares:</string>
 </resources>

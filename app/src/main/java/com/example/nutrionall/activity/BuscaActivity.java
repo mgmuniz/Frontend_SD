@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -38,6 +40,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
     private RadioButton radioAlimento;
     private RadioButton radioNutrient;
 
+    private ArrayList<Food> arrayAlimentos;
+
     private Context context;
 
     @Override
@@ -53,6 +57,20 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
         editBuscaBusca.setText(termo_busca);
         buscar(null);
+
+        resultadosBusca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Food alimento_clicado = arrayAlimentos.get(position);
+                alimento_clicado = buscarAlimento(null,alimento_clicado.get_id());
+//                Log.d("Despair2",alimento_clicado.get_id());
+
+
+                Intent intent = new Intent(BuscaActivity.this, InfoAlimentosActivity.class);
+                intent.putExtra("food", alimento_clicado);
+                startActivity(intent);
+            }
+        });
     }
 
     public void buscar(View view) {
@@ -61,8 +79,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         String query = editBuscaBusca.getText().toString();
 
         Log.d(TAG, "buscar: " + query);
-        buscarAlimento(view);
-        buscarNutriente(view);
+//        buscarAlimento(view);
+//        buscarNutriente(view);
 
         JsonObject food = new JsonObject();
         food.addProperty("name", query);
@@ -77,14 +95,14 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                     List<Food> list;
                     list = response.body();
 
-                    for(int i = 0; i < list.size(); i++){
-                        Log.d(TAG, "id:" + list.get(i).get_id());
-                    }
+//                    for(int i = 0; i < list.size(); i++){
+//                        Log.d(TAG, "id:" + list.get(i).get_id());
+//                    }
 
-                    ArrayList<Food> arrayListAux = new ArrayList<>();
-                    arrayListAux.addAll(list);
+                    arrayAlimentos = new ArrayList<>();
+                    arrayAlimentos.addAll(list);
 
-                    ArrayAdapter adapter = new FoodAdapter(context, arrayListAux);
+                    ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
                     resultadosBusca.setAdapter(adapter);
 
                 } else {
@@ -99,53 +117,49 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         });
     }
 
-    public void desRadioAlimento(View view) {
-        radioAlimento.setChecked(false);
-    }
-
-    public void desRadioNutriente(View view) {
-        radioNutrient.setChecked(false);
-    }
-
-    public void getReferencesComponentes() {
-        editBuscaBusca = findViewById(R.id.editBuscaBusca);
-        resultadosBusca = findViewById(R.id.listBuscaResults);
-        radioAlimento = findViewById(R.id.radioBuscaAlimento);
-        radioNutrient = findViewById(R.id.radioBuscaNutriente);
-    }
 
     public SharedPreferences getPreferences() {
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         return preferences;
     }
 
-    public void buscarAlimento(View view) {
+    public Food buscarAlimento(View view, String id) {
         final String TAG = "searchFood";
-        String id = "5cf845fe245413a64b40500e";
-
+        id = "5cf845fe245413a64b40500e";
         Log.d(TAG, "buscarAlimento: " + id);
 
         FoodApi serviceApi = retrofit.create(FoodApi.class);
         Call<Food> call = serviceApi.getFood(id, "bearer " + getPreferences().getString("token", ""));
+        final Food[] food_result = {null};
+
 
         call.enqueue(new Callback<Food>() {
             @Override
             public void onResponse(Call<Food> call, Response<Food> response) {
+                Log.d(TAG, "Despair: " + "Caiu aqui");
                 if (getPreferences().getBoolean("isPremium", false)) {
+
                     if (response.isSuccessful()) {
                         // se o usuário for premium e a resposta do server for 200OK
+
                         Food resp = response.body();
                         Log.d(TAG, "name: " + resp.getFood().getName().getValue());
                         Log.d(TAG, "category: " + resp.getFood().getCategory().getValue());
                         for (int i = 0; i < resp.getLstSimilars().size(); i++) {
                             Log.d(TAG, "similar: " + resp.getLstSimilars().get(i).getName().getValue());
                         }
+
+                        food_result[0] = resp;
+
                     } else {
+
                         // tratamento de erro
                     }
                 } else {
+
                     if (response.isSuccessful()) {
                         // se o usuário NÃO for premium e a resposta do server for 200OK
+
                         Food resp = response.body();
                         Log.d(TAG, "name: " + resp.getName().getValue());
                         Log.d(TAG, "category: " + resp.getCategory().getValue());
@@ -160,6 +174,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
+
+        return food_result[0];
     }
 
     public void buscarNutriente(View view) {
@@ -207,5 +223,22 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
+    }
+
+
+    public void desRadioAlimento(View view) {
+        radioAlimento.setChecked(false);
+    }
+
+    public void desRadioNutriente(View view) {
+        radioNutrient.setChecked(false);
+    }
+
+    public void getReferencesComponentes() {
+        editBuscaBusca = findViewById(R.id.editBuscaBusca);
+        resultadosBusca = findViewById(R.id.listBuscaResults);
+        radioAlimento = findViewById(R.id.radioBuscaAlimento);
+        radioNutrient = findViewById(R.id.radioBuscaNutriente);
+
     }
 }

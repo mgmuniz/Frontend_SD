@@ -1,6 +1,8 @@
 package com.example.nutrionall.models.Food;
 
-public class Definition {
+import java.io.Serializable;
+
+public class Definition implements Serializable {
     public String value;
     public String type;
 
