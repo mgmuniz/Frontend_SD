@@ -24,6 +24,7 @@ import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.google.gson.JsonObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
     private ListView resultadosBusca;
     private RadioButton radioAlimento;
     private RadioButton radioNutrient;
+    private Food alimento_clicado;
+
 
     private ArrayList<Food> arrayAlimentos;
 
@@ -61,14 +64,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         resultadosBusca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Food alimento_clicado = arrayAlimentos.get(position);
-                alimento_clicado = buscarAlimento(null,alimento_clicado.get_id());
-//                Log.d("Despair2",alimento_clicado.get_id());
-
-
-                Intent intent = new Intent(BuscaActivity.this, InfoAlimentosActivity.class);
-                intent.putExtra("food", alimento_clicado);
-                startActivity(intent);
+                alimento_clicado = arrayAlimentos.get(position);
+                buscarAlimento(null, alimento_clicado.get_id());
             }
         });
     }
@@ -79,8 +76,6 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         String query = editBuscaBusca.getText().toString();
 
         Log.d(TAG, "buscar: " + query);
-//        buscarAlimento(view);
-//        buscarNutriente(view);
 
         JsonObject food = new JsonObject();
         food.addProperty("name", query);
@@ -94,10 +89,6 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                 if (response.isSuccessful()) {
                     List<Food> list;
                     list = response.body();
-
-//                    for(int i = 0; i < list.size(); i++){
-//                        Log.d(TAG, "id:" + list.get(i).get_id());
-//                    }
 
                     arrayAlimentos = new ArrayList<>();
                     arrayAlimentos.addAll(list);
@@ -123,20 +114,17 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         return preferences;
     }
 
-    public Food buscarAlimento(View view, String id) {
+    public void buscarAlimento(View view, String id) {
         final String TAG = "searchFood";
-        id = "5cf845fe245413a64b40500e";
         Log.d(TAG, "buscarAlimento: " + id);
 
         FoodApi serviceApi = retrofit.create(FoodApi.class);
         Call<Food> call = serviceApi.getFood(id, "bearer " + getPreferences().getString("token", ""));
-        final Food[] food_result = {null};
 
 
         call.enqueue(new Callback<Food>() {
             @Override
             public void onResponse(Call<Food> call, Response<Food> response) {
-                Log.d(TAG, "Despair: " + "Caiu aqui");
                 if (getPreferences().getBoolean("isPremium", false)) {
 
                     if (response.isSuccessful()) {
@@ -149,10 +137,11 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                             Log.d(TAG, "similar: " + resp.getLstSimilars().get(i).getName().getValue());
                         }
 
-                        food_result[0] = resp;
-
+                        // se o cara for premium
+                        Intent intent = new Intent(getApplicationContext(), InfoAlimentosActivity.class);
+                        intent.putExtra("food", resp);
+                        startActivity(intent);
                     } else {
-
                         // tratamento de erro
                     }
                 } else {
@@ -163,6 +152,10 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                         Food resp = response.body();
                         Log.d(TAG, "name: " + resp.getName().getValue());
                         Log.d(TAG, "category: " + resp.getCategory().getValue());
+
+                        Intent intent = new Intent(getApplicationContext(), InfoAlimentosActivity.class);
+                        intent.putExtra("food", resp);
+                        startActivity(intent);
                     } else {
                         // tratamento de erro
                     }
@@ -174,9 +167,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
-
-        return food_result[0];
     }
+
 
     public void buscarNutriente(View view) {
         final String TAG = "searchNutrient";

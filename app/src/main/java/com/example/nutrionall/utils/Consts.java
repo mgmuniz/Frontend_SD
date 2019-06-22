@@ -1,11 +1,14 @@
 package com.example.nutrionall.utils;
 
+import com.example.nutrionall.models.Food.Food;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Consts {
     public static final String API_BASE_URL = "https://backend-sd.herokuapp.com";
     public static final String ARQUIVO_PREFERENCIAS = "NutritionAllArquivoPreferencias";
+    public static Food foodParameter;
 
     public static Retrofit connection() {
         return new Retrofit.Builder()

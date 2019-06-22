@@ -4,20 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
-import com.example.nutrionall.adapters.FoodAdapter;
 import com.example.nutrionall.adapters.SimilaresAdapter;
-import com.example.nutrionall.models.Food.Definition;
 import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
@@ -42,26 +39,28 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
         getReferencesComponentes();
         this.context = this;
         setDados();
-
-
+        String TAG = "infoAlimentosActivity";
     }
 
     private void setupRecycler(List<Food> lstSimilares) {
-
+        String TAG = "Despair";
         // Configurando o gerenciador de layout para ser uma lista.
-        Log.d("Despair","Vou setar o layout");
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
+        Log.d("Despair", "Vou setar o layout");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listInfoAlimentosSimilares.setLayoutManager(layoutManager);
 
         // Adiciona o adapter que irá anexar os objetos à lista.
 
+        for (int i = 0; i < lstSimilares.size(); i++) {
+            Log.d(TAG, "setupRecycler: " + lstSimilares.get(i).get_id());
+        }
 
         ArrayList<Food> arraySimilares = new ArrayList<>();
         arraySimilares.addAll(lstSimilares);
 
-        mAdapter = new SimilaresAdapter(context,arraySimilares);
+        mAdapter = new SimilaresAdapter(context, arraySimilares);
 
-        if(mAdapter.getItemCount() > 0) {
+        if (mAdapter.getItemCount() > 0) {
             listInfoAlimentosSimilares.setAdapter(mAdapter);
 
             // Configurando um divisor entre linhas, para uma melhor visualização.
@@ -72,10 +71,22 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
 
     @SuppressWarnings("ResourceType")
     private void setDados() {
+        String TAG = "setDados";
         Food food = (Food) getIntent().getSerializableExtra("food");
-        txtInfoAlimentoTitulo.setText(food.getName().getValue());
 
-        String txtCategoriaAlimento = food.getCategory().getValue();
+        String txtTituloAlimento;
+        String txtCategoriaAlimento;
+
+        if (getPreferences().getBoolean("isPremium", false)) {
+            // o premium tem que acessar a função getFood para obter os dados
+            txtTituloAlimento = food.getFood().getName().getValue();
+            txtCategoriaAlimento = food.getFood().getCategory().getValue();
+        } else {
+            txtTituloAlimento = food.getName().getValue();
+            txtCategoriaAlimento = food.getCategory().getValue();
+        }
+
+        txtInfoAlimentoTitulo.setText(txtTituloAlimento);
         txtInfoAlimentoCategoria.setText(txtCategoriaAlimento);
 
         Resources res = context.getResources();
@@ -125,8 +136,11 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
             default:
                 imgInfoAlimentoCategoria.setImageDrawable(categorias.getDrawable(11));
         }
-
-        setupRecycler(food.getLstSimilars());
+        if (getPreferences().getBoolean("isPremium", false)) {
+            setupRecycler(food.getLstSimilars());
+        }else{
+            // se n for premium, n tem similares
+        }
     }
 
 
