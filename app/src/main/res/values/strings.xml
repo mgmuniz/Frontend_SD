@@ -45,4 +45,5 @@
 
     <string name="title_activity_visualiza_refeicao">VisualizaRefeicaoActivity</string>
     <string name="Similares">Alimentos Similares:</string>
+    <string name="Lista_Nutrientes">Lista de Nutrientes:</string>
 </resources>
