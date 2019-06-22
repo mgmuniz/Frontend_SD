@@ -112,6 +112,7 @@
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:buttonTint="#00796B"
+                android:checked="true"
                 android:onClick="desRadioLessCriaDesjejum"
                 android:text="Café da manhã"
                 android:textColor="@color/vpi__background_holo_dark" />
@@ -143,7 +144,7 @@
                 android:textColor="@color/vpi__background_holo_dark" />
 
             <RadioButton
-                android:id="@+id/criaRefeicaoJanta"
+                android:id="@+id/criaRefeicaoJantar"
                 android:layout_width="90dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"

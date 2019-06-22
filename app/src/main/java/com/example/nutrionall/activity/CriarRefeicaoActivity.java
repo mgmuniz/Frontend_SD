@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterCriaRefeicao.MyFragPageAdapterCriaRefeicao;
@@ -162,5 +163,49 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     public SharedPreferences getPreferences() {
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         return preferences;
+    }
+
+    public void desRadioLessCriaDesjejum(View view) {
+
+        RadioButton radioAlmoco = findViewById(R.id.criaRefeicaoAlmoco);
+        RadioButton radioLanche = findViewById(R.id.criaRefeicaoLanche);
+        RadioButton radioJantar = findViewById(R.id.criaRefeicaoJantar);
+
+        radioJantar.setChecked(false);
+        radioLanche.setChecked(false);
+        radioAlmoco.setChecked(false);
+    }
+
+    public void desRadioLessCriaAlmoco(View view) {
+
+        RadioButton radioDesjejum = findViewById(R.id.criaRefeicaoDesjejum);
+        RadioButton radioLanche = findViewById(R.id.criaRefeicaoLanche);
+        RadioButton radioJantar = findViewById(R.id.criaRefeicaoJantar);
+
+        radioJantar.setChecked(false);
+        radioLanche.setChecked(false);
+        radioDesjejum.setChecked(false);
+    }
+
+    public void desRadioLessCriaLanche(View view) {
+
+        RadioButton radioDesjejum = findViewById(R.id.criaRefeicaoDesjejum);
+        RadioButton radioAlmoco = findViewById(R.id.criaRefeicaoAlmoco);
+        RadioButton radioJantar = findViewById(R.id.criaRefeicaoJantar);
+
+        radioJantar.setChecked(false);
+        radioAlmoco.setChecked(false);
+        radioDesjejum.setChecked(false);
+    }
+
+    public void desRadioLessCriaJantar(View view) {
+
+        RadioButton radioDesjejum = findViewById(R.id.criaRefeicaoDesjejum);
+        RadioButton radioAlmoco = findViewById(R.id.criaRefeicaoAlmoco);
+        RadioButton radioLanche = findViewById(R.id.criaRefeicaoLanche);
+
+        radioLanche.setChecked(false);
+        radioAlmoco.setChecked(false);
+        radioDesjejum.setChecked(false);
     }
 }
