@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.nutrionall.R;
@@ -46,6 +47,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
     private EditText editCadastroEmail;
     private EditText editCadastroDataNascimento;
     private ImageView editCadastroImgUser;
+    private ProgressBar progressBarCadastroUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,12 +166,9 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
                 @Override
                 public void onResponse(Call<UserCadastro> call, Response<UserCadastro> response) {
                     if (response.isSuccessful()) {
+
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
                     } else {
                         try {
                             // mensagens do servidor
@@ -199,6 +198,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
         editCadastroEmail = findViewById(R.id.editCadastroEmail);
         editCadastroDataNascimento = findViewById(R.id.editCadastroDataNascimento);
         editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
+        progressBarCadastroUser = findViewById(R.id.progressBarCadastroUser);
     }
 
     @Override
