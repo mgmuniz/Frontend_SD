@@ -127,7 +127,6 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
     public void buscar(View view) {
         final String TAG = "search";
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         String query = editBuscaBusca.getText().toString();
 
         Log.d(TAG, "buscar: " + query);
