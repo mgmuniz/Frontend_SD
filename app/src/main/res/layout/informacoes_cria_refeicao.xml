@@ -16,13 +16,14 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton3"
+            android:id="@+id/btnCriarRefeicaoAdicionarImagem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="136dp"
+            android:layout_marginTop="172dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:clickable="true"
+            android:onClick="loadImgMeal"
             app:backgroundTint="#68FB81"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.976"
@@ -31,9 +32,9 @@
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <ImageView
-            android:id="@+id/ImagemCriaRefeicao"
-            android:layout_width="394dp"
-            android:layout_height="136dp"
+            android:id="@+id/imgCriarRefeicaoImagemRefeicao"
+            android:layout_width="397dp"
+            android:layout_height="173dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
@@ -45,7 +46,7 @@
             app:srcCompat="@drawable/refeicoes_b" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/txtCriarRefeicaoNomeRefeicao"
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
@@ -63,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/floatingActionButton3" />
+            app:layout_constraintTop_toBottomOf="@+id/btnCriarRefeicaoAdicionarImagem" />
 
         <TextView
             android:id="@+id/textView7"
@@ -101,7 +102,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/criaRefeicaoDesjejum"
+                    android:id="@+id/radioCriarRefeicaoDesjejum"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -112,7 +113,7 @@
                     android:textColor="@color/vpi__background_holo_dark" />
 
                 <RadioButton
-                    android:id="@+id/criaRefeicaoAlmoco"
+                    android:id="@+id/radioCriarRefeicaoAlmoco"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -128,7 +129,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/criaRefeicaoLanche"
+                    android:id="@+id/radioCriarRefeicaoLanche"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -138,7 +139,7 @@
                     android:textColor="@color/vpi__background_holo_dark" />
 
                 <RadioButton
-                    android:id="@+id/criaRefeicaoJantar"
+                    android:id="@+id/radioCriarRefeicaoJanta"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
@@ -150,7 +151,7 @@
         </RadioGroup>
 
         <Button
-            android:id="@+id/salvarRefeicao"
+            android:id="@+id/btnCriarRefeicaoSalvarRefeicao"
             android:layout_width="211dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="134dp"
@@ -160,6 +161,7 @@
             android:layout_marginRight="134dp"
             android:background="@drawable/background_button_cadastrar_refeicao"
             android:color="#00796B"
+            android:onClick="cadastrar"
             android:text="@string/Salvar_Refeicao"
             android:textAllCaps="false"
             android:textSize="14sp"
@@ -169,16 +171,17 @@
             tools:text="@string/Salvar_Refeicao" />
 
         <ToggleButton
-            android:id="@+id/toggleButton"
+            android:id="@+id/btnCriarRefeicaoVisivel"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/background_button_cadastrar_refeicao"
+            android:checked="false"
             android:text="ToggleButton"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/editText" />
+            app:layout_constraintTop_toBottomOf="@+id/txtCriarRefeicaoNomeRefeicao" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -188,7 +191,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@+id/txtCriarRefeicaoNomeRefeicao"
             app:srcCompat="@drawable/ic_eye_black" />
 
         <TextView

@@ -1,15 +1,23 @@
 package com.example.nutrionall.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterCriaRefeicao.MyFragPageAdapterCriaRefeicao;
@@ -38,24 +46,79 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     private Retrofit retrofit;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private ImageView editCadastroImgMeal;
+
+    // Componentes
+    private EditText txtCriarRefeicaoNomeRefeicao;
+    private EditText txtCriarRefeicaoDescricao;
+    private ToggleButton btnCriarRefeicaoVisivel;
+    private RadioButton radioCriarRefeicaoDesjejum;
+    private RadioButton radioCriarRefeicaoAlmoco;
+    private RadioButton radioCriarRefeicaoLanche;
+    private RadioButton radioCriarRefeicaoJanta;
+
+    private RecyclerView listCriarRefeicaoIngredientes;
+    private ImageView imgCriarRefeicaoImagemRefeicao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_refeicao);
 
-        getReferencesComponentes();
+
         // estabelece comunicação com a api
         retrofit = Consts.connection();
 
-//        cadastrar(null);
-
+        getReferencesComponentes();
         mViewPager.setAdapter(new MyFragPageAdapterCriaRefeicao(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_tab)));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
+    public void loadImgMeal(View view){
+        // Intent para obter uma foto a partir da galeria
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // Recuperar imagem que o usuário escolheu | O requestCode indica o ponto de requisição (só temos 1 nesse caso)
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Testar retorno dos dados
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+            // Recuperar local do recurso:
+            Uri localImagem = data.getData();
+
+            // Recuperar imagem
+            try {
+                Bitmap img = MediaStore.Images.Media.getBitmap(getContentResolver(), localImagem);
+
+                // Comprimir no formato JPEG - Para remover transparência
+
+                //Objeto para receber a imagem
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                img.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                imgCriarRefeicaoImagemRefeicao = findViewById(R.id.imgCriarRefeicaoImagemRefeicao);
+                imgCriarRefeicaoImagemRefeicao.setImageBitmap(img);
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
     private Meal getMealData(){
+
+        txtCriarRefeicaoNomeRefeicao = findViewById(R.id.txtCriarRefeicaoNomeRefeicao);
+        txtCriarRefeicaoDescricao = findViewById(R.id.txtCriarRefeicaoDescricao);
+        btnCriarRefeicaoVisivel = findViewById(R.id.btnCriarRefeicaoVisivel);
+        radioCriarRefeicaoDesjejum = findViewById(R.id.radioCriarRefeicaoDesjejum);
+        radioCriarRefeicaoAlmoco = findViewById(R.id.radioCriarRefeicaoAlmoco);
+        radioCriarRefeicaoLanche = findViewById(R.id.radioCriarRefeicaoLanche);
+        radioCriarRefeicaoJanta = findViewById(R.id.radioCriarRefeicaoJanta);
+
         Meal newMeal = new Meal();
 
         ArrayList<Ingredient> ingredients = new ArrayList<>();
@@ -71,10 +134,15 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         ingredients.add(x1);
         ingredients.add(x2);
 
-        newMeal.setName("Refeição teste Android 1");
-        newMeal.setDescription("Apenas uma descrição");
-        newMeal.setVisibility(true);
-        newMeal.setClassification(Consts.getClassification("Jantar"));
+        newMeal.setName(txtCriarRefeicaoNomeRefeicao.getText().toString());
+        newMeal.setDescription(txtCriarRefeicaoDescricao.getText().toString());
+        newMeal.setVisibility((btnCriarRefeicaoVisivel.isChecked()));
+
+        if(radioCriarRefeicaoDesjejum.isChecked()){newMeal.setClassification(Consts.getClassification("Desjejum"));}
+        if(radioCriarRefeicaoAlmoco.isChecked()){newMeal.setClassification(Consts.getClassification("Almoço"));}
+        if(radioCriarRefeicaoLanche.isChecked()){newMeal.setClassification(Consts.getClassification("Lanche"));}
+        if(radioCriarRefeicaoJanta.isChecked()){newMeal.setClassification(Consts.getClassification("Jantar"));}
+
         newMeal.setIngredients(ingredients);
 
         return newMeal;
@@ -103,8 +171,10 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
             @Override
             public void onResponse(Call<Meal> call, Response<Meal> response) {
                 if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Cadastro efetuado com sucesso!", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onResponse: " + response.message());
                 }else{
+                    Toast.makeText(getApplicationContext(),"Erro ao cadastrar refeição!", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onResponse: " + response.toString());
                 }
             }
@@ -114,14 +184,16 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
+
+        finish();
     }
 
     private byte[] imgToString() {
-        editCadastroImgMeal.setDrawingCacheEnabled(true);
-        editCadastroImgMeal.buildDrawingCache();
+        imgCriarRefeicaoImagemRefeicao.setDrawingCacheEnabled(true);
+        imgCriarRefeicaoImagemRefeicao.buildDrawingCache();
 
         // recupera o bitmap da imagem a ser enviada
-        Bitmap bitmap = editCadastroImgMeal.getDrawingCache();
+        Bitmap bitmap = imgCriarRefeicaoImagemRefeicao.getDrawingCache();
 
         // comprime o bitmap para algum formato de imagem
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -134,21 +206,20 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     }
 
     private MultipartBody.Part multipart() throws IOException {
-//        File filesDir = getApplicationContext().getFilesDir();
-//        File file = new File(filesDir, "imageMeal" + ".png");
-//
-//        byte[] img = imgToString();
-//
-//        FileOutputStream fos = new FileOutputStream(file);
-//        fos.write(img);
-//        fos.flush();
-//        fos.close();
-//
-//        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-//        MultipartBody.Part body = MultipartBody.Part.createFormData("urlImg", file.getName(), reqFile);
+        File filesDir = getApplicationContext().getFilesDir();
+        File file = new File(filesDir, "imageMeal" + ".png");
 
-        // return body;
-        return null;
+        byte[] img = imgToString();
+
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(img);
+        fos.flush();
+        fos.close();
+
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("urlImg", file.getName(), reqFile);
+
+        return body;
     }
 
     @Override
@@ -156,7 +227,7 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         // inicializa variáveis dos componentes
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
-        //editCadastroImgMeal = findViewById(R.id.editCadastroImgMeal);
+
     }
 
     @Override
@@ -167,9 +238,9 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
     public void desRadioLessCriaDesjejum(View view) {
 
-        RadioButton radioAlmoco = findViewById(R.id.criaRefeicaoAlmoco);
-        RadioButton radioLanche = findViewById(R.id.criaRefeicaoLanche);
-        RadioButton radioJantar = findViewById(R.id.criaRefeicaoJantar);
+        RadioButton radioAlmoco = findViewById(R.id.radioCriarRefeicaoAlmoco);
+        RadioButton radioLanche = findViewById(R.id.radioCriarRefeicaoLanche);
+        RadioButton radioJantar = findViewById(R.id.radioCriarRefeicaoJanta);
 
         radioJantar.setChecked(false);
         radioLanche.setChecked(false);
@@ -178,9 +249,9 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
     public void desRadioLessCriaAlmoco(View view) {
 
-        RadioButton radioDesjejum = findViewById(R.id.criaRefeicaoDesjejum);
-        RadioButton radioLanche = findViewById(R.id.criaRefeicaoLanche);
-        RadioButton radioJantar = findViewById(R.id.criaRefeicaoJantar);
+        RadioButton radioDesjejum = findViewById(R.id.radioCriarRefeicaoDesjejum);
+        RadioButton radioLanche = findViewById(R.id.radioCriarRefeicaoLanche);
+        RadioButton radioJantar = findViewById(R.id.radioCriarRefeicaoJanta);
 
         radioJantar.setChecked(false);
         radioLanche.setChecked(false);
@@ -189,9 +260,9 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
     public void desRadioLessCriaLanche(View view) {
 
-        RadioButton radioDesjejum = findViewById(R.id.criaRefeicaoDesjejum);
-        RadioButton radioAlmoco = findViewById(R.id.criaRefeicaoAlmoco);
-        RadioButton radioJantar = findViewById(R.id.criaRefeicaoJantar);
+        RadioButton radioDesjejum = findViewById(R.id.radioCriarRefeicaoDesjejum);
+        RadioButton radioAlmoco = findViewById(R.id.radioCriarRefeicaoAlmoco);
+        RadioButton radioJantar = findViewById(R.id.radioCriarRefeicaoJanta);
 
         radioJantar.setChecked(false);
         radioAlmoco.setChecked(false);
@@ -200,9 +271,9 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
     public void desRadioLessCriaJantar(View view) {
 
-        RadioButton radioDesjejum = findViewById(R.id.criaRefeicaoDesjejum);
-        RadioButton radioAlmoco = findViewById(R.id.criaRefeicaoAlmoco);
-        RadioButton radioLanche = findViewById(R.id.criaRefeicaoLanche);
+        RadioButton radioDesjejum = findViewById(R.id.radioCriarRefeicaoDesjejum);
+        RadioButton radioAlmoco = findViewById(R.id.radioCriarRefeicaoAlmoco);
+        RadioButton radioLanche = findViewById(R.id.radioCriarRefeicaoLanche);
 
         radioLanche.setChecked(false);
         radioAlmoco.setChecked(false);
