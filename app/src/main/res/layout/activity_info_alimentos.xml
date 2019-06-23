@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TableLayout
-            android:id="@+id/tableLayout"
+            android:id="@+id/tableInfoAlimentoTableNutrientes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -78,7 +78,7 @@
                     android:id="@+id/txtInfoAlimentoHumiditySodium"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -88,7 +88,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoHumiditySodiumV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -107,7 +107,7 @@
                     android:id="@+id/txtInfoAlimentoEnergyPotassium"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="@android:color/white"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -117,7 +117,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoEnergyPotassiumV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="@color/default_circle_indicator_fill_color"
                     android:gravity="end"
@@ -136,7 +136,7 @@
                     android:id="@+id/txtInfoAlimentoProteinCopper"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -146,7 +146,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoProteinCopperV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -165,7 +165,7 @@
                     android:id="@+id/txtInfoAlimentoLipidsZinc"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="@android:color/white"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -175,7 +175,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoLipidsZincV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="@android:color/white"
                     android:gravity="end"
@@ -194,7 +194,7 @@
                     android:id="@+id/txtInfoAlimentoCarbohydrateRe"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -204,7 +204,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoCarbohydrateReV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -223,7 +223,7 @@
                     android:id="@+id/txtInfoAlimentoCholesterolRetinol"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="@android:color/white"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -233,7 +233,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoCholesterolRetinolV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="@color/default_circle_indicator_fill_color"
                     android:gravity="end"
@@ -252,7 +252,7 @@
                     android:id="@+id/txtInfoAlimentoAshesThiamine"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -262,7 +262,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoAshesThiamineV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -283,7 +283,7 @@
                     android:id="@+id/txtInfoAlimentoFiberRae"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="@android:color/white"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -293,7 +293,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoFiberRaeV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="@color/default_circle_indicator_fill_color"
                     android:gravity="end"
@@ -313,7 +313,7 @@
                     android:id="@+id/txtInfoAlimentoMagnesiumPyridoxine"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -323,7 +323,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoMagnesiumPyridoxineV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -342,7 +342,7 @@
                     android:id="@+id/txtInfoAlimentoManganaseNiacin"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="@android:color/white"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -352,7 +352,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoManganaseNiacinV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="@color/default_circle_indicator_fill_color"
                     android:gravity="end"
@@ -371,7 +371,7 @@
                     android:id="@+id/txtInfoAlimentoPhosphorusVitaminC"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -381,7 +381,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoPhosphorusVitaminCV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -400,7 +400,7 @@
                     android:id="@+id/txtInfoAlimentoCalciumRiboflavin"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="@android:color/white"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -410,7 +410,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoCalciumRiboflavinV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="@color/default_circle_indicator_fill_color"
                     android:gravity="end"
@@ -429,7 +429,7 @@
                     android:id="@+id/txtInfoAlimentoIron"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.6"
                     android:background="#C8F3C0"
                     android:padding="3dip"
                     android:text="Umidade"
@@ -439,7 +439,7 @@
                 <TextView
                     android:id="@+id/txtInfoAlimentoIronV"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.4"
 
                     android:background="#C8F3C0"
                     android:gravity="end"
@@ -491,7 +491,8 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            app:layout_constraintTop_toBottomOf="@+id/txtInfoAlimentoMsgPremium"
+            app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/layout_similares" />
 
         <TextView
@@ -531,8 +532,9 @@
             android:layout_marginLeft="140dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/background_button_login"
+            android:onClick="setTablePart1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+            app:layout_constraintTop_toBottomOf="@+id/tableInfoAlimentoTableNutrientes"
             app:srcCompat="@drawable/ic_navigate_before_gray" />
 
         <ImageButton
@@ -543,9 +545,25 @@
             android:layout_marginEnd="140dp"
             android:layout_marginRight="140dp"
             android:background="@drawable/background_button_login"
+            android:onClick="setTablePart2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+            app:layout_constraintTop_toBottomOf="@+id/tableInfoAlimentoTableNutrientes"
             app:srcCompat="@drawable/ic_navigate_next_black" />
+
+        <TextView
+            android:id="@+id/txtInfoAlimentoMsgPremium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/Mensagem_UserPremium"
+            android:textColor="@android:color/holo_orange_light"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            tools:text="@string/Mensagem_UserPremium" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

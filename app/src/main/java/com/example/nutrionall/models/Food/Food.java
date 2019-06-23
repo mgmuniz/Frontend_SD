@@ -1,5 +1,7 @@
 package com.example.nutrionall.models.Food;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Food implements Serializable {
     Definition lipids;
     Definition cholesterol;
     Definition carbohydrate;
+    @SerializedName("food fiber")
     Definition foodFiber;
     Definition ashes;
     Definition calcium;
@@ -31,6 +34,7 @@ public class Food implements Serializable {
     Definition riboflavin;
     Definition pyridoxine;
     Definition niacin;
+    @SerializedName("vitamin c")
     Definition vitaminc;
 
     Food food;
