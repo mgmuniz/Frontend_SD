@@ -3,18 +3,23 @@ package com.example.nutrionall.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
 import com.example.nutrionall.R;
+import com.example.nutrionall.adapters.AdapterSearchBarHome;
 import com.example.nutrionall.adapters.FoodAdapter;
 import com.example.nutrionall.api.Food.FoodApi;
 import com.example.nutrionall.api.Food.Search;
@@ -22,6 +27,7 @@ import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Food.SearchNutrientFood;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.example.nutrionall.utils.RecyclerItemClickListener;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -41,6 +47,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
     private RadioButton radioAlimento;
     private RadioButton radioNutrient;
     private Food alimento_clicado;
+    private RecyclerView recyclerBusca;
+    private ImageView imgHomeSearchButton;
 
 
     private ArrayList<Food> arrayAlimentos;
@@ -57,9 +65,16 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
         Intent intent = getIntent();
         String termo_busca = intent.getStringExtra("termo_busca");
+        String nutrient = intent.getStringExtra("nutrient");
 
-        editBuscaBusca.setText(termo_busca);
-        buscar(null);
+        if(termo_busca != null){
+            editBuscaBusca.setText(termo_busca);
+            buscar(null);
+        }else{
+            buscarNutriente(nutrient);
+        }
+
+
 
         resultadosBusca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,7 +83,47 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                 buscarAlimento(null, alimento_clicado.get_id());
             }
         });
+        setRecycler();
     }
+
+    private void setRecycler(){
+        // adapter recyclerView search bar nutrient
+        Consts.generateNutrient();
+        AdapterSearchBarHome adapter = new AdapterSearchBarHome(Consts.nutrients);
+
+        recyclerBusca.setVisibility(View.INVISIBLE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false);
+        recyclerBusca.setLayoutManager(layoutManager);
+        recyclerBusca.setHasFixedSize(true);
+        recyclerBusca.setAdapter(adapter);
+        recyclerBusca.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), recyclerBusca,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent intent = new Intent(getApplicationContext(), BuscaActivity.class);
+
+                                ArrayList<String> keys = new ArrayList<>(Consts.nutrients.keySet());
+                                buscarNutriente(Consts.getNutrient(keys.get(position)));
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        })
+
+        );
+    }
+
 
     public void buscar(View view) {
         final String TAG = "search";
@@ -170,12 +225,10 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
     }
 
 
-    public void buscarNutriente(View view) {
+    public void buscarNutriente(String nutrient) {
         final String TAG = "searchNutrient";
 
         // nutriente q deve ser alterado
-        String nutrient = "humidity";
-
         Log.d(TAG, "buscarNutriente: " + nutrient);
 
         Search serviceApi = retrofit.create(Search.class);
@@ -193,17 +246,19 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                     if (response.isSuccessful()) {
                         // se o usuário for premium
                         SearchNutrientFood resp = response.body();
-                        Log.d(TAG, "page: " + resp.getPage());
-                        Log.d(TAG, "limit: " + resp.getLimit());
-                        for (int i = 0; i < resp.getLimit(); i++) {
-                            Log.d(TAG, "data: " + resp.getData().get(i).getName().getValue());
-                        }
+
+                        arrayAlimentos = new ArrayList<>();
+                        arrayAlimentos.addAll(resp.getData());
+
+                        ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
+                        resultadosBusca.setAdapter(adapter);
                     } else {
                         Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
                     }
                 } else {
                     if (response.isSuccessful()) {
                         // se o usuário não for premium
+                        Log.d(TAG, "onResponse: n premium");
                     } else {
                         Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
                     }
@@ -220,10 +275,20 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
     public void desRadioAlimento(View view) {
         radioAlimento.setChecked(false);
+
+        editBuscaBusca.setVisibility(View.INVISIBLE);
+        imgHomeSearchButton.setVisibility(View.INVISIBLE);
+
+        recyclerBusca.setVisibility(View.VISIBLE);
     }
 
     public void desRadioNutriente(View view) {
         radioNutrient.setChecked(false);
+
+        editBuscaBusca.setVisibility(View.VISIBLE);
+        imgHomeSearchButton.setVisibility(View.VISIBLE);
+
+        recyclerBusca.setVisibility(View.INVISIBLE);
     }
 
     public void getReferencesComponentes() {
@@ -231,6 +296,7 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         resultadosBusca = findViewById(R.id.listBuscaResults);
         radioAlimento = findViewById(R.id.radioBuscaAlimento);
         radioNutrient = findViewById(R.id.radioBuscaNutriente);
-
+        recyclerBusca = findViewById(R.id.recyclerBusca);
+        imgHomeSearchButton = findViewById(R.id.imgHomeSearchButton);
     }
 }

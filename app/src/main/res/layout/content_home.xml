@@ -43,9 +43,16 @@
         android:inputType="textPersonName"
         android:textColor="@color/vpi__background_holo_dark"
         android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/imgHomeSearchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerSearchHome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
 
     <RadioGroup
         android:id="@+id/radioGroup2"
@@ -89,7 +96,7 @@
     </RadioGroup>
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/imgHomeSearchButton"
         android:layout_width="69dp"
         android:layout_height="41dp"
         android:layout_marginTop="8dp"

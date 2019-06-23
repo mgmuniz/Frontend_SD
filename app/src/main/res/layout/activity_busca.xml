@@ -32,12 +32,12 @@
         android:inputType="textPersonName"
         android:textColor="@color/vpi__background_holo_dark"
         android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/imgHomeSearchButton"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/imgHomeSearchButton"
         android:layout_width="69dp"
         android:layout_height="41dp"
         android:layout_marginTop="8dp"
@@ -48,6 +48,11 @@
         android:src="@drawable/ic_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerBusca"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ListView
         android:id="@+id/listBuscaResults"

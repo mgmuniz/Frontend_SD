@@ -8,23 +8,30 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
+import com.example.nutrionall.adapters.AdapterSearchBarHome;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.example.nutrionall.utils.RecyclerItemClickListener;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
+
+import java.util.ArrayList;
 
 import retrofit2.Retrofit;
 
@@ -32,13 +39,7 @@ import retrofit2.Retrofit;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Methods {
 
-    private String[] mImages = new String[]{
-            "https://nit.pt/wp-content/uploads/2017/12/840b2ccfec7171179aac43a1f6919c11-754x394.jpg",
-            "https://nit.pt/wp-content/uploads/2017/12/c4ca4238a0b923820dcc509a6f75849b-10-754x394.jpg",
-            "https://nit.pt/wp-content/uploads/2019/06/3db9f34c117da413eb2de25c06547fe8-754x394.jpg",
-            "https://nit.pt/wp-content/uploads/2019/06/a0ea12235f3b00b1ace614e143be0eb2-1-754x394.jpg",
-            "https://nit.pt/wp-content/uploads/2019/06/1a051d4e6c04508055d43a8f4f5cb313-754x394.jpg"
-    };
+    private String[] mImages = Consts.mImages;
 
 
     private EditText editHomeBusca;
@@ -50,6 +51,8 @@ public class HomeActivity extends AppCompatActivity
     private NavigationView navigationView;
     private Toolbar toolbar;
     private Retrofit retrofit;
+    private ImageView imgHomeSearchButton;
+    private RecyclerView recyclerSearchHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,22 +74,18 @@ public class HomeActivity extends AppCompatActivity
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-//                imageView.setImageResource(mImages[position]);
                 Picasso.get().load(mImages[position]).fit().centerCrop().into(imageView);
             }
         });
-
-
         carouselView.setImageClickListener(new ImageClickListener() {
             @Override
             public void onClick(int position) {
-//                titulo.setText(mTitles[position]);
             }
         });
 
         retrofit = Consts.connection();
 
-
+        setRecycler();
     }
 
     @Override
@@ -154,21 +153,24 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void desRadioAlimento(View view) {
-
         RadioButton radioAlimento = findViewById(R.id.radioBuscaAlimento);
-
         radioAlimento.setChecked(false);
+
+        imgHomeSearchButton.setVisibility(View.INVISIBLE);
+        editHomeBusca.setVisibility(View.INVISIBLE);
+        recyclerSearchHome.setVisibility(View.VISIBLE);
     }
 
     public void desRadioNutriente(View view) {
-
         RadioButton radioNutrient = findViewById(R.id.radioBuscaNutriente);
-
         radioNutrient.setChecked(false);
+
+        imgHomeSearchButton.setVisibility(View.VISIBLE);
+        editHomeBusca.setVisibility(View.VISIBLE);
+        recyclerSearchHome.setVisibility(View.INVISIBLE);
     }
 
     public void buscar(View view) {
-
         Intent intent = new Intent(HomeActivity.this, BuscaActivity.class);
         intent.putExtra("termo_busca", editHomeBusca.getText().toString());
         startActivity(intent);
@@ -183,12 +185,54 @@ public class HomeActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
         editHomeBusca = findViewById(R.id.editHomeBusca);
+        recyclerSearchHome = findViewById(R.id.recyclerSearchHome);
+        imgHomeSearchButton = findViewById(R.id.imgHomeSearchButton);
     }
 
     @Override
     public SharedPreferences getPreferences() {
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         return preferences;
+    }
+
+    private void setRecycler(){
+        // adapter recyclerView search bar nutrient
+        Consts.generateNutrient();
+        AdapterSearchBarHome adapter = new AdapterSearchBarHome(Consts.nutrients);
+
+        recyclerSearchHome.setVisibility(View.INVISIBLE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
+                getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false);
+        recyclerSearchHome.setLayoutManager(layoutManager);
+        recyclerSearchHome.setHasFixedSize(true);
+        recyclerSearchHome.setAdapter(adapter);
+        recyclerSearchHome.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), recyclerSearchHome,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent intent = new Intent(getApplicationContext(), BuscaActivity.class);
+
+                                ArrayList<String> keys = new ArrayList<>(Consts.nutrients.keySet());
+                                // Log.d("searchBar", "onItemClick: " + Consts.getNutrient(keys.get(position)));
+                                intent.putExtra("nutrient", Consts.getNutrient(keys.get(position)));
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        })
+
+        );
     }
 
     private void logout() {

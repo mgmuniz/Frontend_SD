@@ -2,13 +2,17 @@ package com.example.nutrionall.utils;
 
 import com.example.nutrionall.models.Food.Food;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Consts {
     public static final String API_BASE_URL = "https://backend-sd.herokuapp.com";
     public static final String ARQUIVO_PREFERENCIAS = "NutritionAllArquivoPreferencias";
-    public static Food foodParameter;
+    public static Map<String, String> nutrients;
+    private static Boolean flagNutrient = false;
 
     public static Retrofit connection() {
         return new Retrofit.Builder()
@@ -42,5 +46,44 @@ public class Consts {
             default:
                 return 4; // café da manhã
         }
+    }
+
+    public static void generateNutrient(){
+        nutrients = new HashMap<String, String>();
+        nutrients.put("Umidade", "humidity");
+        nutrients.put("Energia", "energy");
+        nutrients.put("Proteína", "protein");
+        nutrients.put("Lipídeos", "lipids");
+        nutrients.put("Colesterol", "cholesterol");
+        nutrients.put("Carboidrato", "carbohydrate");
+        nutrients.put("Fibra Alimentar", "food fiber");
+        nutrients.put("Cinzas", "ashes");
+        nutrients.put("Cálcio", "calcium");
+        nutrients.put("Magnésio", "magnesium");
+        nutrients.put("Manganês", "manganese");
+        nutrients.put("Fósforo", "phosphorus");
+        nutrients.put("Ferro", "iron");
+        nutrients.put("Sódio", "sodium");
+        nutrients.put("Potássio", "potassium");
+        nutrients.put("Cobre", "copper");
+        nutrients.put("Zinco", "zinc");
+        nutrients.put("Retinol", "retinol");
+        nutrients.put("RE", "re");
+        nutrients.put("RAE", "rae");
+        nutrients.put("Tiamina", "thiamine");
+        nutrients.put("Riboflavina", "riboflavin");
+        nutrients.put("Piridoxina", "pyridoxine");
+        nutrients.put("Niacina", "niacin");
+        nutrients.put("Vitamina C", "vitamin c");
+        flagNutrient = true;
+    }
+
+    public static String getNutrient(String name){
+        if(flagNutrient == false){
+            generateNutrient();
+            flagNutrient = true;
+        }
+
+        return nutrients.get(name);
     }
 }
