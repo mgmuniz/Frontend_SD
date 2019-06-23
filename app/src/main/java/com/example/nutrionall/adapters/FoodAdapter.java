@@ -94,7 +94,7 @@ public class FoodAdapter extends ArrayAdapter<Food> {
                 imagemCategoriaAlimento.setImageDrawable(categorias.getDrawable(12));
                 break;
             default:
-                imagemCategoriaAlimento.setImageDrawable(categorias.getDrawable(11));
+                imagemCategoriaAlimento.setImageDrawable(categorias.getDrawable(2));
         }
 
         return rowView;

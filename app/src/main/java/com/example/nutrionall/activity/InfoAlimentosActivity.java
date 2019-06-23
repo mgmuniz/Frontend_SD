@@ -177,7 +177,7 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
                 imgInfoAlimentoCategoria.setImageDrawable(categorias.getDrawable(12));
                 break;
             default:
-                imgInfoAlimentoCategoria.setImageDrawable(categorias.getDrawable(11));
+                imgInfoAlimentoCategoria.setImageDrawable(categorias.getDrawable(2));
         }
         if (getPreferences().getBoolean("isPremium", false)) {
             setupRecycler(food.getLstSimilars());
@@ -236,8 +236,8 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
             txtInfoAlimentoIron.setVisibility(TextView.VISIBLE);
             txtInfoAlimentoIronV.setVisibility(TextView.VISIBLE);
 
-            txtInfoAlimentoProteinCopper.setText("Ferro");
-            txtInfoAlimentoProteinCopperV.setText(checkValue(this.food.getFood().getIron().getValue(), "g"));
+            txtInfoAlimentoIron.setText("Ferro");
+            txtInfoAlimentoIronV.setText(checkValue(this.food.getFood().getIron().getValue(), "g"));
 
         }else{
 
@@ -307,25 +307,25 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
         txtInfoAlimentoLipidsZincV.setText(checkValue(this.food.getFood().getZinc().getValue(),"g"));
 
         txtInfoAlimentoCholesterolRetinol.setText("Retinol");
-        txtInfoAlimentoCholesterolRetinolV.setText(checkValue(this.food.getFood().getCholesterol().getValue(),"g"));
+        txtInfoAlimentoCholesterolRetinolV.setText(checkValue(this.food.getFood().getRetinol().getValue(),"g"));
 
         txtInfoAlimentoCarbohydrateRe.setText("RE");
-        txtInfoAlimentoCarbohydrateReV.setText(checkValue(this.food.getFood().getCarbohydrate().getValue(),"g"));
+        txtInfoAlimentoCarbohydrateReV.setText(checkValue(this.food.getFood().getRe().getValue(),"g"));
 
         txtInfoAlimentoFiberRae.setText("RAE");
-        txtInfoAlimentoFiberRaeV.setText(checkValue(this.food.getFood().getFoodFiber().getValue(),"g"));
+        txtInfoAlimentoFiberRaeV.setText(checkValue(this.food.getFood().getRae().getValue(),"g"));
 
         txtInfoAlimentoAshesThiamine.setText("Tiamina");
-        txtInfoAlimentoAshesThiamineV.setText(checkValue(this.food.getFood().getAshes().getValue(),"g"));
+        txtInfoAlimentoAshesThiamineV.setText(checkValue(this.food.getFood().getThiamine().getValue(),"g"));
 
         txtInfoAlimentoCalciumRiboflavin.setText("Riboflavina");
-        txtInfoAlimentoCalciumRiboflavinV.setText(checkValue(this.food.getFood().getCalcium().getValue(),"g"));
+        txtInfoAlimentoCalciumRiboflavinV.setText(checkValue(this.food.getFood().getRiboflavin().getValue(),"g"));
 
         txtInfoAlimentoMagnesiumPyridoxine.setText("Piridoxina");
-        txtInfoAlimentoMagnesiumPyridoxineV.setText(checkValue(this.food.getFood().getMagnesium().getValue(),"g"));
+        txtInfoAlimentoMagnesiumPyridoxineV.setText(checkValue(this.food.getFood().getPyridoxine().getValue(),"g"));
 
         txtInfoAlimentoManganaseNiacin.setText("Niacina");
-        txtInfoAlimentoManganaseNiacinV.setText(checkValue(this.food.getFood().getManganese().getValue(),"g"));
+        txtInfoAlimentoManganaseNiacinV.setText(checkValue(this.food.getFood().getNiacin().getValue(),"g"));
 
         txtInfoAlimentoPhosphorusVitaminC.setText("Vitamina C");
         txtInfoAlimentoPhosphorusVitaminCV.setText(checkValue(this.food.getFood().getVitaminc().getValue(),"g"));

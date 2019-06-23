@@ -85,7 +85,7 @@ public class SimilaresAdapter extends RecyclerView.Adapter<SimilaresHolder> {
                 holder.imgLayoutBuscaImgCategoria.setImageDrawable(categorias.getDrawable(12));
                 break;
             default:
-                holder.imgLayoutBuscaImgCategoria.setImageDrawable(categorias.getDrawable(11));
+                holder.imgLayoutBuscaImgCategoria.setImageDrawable(categorias.getDrawable(2));
         }
     }
 
