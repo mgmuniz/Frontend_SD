@@ -47,4 +47,7 @@
     <string name="Similares">Alimentos Similares:</string>
     <string name="Lista_Nutrientes">Lista de Nutrientes:</string>
     <string name="Mensagem_UserPremium">Disponíveis apenas para usuários Premium</string>
+    <string name="Publico">Público</string>
+    <string name="Salvar_Refeicao">Salvar Refeição</string>
+    <string name="Texto_Descricao">Descreva sua refeição ;)</string>
 </resources>
