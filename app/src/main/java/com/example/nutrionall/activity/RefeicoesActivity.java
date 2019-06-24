@@ -69,9 +69,6 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             }
         });
 
-        getRefeicao();
-        deleteRefeicao();
-        listAll();
     }
 
     public void desRadioLessDesjejum(View view) {
@@ -121,41 +118,6 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
     public void criaRefeicao(View view) {
         Intent intent = new Intent(RefeicoesActivity.this, CriarRefeicaoActivity.class);
         startActivity(intent);
-    }
-
-    public void getRefeicao() {
-        final String TAG = "getRefeição";
-
-        String id = "5d0bdec9bcccc223ae26c8fb";
-
-        Log.d(TAG, "getRefeição: " + id);
-
-        MealApi serviceApi = retrofit.create(MealApi.class);
-        Call<Meal> call = serviceApi.getByID(id, "bearer " + getPreferences().getString("token", ""));
-
-        call.enqueue(new Callback<Meal>() {
-            @Override
-            public void onResponse(Call<Meal> call, Response<Meal> response) {
-                if (getPreferences().getBoolean("isPremium", false)) {
-                    if (response.isSuccessful()) {
-                        // o usuário é premium
-                        Meal resp = response.body();
-                    } else {
-                        Log.d(TAG, "onResponse: erro");
-                    }
-                } else {
-                    if (response.isSuccessful()) {
-                        // o usuário não é premium
-                        Meal resp = response.body();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Meal> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
     }
 
     public void deleteRefeicao() {

@@ -33,7 +33,7 @@
         app:srcCompat="@drawable/refeicoes_b" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/nomeVisuRefeicao"
         android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_marginStart="16dp"
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/descricaoVisuRefeicao"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -99,6 +99,6 @@
         android:numStars="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        app:layout_constraintTop_toBottomOf="@+id/nomeVisuRefeicao" />
 
 </android.support.constraint.ConstraintLayout>
