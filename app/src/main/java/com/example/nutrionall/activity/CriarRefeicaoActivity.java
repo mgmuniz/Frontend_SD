@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,16 +19,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterCriaRefeicao.MyFragPageAdapterCriaRefeicao;
 import com.example.nutrionall.adapters.IngredientesAdapter;
-import com.example.nutrionall.adapters.SimilaresAdapter;
 import com.example.nutrionall.api.Meal.MealApi;
-import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Ingredient;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
@@ -38,7 +39,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -62,6 +62,8 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     private RadioButton radioCriarRefeicaoAlmoco;
     private RadioButton radioCriarRefeicaoLanche;
     private RadioButton radioCriarRefeicaoJanta;
+    private TextView txtCadastroRefeicao;
+    private ProgressBar progressBarCadastroRefeicao;
 
     private RecyclerView listCriarRefeicaoIngredientes;
     private ImageView imgCriarRefeicaoImagemRefeicao;
@@ -75,27 +77,25 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_refeicao);
         this.context = this;
-
+        getReferencesComponentes();
 
 
         // estabelece comunicação com a api
         retrofit = Consts.connection();
 
-        getReferencesComponentes();
         mViewPager.setAdapter(new MyFragPageAdapterCriaRefeicao(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_tab)));
         mTabLayout.setupWithViewPager(mViewPager);
 
         flag_recycler_iniciou = false;
-
     }
 
 
-    public void loadImgMeal(View view){
+    public void loadImgMeal(View view) {
         // Intent para obter uma foto a partir da galeria
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Recuperar imagem que o usuário escolheu | O requestCode indica o ponto de requisição (só temos 1 nesse caso)
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         super.onActivityResult(requestCode, resultCode, data);
 
         // Testar retorno dos dados
-        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             // Recuperar local do recurso:
             Uri localImagem = data.getData();
 
@@ -115,10 +115,10 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
                 //Objeto para receber a imagem
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                img.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                img.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 imgCriarRefeicaoImagemRefeicao = findViewById(R.id.imgCriarRefeicaoImagemRefeicao);
                 imgCriarRefeicaoImagemRefeicao.setImageBitmap(img);
-            } catch(IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -143,8 +143,8 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
-    public void addIngrediente(View view){
-        if(!flag_recycler_iniciou){
+    public void addIngrediente(View view) {
+        if (!flag_recycler_iniciou) {
             flag_recycler_iniciou = true;
             setupRecyclerIngredientes(null);
         }
@@ -162,7 +162,7 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     }
 
 
-    private Meal getMealData(){
+    private Meal getMealData() {
 
         txtCriarRefeicaoNomeRefeicao = findViewById(R.id.txtCriarRefeicaoNomeRefeicao);
         txtCriarRefeicaoDescricao = findViewById(R.id.txtCriarRefeicaoDescricao);
@@ -191,10 +191,18 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         newMeal.setDescription(txtCriarRefeicaoDescricao.getText().toString());
         newMeal.setVisibility((btnCriarRefeicaoVisivel.isChecked()));
 
-        if(radioCriarRefeicaoDesjejum.isChecked()){newMeal.setClassification(Consts.getClassification("Desjejum"));}
-        if(radioCriarRefeicaoAlmoco.isChecked()){newMeal.setClassification(Consts.getClassification("Almoço"));}
-        if(radioCriarRefeicaoLanche.isChecked()){newMeal.setClassification(Consts.getClassification("Lanche"));}
-        if(radioCriarRefeicaoJanta.isChecked()){newMeal.setClassification(Consts.getClassification("Jantar"));}
+        if (radioCriarRefeicaoDesjejum.isChecked()) {
+            newMeal.setClassification(Consts.getClassification("Desjejum"));
+        }
+        if (radioCriarRefeicaoAlmoco.isChecked()) {
+            newMeal.setClassification(Consts.getClassification("Almoço"));
+        }
+        if (radioCriarRefeicaoLanche.isChecked()) {
+            newMeal.setClassification(Consts.getClassification("Lanche"));
+        }
+        if (radioCriarRefeicaoJanta.isChecked()) {
+            newMeal.setClassification(Consts.getClassification("Jantar"));
+        }
 
         newMeal.setIngredients(ingredients);
 
@@ -217,17 +225,27 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
             e.printStackTrace();
         }
 
+        getReferencesComponentes();
+        // componente loading
+        progressBarCadastroRefeicao.setVisibility(View.VISIBLE);
+        txtCadastroRefeicao.setText("Aguarde enquanto resolvemos tudo ...");
+        txtCadastroRefeicao.setTextColor(Color.WHITE);
+
         MealApi serviceApi = retrofit.create(MealApi.class);
         Call<Meal> call = serviceApi.save(urlImg, newMeal, "bearer " + getPreferences().getString("token", ""));
 
         call.enqueue(new Callback<Meal>() {
             @Override
             public void onResponse(Call<Meal> call, Response<Meal> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Cadastro efetuado com sucesso!", Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Cadastro efetuado com sucesso!", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onResponse: " + response.message());
-                }else{
-                    Toast.makeText(getApplicationContext(),"Erro ao cadastrar refeição!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    // Toast.makeText(getApplicationContext(),"Erro ao cadastrar refeição!", Toast.LENGTH_SHORT).show();
+                    txtCadastroRefeicao.setError("Erro ao cadastrar refeição!");
+                    txtCadastroRefeicao.setText("Erro ao cadastrar refeição!");
+                    progressBarCadastroRefeicao.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "onResponse: " + response.toString());
                 }
             }
@@ -235,13 +253,16 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
             @Override
             public void onFailure(Call<Meal> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
+                txtCadastroRefeicao.setError("Erro ao cadastrar refeição!");
+                txtCadastroRefeicao.setText("Erro ao cadastrar refeição!");
+                txtCadastroRefeicao.setTextColor(Color.RED);
+                progressBarCadastroRefeicao.setVisibility(View.INVISIBLE);
             }
         });
-
-        finish();
     }
 
     private byte[] imgToString() {
+        imgCriarRefeicaoImagemRefeicao = findViewById(R.id.imgCriarRefeicaoImagemRefeicao);
         imgCriarRefeicaoImagemRefeicao.setDrawingCacheEnabled(true);
         imgCriarRefeicaoImagemRefeicao.buildDrawingCache();
 
@@ -280,7 +301,19 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         // inicializa variáveis dos componentes
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
+        imgCriarRefeicaoImagemRefeicao = findViewById(R.id.imgCriarRefeicaoImagemRefeicao);
+        txtCriarRefeicaoNomeRefeicao = findViewById(R.id.txtCriarRefeicaoNomeRefeicao);
+        txtCriarRefeicaoDescricao = findViewById(R.id.txtCriarRefeicaoDescricao);
+        btnCriarRefeicaoVisivel = findViewById(R.id.btnCriarRefeicaoVisivel);
+        radioCriarRefeicaoDesjejum = findViewById(R.id.radioCriarRefeicaoDesjejum);
+        radioCriarRefeicaoAlmoco = findViewById(R.id.radioCriarRefeicaoAlmoco);
+        radioCriarRefeicaoLanche = findViewById(R.id.radioCriarRefeicaoLanche);
+        radioCriarRefeicaoJanta = findViewById(R.id.radioCriarRefeicaoJanta);
+        listCriarRefeicaoIngredientes = findViewById(R.id.listCriarRefeicaoIngredientes);
+        imgCriarRefeicaoImagemRefeicao = findViewById(R.id.imgCriarRefeicaoImagemRefeicao);
 
+        txtCadastroRefeicao = findViewById(R.id.txtCadastroRefeicao);
+        progressBarCadastroRefeicao = findViewById(R.id.progressBarCadastroRefeicao);
     }
 
     @Override
