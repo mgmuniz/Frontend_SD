@@ -10,6 +10,7 @@ import com.example.nutrionall.utils.Consts;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,6 +105,8 @@ public class LoginActivity extends AppCompatActivity implements Methods {
 
             progressLoginValidateToken.setVisibility(View.VISIBLE);
             textLoginValidateToken.setVisibility(View.VISIBLE);
+            textLoginValidateToken.setTextColor(Color.WHITE);
+            textLoginValidateToken.setError(null);
             textLoginValidateToken.setText("Aguarde enquanto resolvemos tudo ...");
 
             UserLogin newUserLogin = new UserLogin();
@@ -137,6 +140,8 @@ public class LoginActivity extends AppCompatActivity implements Methods {
                             // informa o usuário da requisição
                             JSONObject x = new JSONObject(response.errorBody().string());
                             textLoginValidateToken.setText(x.getString("msg"));
+                            textLoginValidateToken.setError(x.getString("msg"));
+                            textLoginValidateToken.setTextColor(Color.RED);
                             progressLoginValidateToken.setVisibility(View.INVISIBLE);
                         } catch (IOException e) {
                             e.printStackTrace();
