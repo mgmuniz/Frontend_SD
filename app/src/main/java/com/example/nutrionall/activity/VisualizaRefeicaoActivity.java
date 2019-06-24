@@ -1,6 +1,8 @@
 package com.example.nutrionall.activity;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -18,6 +20,9 @@ import com.example.nutrionall.api.Meal.MealApi;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+
+import java.io.IOException;
+import java.net.URL;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,12 +54,25 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
     }
 
+    // essa função que vai pegar os dados da refeicao da API e colocar na tela
     private void setInfo(Meal refeicao){
         refeicaoTitulo = findViewById(R.id.nomeVisuRefeicao);
         imagemVisualizaRefeicao = findViewById(R.id.ImagemVisualizaRefeicao);
         descricaoRefeicao = findViewById(R.id.descricaoVisuRefeicao);
 
+        refeicaoTitulo.setText(refeicao.getName());
+        descricaoRefeicao.setText(refeicao.getDescription());
+        try {
+            URL newurl = new URL(refeicao.getUrlImg());
+            Bitmap fotoRefeicao = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
+            imagemVisualizaRefeicao.setImageBitmap(fotoRefeicao);
+        } catch (IOException e) {
+            Log.e("Error", e.getMessage());
+            e.printStackTrace();
+        }
     }
+
+
 
     public void getRefeicao() {
         final String TAG = "getRefeição";
