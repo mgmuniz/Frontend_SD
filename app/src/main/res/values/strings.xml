@@ -50,4 +50,9 @@
     <string name="Publico">Público</string>
     <string name="Salvar_Refeicao">Salvar Refeição</string>
     <string name="Texto_Descricao">Descreva sua refeição ;)</string>
+    <string name="Alimento">Alimento</string>
+    <string name="Porcao">Porção/Qtde.</string>
+    <string name="Porção">Porção</string>
+    <string name="Porcao_Ingrediente">Porção:</string>
+    <string name="Quantidade">Quantidade:</string>
 </resources>

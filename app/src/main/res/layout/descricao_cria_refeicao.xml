@@ -9,9 +9,6 @@
     android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -57,6 +54,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:clickable="true"
+            android:onClick="addIngrediente"
             app:backgroundTint="#68FB81"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/listCriarRefeicaoIngredientes"
@@ -74,6 +72,7 @@
             android:background="@drawable/background_edittext_descricao_refeicao"
             android:editable="true"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:gravity="start|top"
             android:hint="@string/Texto_Descricao"
             android:inputType="textMultiLine"
@@ -81,8 +80,6 @@
             android:textColor="@android:color/black"
             android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
             android:textSize="14sp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -90,14 +87,50 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listCriarRefeicaoIngredientes"
             android:layout_width="0dp"
-            android:layout_height="340dp"
+            android:layout_height="334dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/background_edittext_descricao_refeicao"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView20"
+            tools:listitem="@layout/layout_ingredientes" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="266dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/Alimento"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginRight="44dp"
+            android:gravity="center"
+            android:text="@string/Porcao"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView19"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 

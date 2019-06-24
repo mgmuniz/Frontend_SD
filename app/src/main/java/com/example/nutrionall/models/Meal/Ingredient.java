@@ -2,6 +2,7 @@ package com.example.nutrionall.models.Meal;
 
 public class Ingredient {
     String idFood;
+    String nameFood;
     String qtdPortion;
     String portion;
 
@@ -12,6 +13,10 @@ public class Ingredient {
     public void setIdFood(String idFood) {
         this.idFood = idFood;
     }
+
+    public String getNameFood() {return nameFood;}
+
+    public void setNameFood(String nameFood) {this.nameFood = nameFood;}
 
     public String getQtdPortion() {
         return qtdPortion;

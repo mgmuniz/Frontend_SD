@@ -1,5 +1,6 @@
 package com.example.nutrionall.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +24,10 @@ import android.widget.ToggleButton;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterCriaRefeicao.MyFragPageAdapterCriaRefeicao;
+import com.example.nutrionall.adapters.IngredientesAdapter;
+import com.example.nutrionall.adapters.SimilaresAdapter;
 import com.example.nutrionall.api.Meal.MealApi;
+import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Ingredient;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
@@ -32,6 +38,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -59,10 +66,16 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     private RecyclerView listCriarRefeicaoIngredientes;
     private ImageView imgCriarRefeicaoImagemRefeicao;
 
+    private Context context;
+    private IngredientesAdapter mAdapter;
+    private boolean flag_recycler_iniciou;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_refeicao);
+        this.context = this;
+
 
 
         // estabelece comunicação com a api
@@ -71,7 +84,11 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         getReferencesComponentes();
         mViewPager.setAdapter(new MyFragPageAdapterCriaRefeicao(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_tab)));
         mTabLayout.setupWithViewPager(mViewPager);
+
+        flag_recycler_iniciou = false;
+
     }
+
 
     public void loadImgMeal(View view){
         // Intent para obter uma foto a partir da galeria
@@ -106,6 +123,42 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
             }
 
         }
+    }
+
+    private void setupRecyclerIngredientes(View view) {
+
+        listCriarRefeicaoIngredientes = findViewById(R.id.listCriarRefeicaoIngredientes);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        listCriarRefeicaoIngredientes.setLayoutManager(layoutManager);
+
+        // Adiciona o adapter que irá anexar os objetos à lista.
+
+        mAdapter = new IngredientesAdapter(new ArrayList<>(0));
+
+        listCriarRefeicaoIngredientes.setAdapter(mAdapter);
+
+        // Configurando um divisor entre linhas, para uma melhor visualização.
+        listCriarRefeicaoIngredientes.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
+    public void addIngrediente(View view){
+        if(!flag_recycler_iniciou){
+            flag_recycler_iniciou = true;
+            setupRecyclerIngredientes(null);
+        }
+
+        Ingredient x1 = new Ingredient();
+        x1.setIdFood("5cf845fe245413a64b40500e");
+        x1.setNameFood("teste");
+        x1.setPortion("50");
+        x1.setQtdPortion("3");
+
+        mAdapter.insertItem(x1);
+
+        Intent intent = new Intent(getApplicationContext(), BuscaIngredientesActivity.class);
+        startActivity(intent);
     }
 
 
