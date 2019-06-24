@@ -20,6 +20,8 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,6 +71,7 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
 
         getRefeicao();
         deleteRefeicao();
+        listAll();
     }
 
     public void desRadioLessDesjejum(View view) {
@@ -178,6 +181,32 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
+
+    public void listAll() {
+        final String TAG = "listAll";
+
+        MealApi serviceApi = retrofit.create(MealApi.class);
+        Call<List<Meal>> call = serviceApi.listAll("bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<List<Meal>>() {
+            @Override
+            public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: " + response.toString());
+                    List<Meal> resp = response.body();
+
+                    for (int i = 0; i < resp.size(); i++) {
+                        Log.d(TAG, "onResponse: " + resp.get(i).getName());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Meal>> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
