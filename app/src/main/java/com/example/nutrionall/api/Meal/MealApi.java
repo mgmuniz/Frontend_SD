@@ -1,9 +1,11 @@
 package com.example.nutrionall.api.Meal;
 
 import com.example.nutrionall.models.Meal.Meal;
+import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -21,6 +23,11 @@ public interface MealApi {
 
     @GET("/meal/{id}")
     Call<Meal> getByID(
+            @Path("id") String id,
+            @Header("Authorization") String authHeader);
+
+    @DELETE("/meal/{id}")
+    Call<JsonObject> deleteByID(
             @Path("id") String id,
             @Header("Authorization") String authHeader);
 }

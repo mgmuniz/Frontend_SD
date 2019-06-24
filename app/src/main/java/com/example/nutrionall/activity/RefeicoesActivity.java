@@ -2,26 +2,23 @@ package com.example.nutrionall.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.example.nutrionall.R;
-import com.example.nutrionall.api.Food.Search;
 import com.example.nutrionall.api.Meal.MealApi;
-import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,6 +68,7 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         });
 
         getRefeicao();
+        deleteRefeicao();
     }
 
     public void desRadioLessDesjejum(View view) {
@@ -117,12 +115,12 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         radioDesjejum.setChecked(false);
     }
 
-    public void criaRefeicao(View view){
+    public void criaRefeicao(View view) {
         Intent intent = new Intent(RefeicoesActivity.this, CriarRefeicaoActivity.class);
         startActivity(intent);
     }
 
-    public void getRefeicao(){
+    public void getRefeicao() {
         final String TAG = "getRefeição";
 
         String id = "5d0bdec9bcccc223ae26c8fb";
@@ -135,15 +133,15 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         call.enqueue(new Callback<Meal>() {
             @Override
             public void onResponse(Call<Meal> call, Response<Meal> response) {
-                if(getPreferences().getBoolean("isPremium", false)){
-                    if(response.isSuccessful()){
+                if (getPreferences().getBoolean("isPremium", false)) {
+                    if (response.isSuccessful()) {
                         // o usuário é premium
                         Meal resp = response.body();
-                    }else{
+                    } else {
                         Log.d(TAG, "onResponse: erro");
                     }
-                }else{
-                    if(response.isSuccessful()){
+                } else {
+                    if (response.isSuccessful()) {
                         // o usuário não é premium
                         Meal resp = response.body();
                     }
@@ -152,6 +150,34 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
 
             @Override
             public void onFailure(Call<Meal> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
+
+    public void deleteRefeicao() {
+        final String TAG = "deleteRefeicao";
+
+        String id = "5d0febc47d90bc001729957e";
+
+        Log.d(TAG, "deleteRefeicao: " + id);
+
+        MealApi serviceApi = retrofit.create(MealApi.class);
+        Call<JsonObject> call = serviceApi.deleteByID(id, "bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject resp = response.body();
+                    Log.d(TAG, "onResponse: " + resp.get("msg"));
+                } else {
+                    Log.d(TAG, "onResponse: " + response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
