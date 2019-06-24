@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnFavoriteRefeicao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="135dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:clickable="true"
+        android:onClick="loadImgMeal"
+        app:backgroundTint="#68FB81"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+
     <ImageView
         android:id="@+id/ImagemVisualizaRefeicao"
         android:layout_width="373dp"
@@ -16,40 +30,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu_gallery" />
+        app:srcCompat="@drawable/refeicoes_b" />
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="362dp"
+        android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/background_edittext_nome_refeicao"
+        android:gravity="center"
         android:text="Nome da Refeição"
         android:textColor="@color/vpi__background_holo_dark"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ImagemVisualizaRefeicao" />
 
     <TextView
         android:id="@+id/textView11"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Descrição"
+        android:text="Descrição:"
         android:textColor="@color/vpi__background_holo_dark"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
 
     <TextView
         android:id="@+id/textView15"
@@ -61,8 +77,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Essa é a descrição do alimento e tudo mais"
+        android:hint="Aqui está a descrição da refeição"
         android:textColor="@color/vpi__background_holo_dark"
+        android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,27 +87,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="246dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="85dp"
-        android:layout_marginLeft="85dp"
+        android:id="@+id/ratingBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="85dp"
-        android:layout_marginRight="85dp"
-        android:background="@color/colorPrimary"
-        android:visibility="visible"
+        android:layout_marginEnd="84dp"
+        android:layout_marginRight="84dp"
+        android:background="@drawable/background_button_cadastrar_refeicao"
+        android:numStars="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-    <ImageView
-        android:id="@+id/imageViewFavoritar"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="@android:color/holo_orange_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
 </android.support.constraint.ConstraintLayout>

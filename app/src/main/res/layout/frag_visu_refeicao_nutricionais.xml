@@ -5,39 +5,445 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textView16"
+    <ImageButton
+        android:id="@+id/imgbuttonInfoAlimentoLeft3"
+        android:layout_width="30dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/background_button_login"
+        android:onClick="setTablePart1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableVisuRefeicaoTableNutrientes"
+        app:srcCompat="@drawable/ic_navigate_before_gray" />
+
+    <ImageButton
+        android:id="@+id/imgbuttonInfoAlimentoRight3"
+        android:layout_width="30dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginRight="140dp"
+        android:background="@drawable/background_button_login"
+        android:onClick="setTablePart2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableVisuRefeicaoTableNutrientes"
+        app:srcCompat="@drawable/ic_navigate_next_black" />
+
+    <TableLayout
+        android:id="@+id/tableVisuRefeicaoTableNutrientes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="Essas informações são referentes a porção de: XXX gramas "
-        android:textColor="@color/vpi__background_holo_dark"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/background_row_infos_nutricionais"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoAlimentoPorcao"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:padding="3dip"
+                android:text="Valores referentes a refeição inteira"
+                android:textColor="#780C08"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoHumiditySodium"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoHumiditySodiumV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoEnergyPotassium"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@android:color/white"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoEnergyPotassiumV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="@color/default_circle_indicator_fill_color"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoProteinCopper"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoProteinCopperV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoLipidsZinc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@android:color/white"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoLipidsZincV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="@android:color/white"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoCarbohydrateRe"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoCarbohydrateReV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoCholesterolRetinol"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@android:color/white"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoCholesterolRetinolV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="@color/default_circle_indicator_fill_color"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoAshesThiamine"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoAshesThiamineV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoFiberRae"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@android:color/white"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoFiberRaeV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="@color/default_circle_indicator_fill_color"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoMagnesiumPyridoxine"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoMagnesiumPyridoxineV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoManganaseNiacin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@android:color/white"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoManganaseNiacinV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="@color/default_circle_indicator_fill_color"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoPhosphorusVitaminC"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoPhosphorusVitaminCV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoCalciumRiboflavin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="@android:color/white"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoCalciumRiboflavinV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="@color/default_circle_indicator_fill_color"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoIron"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:background="#C8F3C0"
+                android:padding="3dip"
+                android:text="Umidade"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtVisuRefeicaoIronV"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+
+                android:background="#C8F3C0"
+                android:gravity="end"
+                android:padding="3dip"
+                android:text="50g"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+    </TableLayout>
+
 </android.support.constraint.ConstraintLayout>
