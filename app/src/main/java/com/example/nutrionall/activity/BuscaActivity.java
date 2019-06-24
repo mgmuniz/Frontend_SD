@@ -16,7 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.AdapterSearchBarHome;
@@ -49,6 +51,9 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
     private Food alimento_clicado;
     private RecyclerView recyclerBusca;
     private ImageView imgHomeSearchButton;
+    private ProgressBar progressBarBuscaActivity;
+    private ImageView imgLogoAtivityBusca;
+    private ImageView imgLogoAtivityBusca2;
 
 
     private ArrayList<Food> arrayAlimentos;
@@ -67,15 +72,6 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         String termo_busca = intent.getStringExtra("termo_busca");
         String nutrient = intent.getStringExtra("nutrient");
 
-        if(termo_busca != null){
-            editBuscaBusca.setText(termo_busca);
-            buscar(null);
-        }else{
-            buscarNutriente(nutrient);
-        }
-
-
-
         resultadosBusca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +80,15 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
             }
         });
         setRecycler();
+
+        if(termo_busca != null){
+            editBuscaBusca.setText(termo_busca);
+            buscar(null);
+        }else{
+            buscarNutriente(nutrient);
+            desRadioAlimento(null);
+            radioNutrient.setChecked(true);
+        }
     }
 
     private void setRecycler(){
@@ -134,6 +139,9 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         JsonObject food = new JsonObject();
         food.addProperty("name", query);
 
+        // componente loading
+        progressBarBuscaActivity.setVisibility(View.VISIBLE);
+
         Search serviceApi = retrofit.create(Search.class);
         Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + getPreferences().getString("token", ""));
 
@@ -147,6 +155,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                     arrayAlimentos = new ArrayList<>();
                     arrayAlimentos.addAll(list);
 
+                    progressBarBuscaActivity.setVisibility(View.INVISIBLE);
+
                     ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
                     resultadosBusca.setAdapter(adapter);
 
@@ -158,6 +168,7 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
             @Override
             public void onFailure(Call<List<Food>> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
+                Toast.makeText(getApplicationContext(), "Ocorreu um erro na comunicação com o servidor", Toast.LENGTH_LONG);
             }
         });
     }
@@ -223,12 +234,14 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         });
     }
 
-
     public void buscarNutriente(String nutrient) {
         final String TAG = "searchNutrient";
 
         // nutriente q deve ser alterado
         Log.d(TAG, "buscarNutriente: " + nutrient);
+
+        // componente loading
+        progressBarBuscaActivity.setVisibility(View.VISIBLE);
 
         Search serviceApi = retrofit.create(Search.class);
         Call<SearchNutrientFood> call = serviceApi.searchByNutrient(
@@ -248,6 +261,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
                         arrayAlimentos = new ArrayList<>();
                         arrayAlimentos.addAll(resp.getData());
+
+                        progressBarBuscaActivity.setVisibility(View.INVISIBLE);
 
                         ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
                         resultadosBusca.setAdapter(adapter);
@@ -271,13 +286,14 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         });
     }
 
-
     public void desRadioAlimento(View view) {
         radioAlimento.setChecked(false);
 
         editBuscaBusca.setVisibility(View.INVISIBLE);
         imgHomeSearchButton.setVisibility(View.INVISIBLE);
+        imgLogoAtivityBusca.setVisibility(View.INVISIBLE);
 
+        imgLogoAtivityBusca2.setVisibility(View.VISIBLE);
         recyclerBusca.setVisibility(View.VISIBLE);
     }
 
@@ -286,7 +302,9 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
 
         editBuscaBusca.setVisibility(View.VISIBLE);
         imgHomeSearchButton.setVisibility(View.VISIBLE);
+        imgLogoAtivityBusca.setVisibility(View.VISIBLE);
 
+        imgLogoAtivityBusca2.setVisibility(View.INVISIBLE);
         recyclerBusca.setVisibility(View.INVISIBLE);
     }
 
@@ -297,5 +315,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         radioNutrient = findViewById(R.id.radioBuscaNutriente);
         recyclerBusca = findViewById(R.id.recyclerBusca);
         imgHomeSearchButton = findViewById(R.id.imgHomeSearchButton);
+        progressBarBuscaActivity = findViewById(R.id.progressBarBuscaActivity);
+        imgLogoAtivityBusca = findViewById(R.id.imgLogoAtivityBusca);
+        imgLogoAtivityBusca2  = findViewById(R.id.imgLogoAtivityBusca2);
     }
 }

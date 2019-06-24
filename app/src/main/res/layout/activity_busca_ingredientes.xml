@@ -40,7 +40,7 @@
         tools:text="@string/Quantidade" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/imgLogoAtivityBusca"
         android:layout_width="43dp"
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
@@ -66,7 +66,7 @@
         android:textColor="@color/vpi__background_holo_dark"
         android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
         app:layout_constraintEnd_toStartOf="@+id/imgBuscaIngredienteButton"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/imgLogoAtivityBusca"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -108,7 +108,7 @@
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogoAtivityBusca"
         tools:text="@string/Porcao_Ingrediente" />
 
     <EditText
