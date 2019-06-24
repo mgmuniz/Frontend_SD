@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.BuscaActivity">
+    android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editBuscarIngredienteQtde"
+        android:id="@+id/editBuscaIngredienteQtde"
         android:layout_width="63dp"
         android:layout_height="23dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/background_edittext_nome_refeicao"
@@ -22,21 +21,21 @@
         android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editBuscaIngredienteBusca" />
+        app:layout_constraintTop_toBottomOf="@+id/txtBuscarIngredienteNomeIngrediente" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center_vertical"
         android:text="@string/Quantidade"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/editBuscarIngredienteQtde"
-        app:layout_constraintTop_toBottomOf="@+id/editBuscaIngredienteBusca"
+        app:layout_constraintEnd_toStartOf="@+id/editBuscaIngredienteQtde"
+        app:layout_constraintTop_toBottomOf="@+id/txtBuscarIngredienteNomeIngrediente"
         tools:text="@string/Quantidade" />
 
     <ImageView
@@ -77,7 +76,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/background_button_login"
-        android:onClick="buscar"
+        android:onClick="buscarIngrediente"
         android:src="@drawable/ic_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +93,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toBottomOf="@+id/btnBuscarIngredienteInserir" />
 
     <TextView
         android:id="@+id/textView9"
@@ -102,13 +101,13 @@
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="@string/Porcao_Ingrediente"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgLogoAtivityBusca"
+        app:layout_constraintTop_toBottomOf="@+id/txtBuscarIngredienteNomeIngrediente"
         tools:text="@string/Porcao_Ingrediente" />
 
     <EditText
@@ -117,7 +116,7 @@
         android:layout_height="23dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/background_edittext_nome_refeicao"
         android:ems="10"
         android:gravity="center"
@@ -127,7 +126,43 @@
         android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/txtBuscarIngredienteNomeIngrediente" />
+
+    <TextView
+        android:id="@+id/txtBuscarIngredienteNomeIngrediente"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text="Alimento X"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editBuscaIngredienteBusca" />
+
+    <Button
+        android:id="@+id/btnBuscarIngredienteInserir"
+        android:layout_width="164dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginLeft="152dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="146dp"
+        android:layout_marginRight="146dp"
+        android:background="@drawable/background_button_cadastrar_refeicao"
+        android:drawableRight="@drawable/ic_add_black_24dp"
+        android:gravity="center"
+        android:onClick="addIngredientInList"
+        android:text="@string/Inserir_Ingrediente"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
 
 </android.support.constraint.ConstraintLayout>

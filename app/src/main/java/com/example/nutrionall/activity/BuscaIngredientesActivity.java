@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.BuscaIngredienteAdapter;
@@ -21,10 +24,12 @@ import com.example.nutrionall.adapters.FoodAdapter;
 import com.example.nutrionall.api.Food.FoodApi;
 import com.example.nutrionall.api.Food.Search;
 import com.example.nutrionall.models.Food.Food;
+import com.example.nutrionall.models.Meal.Ingredient;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.google.gson.JsonObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +45,10 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
     private ListView listBuscaIngredienteResults;
     private Food alimento_clicado;
     private ImageView imgBuscaIngredienteButton;
-
+    private EditText editBuscarIngredientePorcao;
+    private EditText editBuscarIngredienteQtde;
+    private TextView txtBuscarIngredienteNomeIngrediente;
+    private Button btnBuscarIngredienteInserir;
 
     private ArrayList<Food> arrayAlimentos;
 
@@ -59,12 +67,18 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 alimento_clicado = arrayAlimentos.get(position);
-                buscarAlimento(null, alimento_clicado.get_id());
+                buscarInfosAlimento(null, alimento_clicado.get_id());
             }
         });
     }
 
-    public void buscar(View view) {
+
+    public SharedPreferences getPreferences() {
+        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
+        return preferences;
+    }
+
+    public void buscarIngrediente(View view) {
         final String TAG = "search";
         String query = editBuscaIngredienteBusca.getText().toString();
 
@@ -72,6 +86,8 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
 
         JsonObject food = new JsonObject();
         food.addProperty("name", query);
+
+
 
         Search serviceApi = retrofit.create(Search.class);
         Call<List<Food>> call = serviceApi.searchByName(food, "bearer " + getPreferences().getString("token", ""));
@@ -86,7 +102,7 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
                     arrayAlimentos = new ArrayList<>();
                     arrayAlimentos.addAll(list);
 
-                    ArrayAdapter adapter = new BuscaIngredienteAdapter(context, arrayAlimentos);
+                    ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
                     listBuscaIngredienteResults.setAdapter(adapter);
 
                 } else {
@@ -97,16 +113,12 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
             @Override
             public void onFailure(Call<List<Food>> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
+                Toast.makeText(getApplicationContext(), "Ocorreu um erro na comunicação com o servidor", Toast.LENGTH_LONG);
             }
         });
     }
 
-    public SharedPreferences getPreferences() {
-        SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
-        return preferences;
-    }
-
-    public void buscarAlimento(View view, String id) {
+    public void buscarInfosAlimento(View view, String id) {
         final String TAG = "searchFood";
         Log.d(TAG, "buscarAlimento: " + id);
 
@@ -129,10 +141,9 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
                             Log.d(TAG, "similar: " + resp.getLstSimilars().get(i).getName().getValue());
                         }
 
-                        // se o cara for premium
-                        Intent intent = new Intent(getApplicationContext(), InfoAlimentosActivity.class);
-                        intent.putExtra("food", resp);
-                        startActivity(intent);
+                        txtBuscarIngredienteNomeIngrediente.setText(resp.getFood().getName().getValue());
+
+
                     } else {
                         // tratamento de erro
                     }
@@ -145,9 +156,7 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
                         Log.d(TAG, "name: " + resp.getName().getValue());
                         Log.d(TAG, "category: " + resp.getCategory().getValue());
 
-                        Intent intent = new Intent(getApplicationContext(), InfoAlimentosActivity.class);
-                        intent.putExtra("food", resp);
-                        startActivity(intent);
+                        txtBuscarIngredienteNomeIngrediente.setText(resp.getName().getValue());
                     } else {
                         // tratamento de erro
                     }
@@ -161,9 +170,40 @@ public class BuscaIngredientesActivity extends AppCompatActivity implements Meth
         });
     }
 
+    public void addIngredientInList(View view){
+        Ingredient ingredient = new Ingredient();
+
+        if(alimento_clicado != null && !editBuscarIngredientePorcao.getText().toString().isEmpty() &&
+                !editBuscarIngredienteQtde.getText().toString().isEmpty()) {
+
+            if (getPreferences().getBoolean("isPremium", false)) {
+                ingredient.setIdFood(alimento_clicado.get_id());
+                ingredient.setNameFood(alimento_clicado.getName().getValue());
+            } else {
+                ingredient.setIdFood(alimento_clicado.get_id());
+                ingredient.setNameFood(alimento_clicado.getName().getValue());
+            }
+
+            ingredient.setPortion(editBuscarIngredientePorcao.getText().toString());
+            ingredient.setQtdPortion(editBuscarIngredienteQtde.getText().toString());
+
+            Intent intent = new Intent();
+            intent.putExtra("MyIngredient", ingredient);
+            setResult(RESULT_OK, intent);
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Preencha todos os dados necessários!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     public void getReferencesComponentes() {
         editBuscaIngredienteBusca = findViewById(R.id.editBuscaIngredienteBusca);
         listBuscaIngredienteResults = findViewById(R.id.listBuscaIngredienteResults);
         imgBuscaIngredienteButton = findViewById(R.id.imgBuscaIngredienteButton);
+        editBuscarIngredientePorcao = findViewById(R.id.editBuscarIngredientePorcao);
+        editBuscarIngredienteQtde = findViewById(R.id.editBuscaIngredienteQtde);
+        txtBuscarIngredienteNomeIngrediente = findViewById(R.id.txtBuscarIngredienteNomeIngrediente);
+        btnBuscarIngredienteInserir = findViewById(R.id.btnBuscarIngredienteInserir);
     }
 }

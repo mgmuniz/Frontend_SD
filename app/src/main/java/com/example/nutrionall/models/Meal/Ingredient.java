@@ -1,6 +1,8 @@
 package com.example.nutrionall.models.Meal;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
     String idFood;
     String nameFood;
     String qtdPortion;

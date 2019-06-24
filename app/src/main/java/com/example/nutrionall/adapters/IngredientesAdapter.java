@@ -58,4 +58,10 @@ public class IngredientesAdapter extends RecyclerView.Adapter<IngredientesHolder
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mIngredientes.size());
     }
+
+    public ArrayList<Ingredient> getArrayIngredients(){
+        ArrayList<Ingredient> arrayIngredients = new ArrayList<>();
+        arrayIngredients.addAll(mIngredientes);
+        return arrayIngredients;
+    }
 }

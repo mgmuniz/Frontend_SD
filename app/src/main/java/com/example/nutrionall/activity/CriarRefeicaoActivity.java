@@ -29,6 +29,7 @@ import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterCriaRefeicao.MyFragPageAdapterCriaRefeicao;
 import com.example.nutrionall.adapters.IngredientesAdapter;
 import com.example.nutrionall.api.Meal.MealApi;
+import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Ingredient;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
@@ -38,6 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -70,6 +72,8 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
     private Context context;
     private IngredientesAdapter mAdapter;
+
+    private Ingredient tmp_alimentoSelecionado;
     private boolean flag_recycler_iniciou;
 
     @Override
@@ -102,6 +106,9 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("onActivityResult",Integer.toString(requestCode));
+        Log.d("onActivityResult",Integer.toString(resultCode));
+        Log.d("onActivityResult",Integer.toString(RESULT_OK));
         // Testar retorno dos dados
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             // Recuperar local do recurso:
@@ -122,6 +129,12 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
                 e.printStackTrace();
             }
 
+        }
+
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null){
+            tmp_alimentoSelecionado = (Ingredient) data.getExtras().getSerializable("MyIngredient");
+            Log.d("Teste entrada na lista", tmp_alimentoSelecionado.getNameFood());
+            insertInListOfIngredients();
         }
     }
 
@@ -149,16 +162,15 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
             setupRecyclerIngredientes(null);
         }
 
-        Ingredient x1 = new Ingredient();
-        x1.setIdFood("5cf845fe245413a64b40500e");
-        x1.setNameFood("teste");
-        x1.setPortion("50");
-        x1.setQtdPortion("3");
 
-        mAdapter.insertItem(x1);
-
+        Log.d("Despair", "Vou abrir a activity de resposta");
         Intent intent = new Intent(getApplicationContext(), BuscaIngredientesActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
+
+    }
+
+    private void insertInListOfIngredients(){
+        mAdapter.insertItem(tmp_alimentoSelecionado);
     }
 
 
@@ -167,19 +179,6 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         getReferencesComponentes();
 
         Meal newMeal = new Meal();
-
-        ArrayList<Ingredient> ingredients = new ArrayList<>();
-        Ingredient x1 = new Ingredient();
-        x1.setIdFood("5cf845fe245413a64b40500e");
-        x1.setPortion("50");
-        x1.setQtdPortion("3");
-        Ingredient x2 = new Ingredient();
-        x2.setIdFood("5cf845fe245413a64b404fad");
-        x2.setPortion("50");
-        x2.setQtdPortion("3");
-
-        ingredients.add(x1);
-        ingredients.add(x2);
 
         newMeal.setName(txtCriarRefeicaoNomeRefeicao.getText().toString());
         newMeal.setDescription(txtCriarRefeicaoDescricao.getText().toString());
@@ -198,7 +197,7 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
             newMeal.setClassification(Consts.getClassification("Jantar"));
         }
 
-        newMeal.setIngredients(ingredients);
+        newMeal.setIngredients(mAdapter.getArrayIngredients());
 
         return newMeal;
     }

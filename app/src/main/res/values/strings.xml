@@ -53,6 +53,7 @@
     <string name="Alimento">Alimento</string>
     <string name="Porcao">Porção/Qtde.</string>
     <string name="Porção">Porção</string>
-    <string name="Porcao_Ingrediente">Porção:</string>
+    <string name="Porcao_Ingrediente">Porção(g):</string>
     <string name="Quantidade">Quantidade:</string>
+    <string name="Inserir_Ingrediente">Inserir ingrediente</string>
 </resources>
