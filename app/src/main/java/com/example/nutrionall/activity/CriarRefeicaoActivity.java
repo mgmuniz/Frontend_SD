@@ -222,8 +222,9 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
         getReferencesComponentes();
         // componente loading
         progressBarCadastroRefeicao.setVisibility(View.VISIBLE);
+        txtCadastroRefeicao.setVisibility(View.VISIBLE);
         txtCadastroRefeicao.setText("Aguarde enquanto resolvemos tudo ...");
-        txtCadastroRefeicao.setTextColor(Color.WHITE);
+        txtCadastroRefeicao.setTextColor(Color.BLACK);
 
         MealApi serviceApi = retrofit.create(MealApi.class);
         Call<Meal> call = serviceApi.save(urlImg, newMeal, "bearer " + getPreferences().getString("token", ""));
@@ -239,6 +240,7 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
                     // Toast.makeText(getApplicationContext(),"Erro ao cadastrar refeição!", Toast.LENGTH_SHORT).show();
                     txtCadastroRefeicao.setError("Erro ao cadastrar refeição!");
                     txtCadastroRefeicao.setText("Erro ao cadastrar refeição!");
+                    txtCadastroRefeicao.setTextColor(Color.RED);
                     progressBarCadastroRefeicao.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "onResponse: " + response.toString());
                 }
