@@ -164,13 +164,7 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
 
     private Meal getMealData() {
 
-        txtCriarRefeicaoNomeRefeicao = findViewById(R.id.txtCriarRefeicaoNomeRefeicao);
-        txtCriarRefeicaoDescricao = findViewById(R.id.txtCriarRefeicaoDescricao);
-        btnCriarRefeicaoVisivel = findViewById(R.id.btnCriarRefeicaoVisivel);
-        radioCriarRefeicaoDesjejum = findViewById(R.id.radioCriarRefeicaoDesjejum);
-        radioCriarRefeicaoAlmoco = findViewById(R.id.radioCriarRefeicaoAlmoco);
-        radioCriarRefeicaoLanche = findViewById(R.id.radioCriarRefeicaoLanche);
-        radioCriarRefeicaoJanta = findViewById(R.id.radioCriarRefeicaoJanta);
+        getReferencesComponentes();
 
         Meal newMeal = new Meal();
 
