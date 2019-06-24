@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrionall.R;
@@ -48,6 +50,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
     private EditText editCadastroDataNascimento;
     private ImageView editCadastroImgUser;
     private ProgressBar progressBarCadastroUser;
+    private TextView textCadastroUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +152,11 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
                         Validate.validateNotExistFieldOrError(editCadastroPassword, "Preencha sua senha!", c) &&
                         Validate.validateNotExistFieldOrError(editCadastroDataNascimento, "Preencha sua data de nascimento!", c)
         ) {
+            textCadastroUsuario.setText("Aguarde enquanto validamos as informações!");
+            textCadastroUsuario.setTextColor(Color.WHITE);
+            textCadastroUsuario.setVisibility(View.VISIBLE);
+            textCadastroUsuario.setError(null);
+            progressBarCadastroUser.setVisibility(View.VISIBLE);
             // recupera as informações do usuário dos campos de edição
             UserCadastro newUser = getUserCadastro();
 
@@ -168,12 +176,18 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
                     if (response.isSuccessful()) {
 
                         Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
 
                     } else {
                         try {
                             // mensagens do servidor
                             JSONObject x = new JSONObject(response.errorBody().string());
-                            Toast.makeText(getApplicationContext(), x.getString("msg"), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), x.getString("msg"), Toast.LENGTH_LONG).show();
+                            textCadastroUsuario.setError(x.getString("msg"));
+                            textCadastroUsuario.setText(x.getString("msg"));
+                            textCadastroUsuario.setTextColor(Color.RED);
+                            progressBarCadastroUser.setVisibility(View.INVISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -199,6 +213,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
         editCadastroDataNascimento = findViewById(R.id.editCadastroDataNascimento);
         editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
         progressBarCadastroUser = findViewById(R.id.progressBarCadastroUser);
+        textCadastroUsuario = findViewById(R.id.textCadastroUsuario);
     }
 
     @Override
