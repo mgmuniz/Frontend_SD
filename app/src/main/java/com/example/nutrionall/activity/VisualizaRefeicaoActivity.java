@@ -3,7 +3,9 @@ package com.example.nutrionall.activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -55,20 +57,22 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
         mViewPager.setAdapter(new MyFragPageAdapterVisuRefeicao(getSupportFragmentManager(),getResources().getStringArray(R.array.titles_tab_visualiza_refeicao) ));
         mTabLayout.setupWithViewPager(mViewPager);
 
+        setInfo();
+
     }
 
     // essa função que vai pegar os dados da refeicao da API e colocar na tela
-    private void setInfo(Meal refeicao){
+    private void setInfo(){
 
         meal = (Meal) getIntent().getSerializableExtra("meal");
         refeicaoTitulo = findViewById(R.id.nomeVisuRefeicao);
         imagemVisualizaRefeicao = findViewById(R.id.ImagemVisualizaRefeicao);
         descricaoRefeicao = findViewById(R.id.descricaoVisuRefeicao);
 
-        refeicaoTitulo.setText(refeicao.getName());
-        descricaoRefeicao.setText(refeicao.getDescription());
+        refeicaoTitulo.setText(meal.getName());
+        descricaoRefeicao.setText(meal.getDescription());
         try {
-            URL newurl = new URL(refeicao.getUrlImg());
+            URL newurl = new URL(meal.getUrlImg());
             Bitmap fotoRefeicao = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
             imagemVisualizaRefeicao.setImageBitmap(fotoRefeicao);
         } catch (IOException e) {
@@ -76,45 +80,43 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
             e.printStackTrace();
         }
     }
-
-
-
-    public void getRefeicao() {
-        final String TAG = "getRefeição";
-
-        String id = "5d0bdec9bcccc223ae26c8fb";
-
-        Log.d(TAG, "getRefeição: " + id);
-
-        MealApi serviceApi = retrofit.create(MealApi.class);
-        Call<Meal> call = serviceApi.getByID(id, "bearer " + getPreferences().getString("token", ""));
-
-        call.enqueue(new Callback<Meal>() {
-            @Override
-            public void onResponse(Call<Meal> call, Response<Meal> response) {
-                if (getPreferences().getBoolean("isPremium", false)) {
-                    if (response.isSuccessful()) {
-                        // o usuário é premium
-                        Meal resp = response.body();
-                        setInfo(resp);
-                    } else {
-                        Log.d(TAG, "onResponse: erro");
-                    }
-                } else {
-                    if (response.isSuccessful()) {
-                        // o usuário não é premium
-                        Meal resp = response.body();
-                        setInfo(resp);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Meal> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
-    }
+//
+//    public void getRefeicao() {
+//        final String TAG = "getRefeição";
+//
+//        String id = "5d0bdec9bcccc223ae26c8fb";
+//
+//        Log.d(TAG, "getRefeição: " + id);
+//
+//        MealApi serviceApi = retrofit.create(MealApi.class);
+//        Call<Meal> call = serviceApi.getByID(id, "bearer " + getPreferences().getString("token", ""));
+//
+//        call.enqueue(new Callback<Meal>() {
+//            @Override
+//            public void onResponse(Call<Meal> call, Response<Meal> response) {
+//                if (getPreferences().getBoolean("isPremium", false)) {
+//                    if (response.isSuccessful()) {
+//                        // o usuário é premium
+//                        Meal resp = response.body();
+//                        setInfo(resp);
+//                    } else {
+//                        Log.d(TAG, "onResponse: erro");
+//                    }
+//                } else {
+//                    if (response.isSuccessful()) {
+//                        // o usuário não é premium
+//                        Meal resp = response.body();
+//                        setInfo(resp);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Meal> call, Throwable t) {
+//                Log.d(TAG, "onFailure: " + t.toString());
+//            }
+//        });
+//    }
 
     @Override
     public void getReferencesComponentes() {
