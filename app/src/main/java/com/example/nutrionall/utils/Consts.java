@@ -32,7 +32,19 @@ public class Consts {
             "https://nit.pt/wp-content/uploads/2017/12/c4ca4238a0b923820dcc509a6f75849b-10-754x394.jpg",
             "https://nit.pt/wp-content/uploads/2019/06/3db9f34c117da413eb2de25c06547fe8-754x394.jpg",
             "https://nit.pt/wp-content/uploads/2019/06/a0ea12235f3b00b1ace614e143be0eb2-1-754x394.jpg",
-            "https://nit.pt/wp-content/uploads/2019/06/1a051d4e6c04508055d43a8f4f5cb313-754x394.jpg"
+            "https://nit.pt/wp-content/uploads/2019/06/1a051d4e6c04508055d43a8f4f5cb313-754x394.jpg",
+
+            "https://4.bp.blogspot.com/-L3FXcJ7aHxA/UpfUwIO56EI/AAAAAAAAAQ8/47urGdL544c/s1600/alimenta%C3%A7%C3%A3o-saud%C3%A1vel.jpg",
+            "http://file-service.riooportunidadesdenegocios.com.br/images/741x371/f15398b7-0de7-493a-af43-19f9e82caa36.jpg",
+            "https://www.fdmoficial.com.br/wp/wp-content/uploads/2017/07/aoe.jpg",
+            "https://www.fdmoficial.com.br/wp/wp-content/uploads/2017/07/Blog_170515_02.png",
+            "https://www.fdmoficial.com.br/wp/wp-content/uploads/2017/07/dietasreceitaspraticasblogspot-Shake-de-Aveia-e-Linha%C3%A7a.jpg",
+
+            "https://www.fdmoficial.com.br/wp/wp-content/uploads/2017/06/anab%C3%B3licos.jpg",
+            "https://www.fdmoficial.com.br/wp/wp-content/uploads/2017/03/time-965184_1280.jpg",
+            "https://s1.narvii.com/image/gv7drcwittpoxor7cajyegru3sgdumrb_hq.jpg",
+            "https://s1.narvii.com/image/ry7qtqozaoend2yf3yr5clryzezrkgx6_hq.jpg",
+            "https://s1.narvii.com/image/bwlctbqk2mx66huswau2d73kgnxrdjyb_hq.jpg"
     };
 
     public static int getClassification(String classification){

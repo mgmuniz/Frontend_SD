@@ -43,11 +43,12 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         retrofit = Consts.connection();
 
         CarouselView carouselView = findViewById(R.id.CarouselRefeicoes);
-        carouselView.setPageCount(mImages.length);
+//        carouselView.setPageCount(mImages.length);
+        carouselView.setPageCount(5);
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.get().load(mImages[position]).fit().centerCrop().into(imageView);
+                Picasso.get().load(mImages[position+5]).fit().centerCrop().into(imageView);
             }
         });
 
@@ -59,11 +60,12 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         });
 
         CarouselView carouselFavoritesView = findViewById(R.id.CarouselRefeicoesFavoritos);
-        carouselFavoritesView.setPageCount(mImages.length);
+//        carouselFavoritesView.setPageCount(mImages.length);
+        carouselFavoritesView.setPageCount(5);
         carouselFavoritesView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.get().load(mImages[position]).fit().centerCrop().into(imageView);
+                Picasso.get().load(mImages[position+10]).fit().centerCrop().into(imageView);
             }
         });
 

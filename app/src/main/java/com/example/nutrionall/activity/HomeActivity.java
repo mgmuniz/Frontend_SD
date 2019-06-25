@@ -70,7 +70,8 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         CarouselView carouselView = findViewById(R.id.CarouselHomeRefeicoes);
-        carouselView.setPageCount(mImages.length);
+//        carouselView.setPageCount(mImages.length);
+        carouselView.setPageCount(5);
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
