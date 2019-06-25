@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
@@ -31,10 +32,13 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
     private String[] mImages = Consts.mImages;
     private Retrofit retrofit;
 
+    private EditText buscaRefeicao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refeicoes);
+        getReferencesComponentes();
 
         retrofit = Consts.connection();
 
@@ -68,9 +72,28 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             public void onClick(int position) {
             }
         });
+    }
 
-        seachByName();
+    public void buscarRefeicaoHome(View view){
 
+        Intent intent = new Intent(RefeicoesActivity.this, BuscaRefeicaoActivity.class);
+        intent.putExtra("termo_busca", buscaRefeicao.getText().toString());
+        intent.putExtra("modo_busca", getRadioActivate());
+        startActivity(intent);
+    }
+
+    private int getRadioActivate(){
+        RadioButton radioDesjejum = findViewById(R.id.radioButtonDesjejum);
+        RadioButton radioAlmoco = findViewById(R.id.radioButtonAlmoco);
+        RadioButton radioLanche = findViewById(R.id.radioButtonLanche);
+        RadioButton radioJantar = findViewById(R.id.radioButtonJantar);
+
+        if(radioJantar.isChecked()){return 1;}
+        if(radioAlmoco.isChecked()){return 2;}
+        if(radioLanche.isChecked()){return 3;}
+        if(radioDesjejum.isChecked()){return 4;}
+
+        return 1;
     }
 
     public void desRadioLessDesjejum(View view) {
@@ -176,36 +199,10 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         });
     }
 
-    public void seachByName() {
-        final String TAG = "searchByName";
-
-        String name = "hope";
-        int classification = 3;
-
-        MealApi serviceApi = retrofit.create(MealApi.class);
-        Call<List<Meal>> call = serviceApi.searchByName(name, classification, "bearer " + getPreferences().getString("token", ""));
-
-        call.enqueue(new Callback<List<Meal>>() {
-            @Override
-            public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
-                if (response.isSuccessful()) {
-                    List<Meal> resp = response.body();
-
-                    for (int i = 0; i < resp.size(); i++) {
-                        Log.d(TAG, "onResponse: " + resp.get(i).getName());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Meal>> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
-    }
 
     @Override
     public void getReferencesComponentes() {
+        buscaRefeicao = findViewById(R.id.buscaRefeicao);
 
     }
 

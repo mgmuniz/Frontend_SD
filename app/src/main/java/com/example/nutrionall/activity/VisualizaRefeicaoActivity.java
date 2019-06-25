@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterVisualizaRefeicao.MyFragPageAdapterVisuRefeicao;
 import com.example.nutrionall.api.Meal.MealApi;
+import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
@@ -38,6 +39,8 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
     private ImageView imagemVisualizaRefeicao;
     private TextView descricaoRefeicao;
 
+    private Meal meal;
+
     private ImageButton imgbuttonFavoriteRefeicao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,8 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
     // essa função que vai pegar os dados da refeicao da API e colocar na tela
     private void setInfo(Meal refeicao){
+
+        meal = (Meal) getIntent().getSerializableExtra("meal");
         refeicaoTitulo = findViewById(R.id.nomeVisuRefeicao);
         imagemVisualizaRefeicao = findViewById(R.id.ImagemVisualizaRefeicao);
         descricaoRefeicao = findViewById(R.id.descricaoVisuRefeicao);

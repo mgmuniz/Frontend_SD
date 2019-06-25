@@ -1,8 +1,9 @@
 package com.example.nutrionall.models.Meal;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Meal {
+public class Meal implements Serializable {
     String _id;
     String urlImg;
     String idUser;

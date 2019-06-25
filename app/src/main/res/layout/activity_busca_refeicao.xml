@@ -6,4 +6,156 @@
     android:layout_height="match_parent"
     tools:context=".activity.BuscaRefeicaoActivity">
 
+    <ImageView
+        android:id="@+id/imgLogoAtivityBusca"
+        android:layout_width="43dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/editBuscaRefeicaoBusca"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/fundo_busca"
+        android:ems="10"
+        android:hint="Buscar"
+        android:inputType="textPersonName"
+        android:textColor="@color/vpi__background_holo_dark"
+        android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
+        app:layout_constraintEnd_toStartOf="@+id/imgBuscaRefeicaoSearchButton"
+        app:layout_constraintStart_toEndOf="@+id/imgLogoAtivityBusca"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imgBuscaRefeicaoSearchButton"
+        android:layout_width="69dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/background_button_login"
+        android:onClick="seachByName"
+        android:src="@drawable/ic_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBarBuscaRefeicaoActivity"
+        style="@android:style/Widget.Material.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/listBuscaRefeicaoResults"
+        tools:visibility="invisible" />
+
+    <ListView
+        android:id="@+id/listBuscaRefeicaoResults"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editBuscaRefeicaoBusca">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButtonBuscaRefeicaoDesjejum"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#00796B"
+                android:checked="true"
+                android:onClick="desRadioLessDesjejum"
+                android:text="Desjejum"
+                android:textColor="@color/vpi__background_holo_dark"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
+            <RadioButton
+                android:id="@+id/radioButtonBuscaRefeicaoAlmoco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#00796B"
+                android:onClick="desRadioLessAlmoco"
+                android:text="Almoço"
+                android:textColor="@color/vpi__background_holo_dark"
+                android:visibility="visible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButtonBuscaRefeicaoLanche"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#00796B"
+                android:onClick="desRadioLessLanche"
+                android:text="Lanche"
+                android:textColor="@color/vpi__background_holo_dark"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
+            <RadioButton
+                android:id="@+id/radioButtonBuscaRefeicaoJantar"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#00796B"
+                android:onClick="desRadioLessJantar"
+                android:text="Jantar"
+                android:textColor="@color/vpi__background_holo_dark"
+                android:visibility="visible"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+    </RadioGroup>
+
 </android.support.constraint.ConstraintLayout>

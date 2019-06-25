@@ -11,37 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/imgLogoAtivityBusca3"
+            android:layout_width="43dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </android.support.design.widget.AppBarLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
 
         <ImageButton
             android:id="@+id/imageButtonPesquisaRefeicao"
-            android:layout_width="69dp"
-            android:layout_height="41dp"
+            android:layout_width="43dp"
+            android:layout_height="39dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="#00FFFFFF"
+            android:onClick="buscarRefeicaoHome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buscaRefeicao"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_search" />
 
         <EditText
@@ -60,8 +54,8 @@
             android:textColorHint="@color/vpi__bright_foreground_disabled_holo_light"
             app:layout_constraintEnd_toStartOf="@+id/imageButtonPesquisaRefeicao"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            app:layout_constraintStart_toEndOf="@+id/imgLogoAtivityBusca3"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.synnapps.carouselview.CarouselView
             android:id="@+id/CarouselRefeicoes"
@@ -187,17 +181,13 @@
             android:id="@+id/textViewFavoritosRefeicoes"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="264dp"
-            android:layout_marginRight="264dp"
             android:text="Favoritos"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/CarouselRefeicoes" />
 
@@ -205,17 +195,13 @@
             android:id="@+id/textViewTopRefeicoes2"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="264dp"
-            android:layout_marginRight="264dp"
             android:text="Top 5 Refeições"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
