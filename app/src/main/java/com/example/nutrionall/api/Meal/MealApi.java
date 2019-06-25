@@ -14,6 +14,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface MealApi {
     @Multipart
@@ -35,4 +36,11 @@ public interface MealApi {
 
     @GET("/meal")
     Call<List<Meal>> listAll(@Header("Authorization") String authHeader);
+
+    @GET("meal/searchByName/")
+    Call<List<Meal>> searchByName(
+            @Query("name") String name,
+            @Query("category") int category,
+            @Header("Authorization") String authHeader
+    );
 }

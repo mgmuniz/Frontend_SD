@@ -69,6 +69,8 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             }
         });
 
+        seachByName();
+
     }
 
     public void desRadioLessDesjejum(View view) {
@@ -159,6 +161,34 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
                 if (response.isSuccessful()) {
                     Log.d(TAG, "onResponse: " + response.toString());
+                    List<Meal> resp = response.body();
+
+                    for (int i = 0; i < resp.size(); i++) {
+                        Log.d(TAG, "onResponse: " + resp.get(i).getName());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Meal>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
+
+    public void seachByName() {
+        final String TAG = "searchByName";
+
+        String name = "hope";
+        int classification = 3;
+
+        MealApi serviceApi = retrofit.create(MealApi.class);
+        Call<List<Meal>> call = serviceApi.searchByName(name, classification, "bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<List<Meal>>() {
+            @Override
+            public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
+                if (response.isSuccessful()) {
                     List<Meal> resp = response.body();
 
                     for (int i = 0; i < resp.size(); i++) {
