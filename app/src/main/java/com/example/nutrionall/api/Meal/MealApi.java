@@ -1,5 +1,6 @@
 package com.example.nutrionall.api.Meal;
 
+import com.example.nutrionall.models.Meal.Evaluate;
 import com.example.nutrionall.models.Meal.Meal;
 import com.google.gson.JsonObject;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -41,6 +43,12 @@ public interface MealApi {
     Call<List<Meal>> searchByName(
             @Query("name") String name,
             @Query("category") int category,
+            @Header("Authorization") String authHeader
+    );
+
+    @POST("meal/evaluation/")
+    Call<Evaluate> newEvaluate(
+            @Body Evaluate body,
             @Header("Authorization") String authHeader
     );
 }
