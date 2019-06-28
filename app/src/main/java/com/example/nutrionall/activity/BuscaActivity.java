@@ -219,6 +219,8 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
                         Log.d(TAG, "name: " + resp.getName().getValue());
                         Log.d(TAG, "category: " + resp.getCategory().getValue());
 
+                        progressBarBuscaActivity.setVisibility(View.INVISIBLE);
+
                         Intent intent = new Intent(getApplicationContext(), InfoAlimentosActivity.class);
                         intent.putExtra("food", resp);
                         startActivity(intent);
@@ -255,28 +257,21 @@ public class BuscaActivity extends AppCompatActivity implements Methods {
         call.enqueue(new Callback<SearchNutrientFood>() {
             @Override
             public void onResponse(Call<SearchNutrientFood> call, Response<SearchNutrientFood> response) {
-                if (getPreferences().getBoolean("isPremium", false)) {
-                    if (response.isSuccessful()) {
-                        // se o usuário for premium
-                        SearchNutrientFood resp = response.body();
 
-                        arrayAlimentos = new ArrayList<>();
-                        arrayAlimentos.addAll(resp.getData());
+                if (response.isSuccessful()) {
+                    // se o usuário for premium
+                    SearchNutrientFood resp = response.body();
 
-                        progressBarBuscaActivity.setVisibility(View.INVISIBLE);
+                    arrayAlimentos = new ArrayList<>();
+                    arrayAlimentos.addAll(resp.getData());
 
-                        ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
-                        resultadosBusca.setAdapter(adapter);
-                    } else {
-                        Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
-                    }
+                    progressBarBuscaActivity.setVisibility(View.INVISIBLE);
+
+                    ArrayAdapter adapter = new FoodAdapter(context, arrayAlimentos);
+                    resultadosBusca.setAdapter(adapter);
+
                 } else {
-                    if (response.isSuccessful()) {
-                        // se o usuário não for premium
-                        Log.d(TAG, "onResponse: n premium");
-                    } else {
-                        Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
-                    }
+                    Log.d(TAG, Consts.falhaReq(response.code(), response.message(), response.raw().toString()));
                 }
             }
 
