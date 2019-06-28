@@ -35,6 +35,9 @@ import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -236,9 +239,20 @@ public class CriarRefeicaoActivity extends AppCompatActivity implements Methods 
                     Log.d(TAG, "onResponse: " + response.message());
                     finish();
                 } else {
-                    // Toast.makeText(getApplicationContext(),"Erro ao cadastrar refeição!", Toast.LENGTH_SHORT).show();
+                    JSONObject msg = null;
+                    try {
+                        msg = new JSONObject(response.errorBody().string());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     txtCadastroRefeicao.setError("Erro ao cadastrar refeição!");
-                    txtCadastroRefeicao.setText("Erro ao cadastrar refeição!");
+                    try {
+                        txtCadastroRefeicao.setText(msg.getString("msg"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     txtCadastroRefeicao.setTextColor(Color.RED);
                     progressBarCadastroRefeicao.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "onResponse: " + response.toString());
