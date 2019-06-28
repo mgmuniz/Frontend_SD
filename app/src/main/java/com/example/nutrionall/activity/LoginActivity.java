@@ -1,18 +1,11 @@
 package com.example.nutrionall.activity;
 
-import com.example.nutrionall.api.User.AuthService;
-import com.example.nutrionall.models.User.AuthUser;
-import com.example.nutrionall.models.User.UserLogin;
-import com.example.nutrionall.utils.Methods;
-import com.example.nutrionall.utils.Validate;
-import com.example.nutrionall.utils.Consts;
-
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrionall.R;
+import com.example.nutrionall.api.User.AuthService;
+import com.example.nutrionall.models.User.AuthUser;
+import com.example.nutrionall.models.User.UserLogin;
+import com.example.nutrionall.utils.Consts;
+import com.example.nutrionall.utils.Methods;
+import com.example.nutrionall.utils.Validate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements Methods {
 
         getReferencesComponentes();
 
+        Log.d("validateToken", "onCreate: " + getPreferences().contains("token"));
+
         if (getPreferences().contains("token")) {
             verifyToken(getPreferences().getString("token", ""));
         }
@@ -61,9 +62,12 @@ public class LoginActivity extends AppCompatActivity implements Methods {
 
         progressLoginValidateToken.setVisibility(View.VISIBLE);
         textLoginValidateToken.setVisibility(View.VISIBLE);
+        textLoginValidateToken.setTextColor(Color.WHITE);
+        textLoginValidateToken.setError(null);
         textLoginValidateToken.setText("Validando informações anteriores, aguarde enquanto fazemos tudo por você =D ...");
 
-        String TAG = "validateToken";
+        final String TAG = "validateToken";
+        Log.d(TAG, "validateToken: iniciada token: " + token);
         AuthUser userAuthenticated = new AuthUser();
         userAuthenticated.setToken(token);
 
@@ -73,21 +77,23 @@ public class LoginActivity extends AppCompatActivity implements Methods {
         call.enqueue(new Callback<AuthUser>() {
             @Override
             public void onResponse(Call<AuthUser> call, Response<AuthUser> response) {
+                Log.d(TAG, "onResponse: " + response.toString());
                 if (response.isSuccessful()) {
-                    Boolean test = response.body().getValidToken();
-                    if (test) {
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    } else {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    Log.d(TAG, "Faça login novamente por favor =D");
                         textLoginValidateToken.setText("Faça login novamente por favor =D");
+                        textLoginValidateToken.setError("Faça login novamente por favor =D");
+                        textLoginValidateToken.setTextColor(Color.RED);
                         progressLoginValidateToken.setVisibility(View.INVISIBLE);
                     }
                 }
-            }
+
 
             @Override
             public void onFailure(Call<AuthUser> call, Throwable t) {
-                Log.d("validateToken", "onFailure: " + t.toString());
+                Log.d(TAG, "onFailure: " + t.toString());
             }
         });
     }
@@ -153,7 +159,6 @@ public class LoginActivity extends AppCompatActivity implements Methods {
 
                 @Override
                 public void onFailure(Call<AuthUser> call, Throwable t) {
-
                     Log.d("login", "onFailure: " + t.toString());
                 }
             });
