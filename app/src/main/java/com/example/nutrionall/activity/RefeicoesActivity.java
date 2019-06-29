@@ -3,12 +3,14 @@ package com.example.nutrionall.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrionall.R;
@@ -39,6 +41,9 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
     private Retrofit retrofit;
 
     private EditText buscaRefeicao;
+    private FloatingActionButton buttonCadastrarRefeicao;
+    private CarouselView CarouselRefeicoesFavoritos;
+    private TextView textViewFavoritosRefeicoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,21 +70,26 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             }
         });
 
-        CarouselView carouselFavoritesView = findViewById(R.id.CarouselRefeicoesFavoritos);
 //        carouselFavoritesView.setPageCount(mImages.length);
-        carouselFavoritesView.setPageCount(5);
-        carouselFavoritesView.setImageListener(new ImageListener() {
+        CarouselRefeicoesFavoritos.setPageCount(5);
+        CarouselRefeicoesFavoritos.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
                 Picasso.get().load(mImages[position+10]).fit().centerCrop().into(imageView);
             }
         });
 
-        carouselFavoritesView.setImageClickListener(new ImageClickListener() {
+        CarouselRefeicoesFavoritos.setImageClickListener(new ImageClickListener() {
             @Override
             public void onClick(int position) {
             }
         });
+
+        if (!getPreferences().getBoolean("isPremium", false)) {
+            buttonCadastrarRefeicao.setVisibility(View.INVISIBLE);
+            CarouselRefeicoesFavoritos.setVisibility(View.INVISIBLE);
+            textViewFavoritosRefeicoes.setVisibility(View.INVISIBLE);
+        }
 
         addNewEvaluate(3, "5d0bdec9bcccc223ae26c8fb");
     }
@@ -248,7 +258,9 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
     @Override
     public void getReferencesComponentes() {
         buscaRefeicao = findViewById(R.id.buscaRefeicao);
-
+        buttonCadastrarRefeicao = findViewById(R.id.buttonCadastrarRefeicao);
+        CarouselRefeicoesFavoritos = findViewById(R.id.CarouselRefeicoesFavoritos);
+        textViewFavoritosRefeicoes = findViewById(R.id.textViewFavoritosRefeicoes);
     }
 
     @Override
