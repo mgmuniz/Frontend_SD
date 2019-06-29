@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Food implements Serializable {
+    @SerializedName("_id")
     String _id;
     Definition name;
     Definition category;

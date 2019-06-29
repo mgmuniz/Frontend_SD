@@ -14,19 +14,31 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.SimilaresAdapter;
+import com.example.nutrionall.api.Food.FoodApi;
 import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 public class InfoAlimentosActivity extends AppCompatActivity implements Methods {
+
+    private Retrofit retrofit;
+
+    private ProgressBar progressBarInfoAlimento;
 
     private RecyclerView listInfoAlimentosSimilares;
     private TextView txtInfoAlimentoTitulo;
@@ -82,6 +94,39 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
         this.context = this;
         setDados();
         String TAG = "infoAlimentosActivity";
+        retrofit = Consts.connection();
+
+        addView(); // adiciona uma visualização ao alimento
+    }
+
+    private void addView() {
+        final String TAG = "addView";
+        String id = null;
+
+        progressBarInfoAlimento.setVisibility(View.VISIBLE);
+
+        if (getPreferences().getBoolean("isPremium", false)) {
+            id = food.getFood().get_id();
+        } else {
+            id = food.get_id();
+        }
+
+        FoodApi serviceApi = retrofit.create(FoodApi.class);
+        Call<JsonObject> call = serviceApi.addView(id, "bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    progressBarInfoAlimento.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
     }
 
     private void setupRecycler(List<Food> lstSimilares) {
@@ -386,6 +431,8 @@ public class InfoAlimentosActivity extends AppCompatActivity implements Methods 
         txtInfoAlimentoManganaseNiacinV = findViewById(R.id.txtInfoAlimentoManganaseNiacinV);
         txtInfoAlimentoPhosphorusVitaminCV = findViewById(R.id.txtInfoAlimentoPhosphorusVitaminCV);
         txtInfoAlimentoIronV = findViewById(R.id.txtInfoAlimentoIronV);
+
+        progressBarInfoAlimento = findViewById(R.id.progressBarInfoAlimento);
     }
 
     public SharedPreferences getPreferences() {
