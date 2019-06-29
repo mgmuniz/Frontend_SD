@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".activity.CadastroActivity">
 
     <android.support.constraint.ConstraintLayout
@@ -25,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            app:srcCompat="@drawable/logo" />
 
         <EditText
             android:id="@+id/editCadastroName"
@@ -217,6 +218,16 @@
             app:layout_constraintStart_toStartOf="@+id/progressBarCadastroUser"
             app:layout_constraintTop_toBottomOf="@+id/progressBarCadastroUser"
             tools:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/compareImgCadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:srcCompat="@drawable/logo"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="1dp"
+            tools:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

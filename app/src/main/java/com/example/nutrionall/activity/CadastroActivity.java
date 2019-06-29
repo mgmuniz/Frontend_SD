@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +24,7 @@ import com.example.nutrionall.R;
 import com.example.nutrionall.api.User.UserService;
 import com.example.nutrionall.models.User.UserCadastro;
 import com.example.nutrionall.utils.Consts;
+import com.example.nutrionall.utils.Masks;
 import com.example.nutrionall.utils.Methods;
 import com.example.nutrionall.utils.Validate;
 
@@ -51,6 +54,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
     private ImageView editCadastroImgUser;
     private ProgressBar progressBarCadastroUser;
     private TextView textCadastroUsuario;
+    private ImageView compareImgCadastro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,8 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
         retrofit = Consts.connection();
 
         getReferencesComponentes();
+        TextWatcher dateBirth = new Masks("##/##/####");
+        editCadastroDataNascimento.addTextChangedListener(dateBirth);
     }
 
     public void loadImg(View view){
@@ -74,6 +80,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        String TAG = "img";
 
         // Testar retorno dos dados
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
@@ -99,27 +106,35 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
     }
 
     private byte[] imgToString() {
-        editCadastroImgUser.setDrawingCacheEnabled(true);
-        editCadastroImgUser.buildDrawingCache();
+        String TAG = "cadastro";
+        Bitmap bitmap1 = ((BitmapDrawable) editCadastroImgUser.getDrawable()).getBitmap();
+        Bitmap bitmap2 = ((BitmapDrawable) compareImgCadastro.getDrawable()).getBitmap();
+        if (bitmap1 == bitmap2) {
+            return null;
+        } else {
+            editCadastroImgUser.setDrawingCacheEnabled(true);
+            editCadastroImgUser.buildDrawingCache();
 
-        // recupera o bitmap da imagemd a ser enviada
-        Bitmap bitmap = editCadastroImgUser.getDrawingCache();
+            // recupera o bitmap da imagemd a ser enviada
+            Bitmap bitmap = editCadastroImgUser.getDrawingCache();
 
-        // comprime o bitmap para algum formato de imagem
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            // comprime o bitmap para algum formato de imagem
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
 
-        // converte o byteArrayOutputStream em array
-        byte[] imgByte = byteArrayOutputStream.toByteArray();
+            // converte o byteArrayOutputStream em array
+            byte[] imgByte = byteArrayOutputStream.toByteArray();
 
-        return imgByte;
+
+            return imgByte;
+        }
     }
 
     private UserCadastro getUserCadastro() {
         UserCadastro newUser = new UserCadastro();
         newUser.setName(editCadastroName.getText().toString());
         newUser.setEmail(editCadastroEmail.getText().toString());
-        newUser.setGender("false");
+        newUser.setGender("true");
         newUser.setPassword(editCadastroPassword.getText().toString());
         newUser.setDateOfBirth(editCadastroDataNascimento.getText().toString());
 
@@ -132,15 +147,18 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
 
         byte[] img = imgToString();
 
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(img);
-        fos.flush();
-        fos.close();
+        if(img != null){
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(img);
+            fos.flush();
+            fos.close();
 
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("urlImg", file.getName(), reqFile);
-
-        return body;
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("urlImg", file.getName(), reqFile);
+            return body;
+        }else{
+            return null;
+        }
     }
 
     public void cadastrar(View view) {
@@ -214,6 +232,7 @@ public class CadastroActivity extends AppCompatActivity implements Methods {
         editCadastroImgUser = findViewById(R.id.editCadastroImgUser);
         progressBarCadastroUser = findViewById(R.id.progressBarCadastroUser);
         textCadastroUsuario = findViewById(R.id.textCadastroUsuario);
+        compareImgCadastro = findViewById(R.id.compareImgCadastro);
     }
 
     @Override
