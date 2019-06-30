@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imagemVisualizaRefeicao"
+        android:id="@+id/imgVisualizaRefeicao"
         android:layout_width="373dp"
         android:layout_height="190dp"
         android:layout_marginStart="24dp"
@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/refeicoes_b" />
 
     <TextView
-        android:id="@+id/nomeVisuRefeicao"
+        android:id="@+id/nomeVisualizaRefeicao"
         android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagemVisualizaRefeicao" />
+        app:layout_constraintTop_toBottomOf="@+id/imgVisualizaRefeicao" />
 
     <TextView
         android:id="@+id/textView11"
@@ -52,10 +52,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingBarVisualizaRefeicao" />
 
     <TextView
-        android:id="@+id/descricaoVisuRefeicao"
+        android:id="@+id/descVisualizaRefeicao"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -76,7 +76,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <RatingBar
-        android:id="@+id/ratingBar2"
+        android:id="@+id/ratingBarVisualizaRefeicao"
         style="@android:style/Widget.Holo.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
@@ -89,7 +89,7 @@
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomeVisuRefeicao" />
+        app:layout_constraintTop_toBottomOf="@+id/nomeVisualizaRefeicao" />
 
     <ImageButton
         android:id="@+id/btnFavoriteRefeicao"

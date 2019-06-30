@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
@@ -24,12 +25,16 @@ import retrofit2.Retrofit;
 
 public class VisualizaRefeicaoActivity extends AppCompatActivity implements Methods {
 
+    // componentes
+    private ImageView imgVisualizaRefeicao;
+    private TextView nomeVisualizaRefeicao;
+    private TextView descVisualizaRefeicao;
+    private RatingBar ratingBarVisualizaRefeicao;
+    private ImageView btnFavoriteRefeicao;
+
     private Retrofit retrofit;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private TextView nomeVisuRefeicao;
-    private ImageView imagemVisualizaRefeicao;
-    private TextView descricaoVisuRefeicao;
 
     private Context context;
 
@@ -47,18 +52,45 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
         retrofit = Consts.connection();
 
-        mViewPager.setAdapter(new MyFragPageAdapterVisuRefeicao(getSupportFragmentManager(),getResources().getStringArray(R.array.titles_tab_visualiza_refeicao) ));
+        meal = (Meal) getIntent().getSerializableExtra("meal");
+
+        mViewPager.setAdapter(new MyFragPageAdapterVisuRefeicao(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_tab_visualiza_refeicao), meal));
         mTabLayout.setupWithViewPager(mViewPager);
 
-    }
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+                String TAG = "tablayout";
+                Log.d(TAG, "onTabSelected: " + tab.getPosition());
+                if (tab.getPosition() == 0) {
+                    // tela de descrição
+                    meal = (Meal) getIntent().getSerializableExtra("meal");
+                    getReferencesComponentes();
+                    nomeVisualizaRefeicao.setText(meal.getName());
+                    descVisualizaRefeicao.setText(meal.getDescription());
+                }
+            }
 
-    public void onAttachedToWindow(){
-        super.onAttachedToWindow();
-        setInfo();
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+
+//        setInfo();
     }
 
     // essa função que vai pegar os dados da refeicao da API e colocar na tela
     private void setInfo(){
+        String TAG = "setInfo";
 
         meal = (Meal) getIntent().getSerializableExtra("meal");
         Log.d("Teste recuperacao", meal.getName());
@@ -89,7 +121,7 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
         }
 
     }
-//
+
 //    public void getRefeicao() {
 //        final String TAG = "getRefeição";
 //
@@ -129,12 +161,13 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
     @Override
     public void getReferencesComponentes() {
+        imgVisualizaRefeicao = findViewById(R.id.imgVisualizaRefeicao);
+        nomeVisualizaRefeicao = findViewById(R.id.nomeVisualizaRefeicao);
+        descVisualizaRefeicao = findViewById(R.id.descVisualizaRefeicao);
+        ratingBarVisualizaRefeicao = findViewById(R.id.ratingBarVisualizaRefeicao);
+        btnFavoriteRefeicao = findViewById(R.id.btnFavoriteRefeicao);
         mTabLayout = findViewById(R.id.tab_layout_visualiza_refeicao);
         mViewPager = findViewById(R.id.view_pager_visu_ref);
-        nomeVisuRefeicao = findViewById(R.id.nomeVisuRefeicao);
-        imagemVisualizaRefeicao = findViewById(R.id.imagemVisualizaRefeicao);
-        descricaoVisuRefeicao = findViewById(R.id.descricaoVisuRefeicao);
-
     }
 
     @Override
