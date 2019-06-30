@@ -94,15 +94,15 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
         meal = (Meal) getIntent().getSerializableExtra("meal");
         Log.d("Teste recuperacao", meal.getName());
-        nomeVisuRefeicao = findViewById(R.id.nomeVisuRefeicao);
-        imagemVisualizaRefeicao = findViewById(R.id.imagemVisualizaRefeicao);
-        descricaoVisuRefeicao = findViewById(R.id.descricaoVisuRefeicao);
+        nomeVisualizaRefeicao = findViewById(R.id.nomeVisualizaRefeicao);
+        imgVisualizaRefeicao = findViewById(R.id.imgVisualizaRefeicao);
+        descVisualizaRefeicao = findViewById(R.id.descVisualizaRefeicao);
 
 
 
-        nomeVisuRefeicao.setText(meal.getName());
-        descricaoVisuRefeicao.setText(meal.getDescription());
-        Picasso.get().load(meal.getUrlImg()).fit().centerCrop().into(imagemVisualizaRefeicao);
+        nomeVisualizaRefeicao.setText(meal.getName());
+        descVisualizaRefeicao.setText(meal.getDescription());
+        Picasso.get().load(meal.getUrlImg()).fit().centerCrop().into(imgVisualizaRefeicao);
     }
 
     public void favoritar(View view){
