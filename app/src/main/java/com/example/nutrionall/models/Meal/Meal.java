@@ -12,6 +12,15 @@ public class Meal implements Serializable {
     Boolean visibility;
     int classification;
     List<Ingredient> ingredients;
+    float avgEvaluation;
+
+    public float getAvgEvaluation() {
+        return avgEvaluation;
+    }
+
+    public void setAvgEvaluation(float avgEvaluation) {
+        this.avgEvaluation = avgEvaluation;
+    }
 
     public String get_id() {
         return _id;
