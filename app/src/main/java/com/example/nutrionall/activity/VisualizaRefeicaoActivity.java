@@ -1,35 +1,25 @@
 package com.example.nutrionall.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterVisualizaRefeicao.MyFragPageAdapterVisuRefeicao;
-import com.example.nutrionall.api.Meal.MealApi;
-import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.URL;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class VisualizaRefeicaoActivity extends AppCompatActivity implements Methods {
@@ -37,48 +27,67 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
     private Retrofit retrofit;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private TextView refeicaoTitulo;
+    private TextView nomeVisuRefeicao;
     private ImageView imagemVisualizaRefeicao;
-    private TextView descricaoRefeicao;
+    private TextView descricaoVisuRefeicao;
+
+    private Context context;
 
     private Meal meal;
+
+    private boolean favoritou = false; // Verificar se o user já favoritou a refeição (mudar ícone)
 
     private ImageButton imgbuttonFavoriteRefeicao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualiza_refeicao);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        this.context = this;
+        getReferencesComponentes();
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout_visualiza_refeicao);
-        mViewPager = (ViewPager) findViewById(R.id.view_pager_visu_ref);
+        retrofit = Consts.connection();
 
         mViewPager.setAdapter(new MyFragPageAdapterVisuRefeicao(getSupportFragmentManager(),getResources().getStringArray(R.array.titles_tab_visualiza_refeicao) ));
         mTabLayout.setupWithViewPager(mViewPager);
 
-        setInfo();
+    }
 
+    public void onAttachedToWindow(){
+        super.onAttachedToWindow();
+        setInfo();
     }
 
     // essa função que vai pegar os dados da refeicao da API e colocar na tela
     private void setInfo(){
 
         meal = (Meal) getIntent().getSerializableExtra("meal");
-        refeicaoTitulo = findViewById(R.id.nomeVisuRefeicao);
-        imagemVisualizaRefeicao = findViewById(R.id.ImagemVisualizaRefeicao);
-        descricaoRefeicao = findViewById(R.id.descricaoVisuRefeicao);
+        Log.d("Teste recuperacao", meal.getName());
+        nomeVisuRefeicao = findViewById(R.id.nomeVisuRefeicao);
+        imagemVisualizaRefeicao = findViewById(R.id.imagemVisualizaRefeicao);
+        descricaoVisuRefeicao = findViewById(R.id.descricaoVisuRefeicao);
 
-        refeicaoTitulo.setText(meal.getName());
-        descricaoRefeicao.setText(meal.getDescription());
-        try {
-            URL newurl = new URL(meal.getUrlImg());
-            Bitmap fotoRefeicao = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
-            imagemVisualizaRefeicao.setImageBitmap(fotoRefeicao);
-        } catch (IOException e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
+
+
+        nomeVisuRefeicao.setText(meal.getName());
+        descricaoVisuRefeicao.setText(meal.getDescription());
+        Picasso.get().load(meal.getUrlImg()).fit().centerCrop().into(imagemVisualizaRefeicao);
+    }
+
+    public void favoritar(View view){
+
+        ImageButton btnFavoriteRefeicao = findViewById(R.id.btnFavoriteRefeicao);
+
+        if(favoritou == true){
+            btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            favoritou = false;
+
         }
+
+        else{
+            btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_red_24dp);
+            favoritou = true;
+        }
+
     }
 //
 //    public void getRefeicao() {
@@ -120,6 +129,11 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
     @Override
     public void getReferencesComponentes() {
+        mTabLayout = findViewById(R.id.tab_layout_visualiza_refeicao);
+        mViewPager = findViewById(R.id.view_pager_visu_ref);
+        nomeVisuRefeicao = findViewById(R.id.nomeVisuRefeicao);
+        imagemVisualizaRefeicao = findViewById(R.id.imagemVisualizaRefeicao);
+        descricaoVisuRefeicao = findViewById(R.id.descricaoVisuRefeicao);
 
     }
 
