@@ -1,13 +1,12 @@
 package com.example.nutrionall.activity.fragmentVisualizaRefeicao;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,19 +14,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.nutrionall.R;
-import com.example.nutrionall.activity.InfoAlimentosActivity;
 import com.example.nutrionall.adapters.IngredientPlusAdapter;
-import com.example.nutrionall.adapters.SimilaresAdapter;
 import com.example.nutrionall.api.Food.FoodApi;
 import com.example.nutrionall.models.Food.Food;
 import com.example.nutrionall.models.Meal.Ingredient;
 import com.example.nutrionall.models.Meal.IngredientPlus;
 import com.example.nutrionall.models.Meal.Meal;
+import com.example.nutrionall.models.User.AuthUser;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,48 +42,75 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
 
     private RecyclerView listVisualizaRefeicao;
     private IngredientPlusAdapter mAdapter;
+    ArrayList<IngredientPlus> foods = new ArrayList<>();
+    private ProgressBar progressBar33;
+    private List<Ingredient> ingredients;
+    private AuthUser user;
+    private int disableProgressBar = 0;
 
     private View v;
     private Context context;
     private Retrofit retrofit;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.frag_visu_refeicao_ingredientes, container, false);
         retrofit = Consts.connection();
-        this.context = context;
+        this.context = getContext();
+        final String TAG = "VisuRefeicaoIngredient";
 
         // deve ser chamado após a instância da view
         getReferencesComponentes();
 
         // recuperando os dados para mostrar no tabview
         Meal meal = (Meal) getArguments().getSerializable("meal");
+        user = (AuthUser) getArguments().getSerializable("user");
 
         ArrayList<IngredientPlus> ingredientsPlus = new ArrayList<IngredientPlus>();
-        List<Ingredient> ingredients = meal.getIngredients();
+        ingredients = meal.getIngredients();
 
-        for(int i=0; i<ingredients.size(); i++){
+        for (int i = 0; i < ingredients.size(); i++) {
             IngredientPlus aux_plus = new IngredientPlus();
 
             String id_ingredient = ingredients.get(i).getIdFood();
             aux_plus.setIdFood(id_ingredient);
             aux_plus.setPortion(ingredients.get(i).getPortion());
             aux_plus.setQtdPortion(ingredients.get(i).getQtdPortion());
-            
-            Food alimento_ingrediente = buscarIngredientPlus(id_ingredient);
 
-            if (getPreferences().getBoolean("isPremium", false)) {
 
-                aux_plus.setNameFood(alimento_ingrediente.getFood().getName().getValue());
-                aux_plus.setCategory(alimento_ingrediente.getFood().getCategory().getValue());
-            }else{
-                aux_plus.setNameFood(alimento_ingrediente.getName().getValue());
-                aux_plus.setCategory(alimento_ingrediente.getCategory().getValue());
-            }
+            FoodApi serviceApi = retrofit.create(FoodApi.class);
+            Call<Food> call = serviceApi.getFood(id_ingredient, "bearer " + user.getToken());
 
-            ingredientsPlus.add(aux_plus);
+            JsonObject x = new JsonObject();
+            x.addProperty("token", user.getToken());
+            x.addProperty("id_ingredient", id_ingredient);
+            x.addProperty("portion", ingredients.get(i).getPortion());
+            x.addProperty("qtdPortion", ingredients.get(i).getQtdPortion());
+
+            VisualizaRefeicaoIngredientesTask task = new VisualizaRefeicaoIngredientesTask();
+            task.execute(x);
+            Food resp = null;
+//            try {
+//                resp = task.execute(call).get();
+//
+//                if (user.getPremium()) {
+//                    aux_plus.setNameFood(resp.getFood().getName().getValue());
+//                    aux_plus.setCategory(resp.getFood().getCategory().getValue());
+//                }else{
+//                    aux_plus.setNameFood(resp.getName().getValue());
+//                    aux_plus.setCategory(resp.getCategory().getValue());
+//                }
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            ingredientsPlus.add(aux_plus);
         }
-        setupRecycler(ingredientsPlus);
+//        setupRecycler(ingredientsPlus);
+        progressBar33 = v.findViewById(R.id.progressBar33);
+        progressBar33.setVisibility(View.VISIBLE);
         return v;
     }
 
@@ -91,10 +120,11 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
         listVisualizaRefeicao.setLayoutManager(layoutManager);
 
         // Adiciona o adapter que irá anexar os objetos à lista.
-
-        for (int i = 0; i < lstIngredients.size(); i++) {
+        for (int i = 1; i < lstIngredients.size(); i++) {
             Log.d("Visualizacao Ingr.", "setupRecycler: " + lstIngredients.get(i).getIdFood());
+            Log.d("visualizacao", "setupRecycler: " + lstIngredients.get(i).getNameFood());
         }
+
 
         ArrayList<IngredientPlus> arrayIngredients = new ArrayList<>();
         arrayIngredients.addAll(lstIngredients);
@@ -105,8 +135,7 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
         listVisualizaRefeicao.setAdapter(mAdapter);
 
         // Configurando um divisor entre linhas, para uma melhor visualização.
-        listVisualizaRefeicao.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
-
+        listVisualizaRefeicao.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL));
     }
 
     private Food buscarIngredientPlus(String id) {
@@ -118,10 +147,10 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
         final Food[] resp = new Food[1];
 
         call.enqueue(new Callback<Food>() {
-            
+
             @Override
             public void onResponse(Call<Food> call, Response<Food> response) {
-                if (getPreferences().getBoolean("isPremium", false)) {
+                if (user.getPremium()) {
 
                     if (response.isSuccessful()) {
                         // se o usuário for premium e a resposta do server for 200OK
@@ -167,5 +196,59 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
     @Override
     public SharedPreferences getPreferences() {
         return null;
+    }
+
+//    class VisualizaRefeicaoIngredientesTask extends AsyncTask<Call, Call, Food> {
+//        @Override
+//        protected Food doInBackground(Call... calls) {
+//            Call<Food> call = calls[0];
+//            Food resp = null;
+//            try {
+//                resp = call.execute().body();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return resp;
+//        }
+//    }
+
+    class VisualizaRefeicaoIngredientesTask extends AsyncTask<JsonObject, Call, IngredientPlus> {
+        @Override
+        protected IngredientPlus doInBackground(JsonObject... json) {
+            JsonObject food = json[0];
+            JsonElement id_ingredient = food.get("id_ingredient");
+            JsonElement token = food.get("token");
+
+            FoodApi serviceApi = retrofit.create(FoodApi.class);
+            Call<Food> call = serviceApi.getFood(id_ingredient.getAsString(), "bearer " + token.getAsString());
+
+            Food resp = null;
+            try {
+                resp = call.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            IngredientPlus x = new IngredientPlus();
+            x.setIdFood(id_ingredient.getAsString());
+            x.setPortion(food.get("portion").getAsString());
+            x.setQtdPortion(food.get("qtdPortion").getAsString());
+            x.setNameFood(resp.getFood().getName().getValue());
+            x.setCategory(resp.getFood().getCategory().getValue());
+
+            return x;
+        }
+
+        @Override
+        protected void onPostExecute(IngredientPlus ingredientPlus) {
+            super.onPostExecute(ingredientPlus);
+            disableProgressBar++;
+            foods.add(ingredientPlus);
+            // if para desativar o progress bar
+            if (disableProgressBar >= ingredients.size()) {
+                progressBar33.setVisibility(View.INVISIBLE);
+            }
+            setupRecycler(foods);
+        }
     }
 }
