@@ -10,18 +10,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterVisualizaRefeicao.MyFragPageAdapterVisuRefeicao;
-import com.example.nutrionall.api.Food.FoodApi;
-import com.example.nutrionall.models.Food.Food;
+import com.example.nutrionall.api.Meal.MealApi;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.models.User.AuthUser;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -96,7 +95,6 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
-//        setInfo();
     }
 
     // essa função que vai pegar os dados da refeicao da API e colocar na tela
@@ -115,20 +113,28 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
     }
 
     public void favoritar(View view){
+        final String TAG = "favoritar";
+        final ImageButton btnFavoriteRefeicao = findViewById(R.id.btnFavoriteRefeicao);
 
-        ImageButton btnFavoriteRefeicao = findViewById(R.id.btnFavoriteRefeicao);
+        JsonObject meal = new JsonObject();
+        meal.addProperty("idMeal", this.meal.get_id());
 
-        if(favoritou == true){
-            btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            favoritou = false;
+        MealApi serviceApi = retrofit.create(MealApi.class);
+        Call<JsonObject> call = serviceApi.newFavorite(meal, "bearer " + getPreferences().getString("token", ""));
 
-        }
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.d(TAG, "onResponse: " + response.toString());
+                favoritou = true;
+                btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_red_24dp);
+            }
 
-        else{
-            btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_red_24dp);
-            favoritou = true;
-        }
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
 
+            }
+        });
     }
 
 

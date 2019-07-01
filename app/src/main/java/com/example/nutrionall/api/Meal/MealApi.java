@@ -65,4 +65,18 @@ public interface MealApi {
             @Body JsonObject body,
             @Header("Authorization") String authHeader
     );
+
+    @POST("meal/favorite/")
+    Call<JsonObject> newFavorite(
+            @Body JsonObject body,
+            @Header("Authorization") String authHeader
+    );
+
+    @GET("meal/favorite/{id}")
+    Call<JsonObject> getFavorite(
+            @Path("id") String id,
+            @Header("Authorization") String authHeader
+    );
+
+
 }
