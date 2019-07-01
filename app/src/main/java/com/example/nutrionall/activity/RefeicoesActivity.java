@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.nutrionall.R;
 import com.example.nutrionall.api.Meal.MealApi;
 import com.example.nutrionall.models.Meal.Evaluate;
+import com.example.nutrionall.models.Meal.Favorite;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -90,6 +92,8 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             CarouselRefeicoesFavoritos.setVisibility(View.INVISIBLE);
             textViewFavoritosRefeicoes.setVisibility(View.INVISIBLE);
         }
+
+        listAllFavorite();
     }
 
     public void buscarRefeicaoHome(View view){
@@ -191,11 +195,11 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
         });
     }
 
-    public void listAll() {
+    public void listAllMeal() {
         final String TAG = "listAll";
 
         MealApi serviceApi = retrofit.create(MealApi.class);
-        Call<List<Meal>> call = serviceApi.listAll("bearer " + getPreferences().getString("token", ""));
+        Call<List<Meal>> call = serviceApi.listAllMeal("bearer " + getPreferences().getString("token", ""));
 
         call.enqueue(new Callback<List<Meal>>() {
             @Override
@@ -212,6 +216,31 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
 
             @Override
             public void onFailure(Call<List<Meal>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
+
+    public void listAllFavorite(){
+        final String TAG = "listAllFavorite";
+
+        MealApi serviceApi = retrofit.create(MealApi.class);
+        Call<ArrayList<Favorite>> call = serviceApi.listAllFavorite("bearer " + getPreferences().getString("token", ""));
+
+        call.enqueue(new Callback<ArrayList<Favorite>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Favorite>> call, Response<ArrayList<Favorite>> response) {
+                Log.d(TAG, "onResponse: " + response.toString());
+                if(response.isSuccessful()){
+                    ArrayList<Favorite> resp = response.body();
+                    for(int i = 0; i < resp.size(); i++){
+                        Log.d(TAG, "onResponse: " + resp.get(i).getName());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Favorite>> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });

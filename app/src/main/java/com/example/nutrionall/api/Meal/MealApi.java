@@ -1,9 +1,11 @@
 package com.example.nutrionall.api.Meal;
 
 import com.example.nutrionall.models.Meal.Evaluate;
+import com.example.nutrionall.models.Meal.Favorite;
 import com.example.nutrionall.models.Meal.Meal;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -38,7 +40,9 @@ public interface MealApi {
             @Header("Authorization") String authHeader);
 
     @GET("/meal")
-    Call<List<Meal>> listAll(@Header("Authorization") String authHeader);
+    Call<List<Meal>> listAllMeal(
+            @Header("Authorization") String authHeader
+    );
 
     @GET("meal/searchByName/")
     Call<List<Meal>> searchByName(
@@ -84,5 +88,8 @@ public interface MealApi {
             @Header("Authorization") String authHeader
     );
 
-
+    @GET("meal/favorite/listAll")
+    Call<ArrayList<Favorite>> listAllFavorite(
+            @Header("Authorization") String authHeader
+    );
 }
