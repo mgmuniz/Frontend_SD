@@ -9,30 +9,38 @@ import com.example.nutrionall.activity.fragmentVisualizaRefeicao.VisuRefeicaoDes
 import com.example.nutrionall.activity.fragmentVisualizaRefeicao.VisuRefeicaoIngredientes;
 import com.example.nutrionall.activity.fragmentVisualizaRefeicao.VisuRefeicaoNutricionais;
 import com.example.nutrionall.models.Meal.Meal;
+import com.example.nutrionall.models.User.AuthUser;
 
 public class MyFragPageAdapterVisuRefeicao extends FragmentPagerAdapter {
 
     private String[] mTitles;
     private Meal meal;
+    private AuthUser user;
 
-    public MyFragPageAdapterVisuRefeicao(FragmentManager fragment, String[] mTitles, Meal meal){
+    public MyFragPageAdapterVisuRefeicao(FragmentManager fragment, String[] mTitles, Meal meal, AuthUser user){
         super(fragment);
         this.mTitles = mTitles;
         this.meal = meal;
+        this.user = user;
     }
     @Override
     public Fragment getItem(int position) {
+        Bundle args = new Bundle();
+        args.putSerializable("meal", meal);
+        Fragment fragment;
         switch (position){
             case 0:
-                Bundle args = new Bundle();
-                args.putSerializable("meal", meal);
-                Fragment fragment = new VisuRefeicaoDescricao();
+                fragment = new VisuRefeicaoDescricao();
                 fragment.setArguments(args);
                 return fragment;
             case 1:
-                return new VisuRefeicaoIngredientes();
+                fragment = new VisuRefeicaoIngredientes();
+                fragment.setArguments(args);
+                return fragment;
             case 2:
-                return new VisuRefeicaoNutricionais();
+                fragment = new VisuRefeicaoNutricionais();
+                fragment.setArguments(args);
+                return fragment;
             default:
                 return null;
         }

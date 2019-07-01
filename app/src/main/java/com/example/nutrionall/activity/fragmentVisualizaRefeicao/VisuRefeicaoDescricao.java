@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.nutrionall.R;
 import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Methods;
+import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 
@@ -43,6 +44,7 @@ public class VisuRefeicaoDescricao extends Fragment implements Methods {
 
         nomeVisualizaRefeicao.setText(meal.getName());
         descVisualizaRefeicao.setText(meal.getDescription());
+        Picasso.get().load(meal.getUrlImg()).fit().centerCrop().into(imgVisualizaRefeicao);
 
         return v;
     }

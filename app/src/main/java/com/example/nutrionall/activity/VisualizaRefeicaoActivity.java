@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.nutrionall.R;
 import com.example.nutrionall.activity.adapterVisualizaRefeicao.MyFragPageAdapterVisuRefeicao;
 import com.example.nutrionall.models.Meal.Meal;
+import com.example.nutrionall.models.User.AuthUser;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.squareup.picasso.Picasso;
@@ -54,7 +55,10 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
 
         meal = (Meal) getIntent().getSerializableExtra("meal");
 
-        mViewPager.setAdapter(new MyFragPageAdapterVisuRefeicao(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_tab_visualiza_refeicao), meal));
+        AuthUser user = new AuthUser();
+        user.set_id(getPreferences().getString("id",""));
+
+        mViewPager.setAdapter(new MyFragPageAdapterVisuRefeicao(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_tab_visualiza_refeicao), meal,user));
         mTabLayout.setupWithViewPager(mViewPager);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -63,13 +67,6 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
                 mViewPager.setCurrentItem(tab.getPosition());
                 String TAG = "tablayout";
                 Log.d(TAG, "onTabSelected: " + tab.getPosition());
-                if (tab.getPosition() == 0) {
-                    // tela de descrição
-                    meal = (Meal) getIntent().getSerializableExtra("meal");
-                    getReferencesComponentes();
-                    nomeVisualizaRefeicao.setText(meal.getName());
-                    descVisualizaRefeicao.setText(meal.getDescription());
-                }
             }
 
             @Override
