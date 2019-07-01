@@ -14,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -49,6 +50,19 @@ public interface MealApi {
     @POST("meal/evaluation/")
     Call<Evaluate> newEvaluate(
             @Body Evaluate body,
+            @Header("Authorization") String authHeader
+    );
+
+    @GET("meal/evaluation/{id}")
+    Call<JsonObject> getEvaluation(
+            @Path("id") String id,
+            @Header("Authorization") String authHeader
+    );
+
+    @PUT("meal/evaluation/{id}")
+    Call<JsonObject> changeEvaluation(
+            @Path("id") String id,
+            @Body JsonObject body,
             @Header("Authorization") String authHeader
     );
 }

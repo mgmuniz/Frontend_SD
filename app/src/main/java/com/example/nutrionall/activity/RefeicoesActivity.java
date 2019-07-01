@@ -90,8 +90,6 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             CarouselRefeicoesFavoritos.setVisibility(View.INVISIBLE);
             textViewFavoritosRefeicoes.setVisibility(View.INVISIBLE);
         }
-
-        addNewEvaluate(3, "5d0bdec9bcccc223ae26c8fb");
     }
 
     public void buscarRefeicaoHome(View view){
@@ -214,42 +212,6 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
 
             @Override
             public void onFailure(Call<List<Meal>> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
-    }
-
-    public void addNewEvaluate(int evaluation, String mealID) {
-        final String TAG = "addNewEvaluate";
-
-        Log.d(TAG, "addNewEvaluate: iniciada");
-
-        Evaluate newEvaluate = new Evaluate();
-        newEvaluate.setEvaluation(evaluation);
-        newEvaluate.setMealID(mealID);
-
-        MealApi serviceApi = retrofit.create(MealApi.class);
-        Call<Evaluate> call = serviceApi.newEvaluate(newEvaluate, "bearer " + getPreferences().getString("token", ""));
-
-        call.enqueue(new Callback<Evaluate>() {
-            @Override
-            public void onResponse(Call<Evaluate> call, Response<Evaluate> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, "onResponse: " + response.body().getMsg());
-                } else {
-                    try {
-                        JSONObject msg = new JSONObject(response.errorBody().string());
-                        Toast.makeText(getApplicationContext(), msg.getString("msg"), Toast.LENGTH_LONG).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Evaluate> call, Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
