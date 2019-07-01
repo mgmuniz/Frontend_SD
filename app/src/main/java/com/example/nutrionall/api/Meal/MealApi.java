@@ -78,5 +78,11 @@ public interface MealApi {
             @Header("Authorization") String authHeader
     );
 
+    @DELETE("meal/favorite/{id}")
+    Call<JsonObject> removeFavorite(
+            @Path("id") String id,
+            @Header("Authorization") String authHeader
+    );
+
 
 }

@@ -120,21 +120,45 @@ public class VisualizaRefeicaoActivity extends AppCompatActivity implements Meth
         meal.addProperty("idMeal", this.meal.get_id());
 
         MealApi serviceApi = retrofit.create(MealApi.class);
-        Call<JsonObject> call = serviceApi.newFavorite(meal, "bearer " + getPreferences().getString("token", ""));
+        Log.d(TAG, "favoritar Flag: " + Consts.flagFavorite);
 
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.d(TAG, "onResponse: " + response.toString());
-                favoritou = true;
-                btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_red_24dp);
-            }
+        if (Consts.flagFavorite) {
+            Call<JsonObject> call = serviceApi.removeFavorite(this.meal.get_id(), "bearer " + getPreferences().getString("token", ""));
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.d(TAG, "removeFavorito: " + response.toString());
+                    if(response.isSuccessful()){
+                        Consts.flagFavorite = false;
+                        btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    }
+                }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }else{
+            Call<JsonObject> call = serviceApi.newFavorite(meal, "bearer " + getPreferences().getString("token", ""));
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.d(TAG, "addFavorito: " + response.toString());
+
+                    if (response.isSuccessful()){
+                        Consts.flagFavorite = true;
+                        btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_red_24dp);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                }
+            });
+        }
+
     }
 
 

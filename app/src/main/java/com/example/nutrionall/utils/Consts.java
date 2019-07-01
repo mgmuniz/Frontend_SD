@@ -13,6 +13,7 @@ public class Consts {
     public static final String ARQUIVO_PREFERENCIAS = "NutritionAllArquivoPreferencias";
     public static Map<String, String> nutrients;
     private static Boolean flagNutrient = false;
+    public static boolean flagFavorite = false;
 
     public static Retrofit connection() {
         return new Retrofit.Builder()

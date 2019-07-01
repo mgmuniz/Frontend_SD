@@ -46,8 +46,6 @@ public class VisuRefeicaoDescricao extends Fragment implements Methods {
     private String evaluateID;
     private boolean evaluateOk = false;
 
-    private boolean favoritou = false; // Verificar se o user já favoritou a refeição (mudar ícone)
-
     private Meal meal;
     private AuthUser user;
 
@@ -80,13 +78,13 @@ public class VisuRefeicaoDescricao extends Fragment implements Methods {
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.isSuccessful()){
-                    Log.d("favoritar", "onResponse: " + response.toString());
-                    favoritou = true;
+                Log.d("favoritar", "recuperando: " + response.toString());
+                if (response.isSuccessful()) {
+                    Consts.flagFavorite = true;
                     btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_red_24dp);
-                }else{
+                } else {
                     btnFavoriteRefeicao.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    favoritou = false;
+                    Consts.flagFavorite = false;
                 }
             }
 
@@ -95,6 +93,7 @@ public class VisuRefeicaoDescricao extends Fragment implements Methods {
 
             }
         });
+
 
         Picasso.get().load(meal.getUrlImg()).fit().centerCrop().into(imgVisualizaRefeicao);
         return v;
