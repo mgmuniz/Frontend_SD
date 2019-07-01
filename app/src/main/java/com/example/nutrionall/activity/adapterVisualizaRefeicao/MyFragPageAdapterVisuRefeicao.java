@@ -27,6 +27,7 @@ public class MyFragPageAdapterVisuRefeicao extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
         args.putSerializable("meal", meal);
+        args.putSerializable("user", user);
         Fragment fragment;
         switch (position){
             case 0:

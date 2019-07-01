@@ -1,6 +1,8 @@
 package com.example.nutrionall.models.User;
 
-public class AuthUser {
+import java.io.Serializable;
+
+public class AuthUser implements Serializable {
     String _id;
     String name;
     String email;

@@ -66,8 +66,6 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
         // recuperando os dados para mostrar no tabview
         Meal meal = (Meal) getArguments().getSerializable("meal");
         user = (AuthUser) getArguments().getSerializable("user");
-
-        ArrayList<IngredientPlus> ingredientsPlus = new ArrayList<IngredientPlus>();
         ingredients = meal.getIngredients();
 
         for (int i = 0; i < ingredients.size(); i++) {
@@ -90,25 +88,8 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
 
             VisualizaRefeicaoIngredientesTask task = new VisualizaRefeicaoIngredientesTask();
             task.execute(x);
-            Food resp = null;
-//            try {
-//                resp = task.execute(call).get();
-//
-//                if (user.getPremium()) {
-//                    aux_plus.setNameFood(resp.getFood().getName().getValue());
-//                    aux_plus.setCategory(resp.getFood().getCategory().getValue());
-//                }else{
-//                    aux_plus.setNameFood(resp.getName().getValue());
-//                    aux_plus.setCategory(resp.getCategory().getValue());
-//                }
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            ingredientsPlus.add(aux_plus);
         }
-//        setupRecycler(ingredientsPlus);
+
         progressBar33 = v.findViewById(R.id.progressBar33);
         progressBar33.setVisibility(View.VISIBLE);
         return v;
@@ -197,20 +178,6 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
     public SharedPreferences getPreferences() {
         return null;
     }
-
-//    class VisualizaRefeicaoIngredientesTask extends AsyncTask<Call, Call, Food> {
-//        @Override
-//        protected Food doInBackground(Call... calls) {
-//            Call<Food> call = calls[0];
-//            Food resp = null;
-//            try {
-//                resp = call.execute().body();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return resp;
-//        }
-//    }
 
     class VisualizaRefeicaoIngredientesTask extends AsyncTask<JsonObject, Call, IngredientPlus> {
         @Override

@@ -84,6 +84,7 @@ public class BuscaRefeicaoActivity extends AppCompatActivity implements Methods 
                 startActivity(intent);
             }
         });
+        progressBarBuscaRefeicaoActivity.setVisibility(View.VISIBLE);
     }
 
     public void seachByName(View view) {

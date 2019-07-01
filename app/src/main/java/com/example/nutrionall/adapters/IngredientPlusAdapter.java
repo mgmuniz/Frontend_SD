@@ -19,7 +19,7 @@ public class IngredientPlusAdapter extends RecyclerView.Adapter<IngredientsPlusH
     private final List<IngredientPlus> mIngredientes;
     private final Context context;
 
-    public IngredientPlusAdapter(Context context,ArrayList ingredientes) {
+    public IngredientPlusAdapter(Context context, ArrayList ingredientes) {
         this.context = context;
         mIngredientes = ingredientes;
     }
