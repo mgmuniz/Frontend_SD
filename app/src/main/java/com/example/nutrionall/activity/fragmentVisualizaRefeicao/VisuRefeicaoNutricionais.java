@@ -138,13 +138,12 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
             if(run == false){
                 progressBar34.setVisibility(View.INVISIBLE);
             }else{
+                progressBar34.setVisibility(View.VISIBLE);
                 VisualizaRefeicaoIngredientesTask task = new VisualizaRefeicaoIngredientesTask();
                 task.execute(x);
             }
         }
 
-        progressBar34 = v.findViewById(R.id.progressBar34);
-        progressBar34.setVisibility(View.VISIBLE);
 
         imgbuttonVisuRefeicaoLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +227,8 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
         txtVisuRefeicaoManganaseNiacinV = v.findViewById(R.id.txtVisuRefeicaoManganaseNiacinV);
         txtVisuRefeicaoPhosphorusVitaminCV = v.findViewById(R.id.txtVisuRefeicaoPhosphorusVitaminCV);
         txtVisuRefeicaoIronV = v.findViewById(R.id.txtVisuRefeicaoIronV);
+
+        progressBar34 = v.findViewById(R.id.progressBar34);
     }
 
     public void setTablePart1VisuRefeicao(View view){

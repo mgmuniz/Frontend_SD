@@ -357,6 +357,9 @@ public class HomeActivity extends AppCompatActivity
             carouselView.setImageClickListener(new ImageClickListener() {
                 @Override
                 public void onClick(int position) {
+                    Intent intent = new Intent(getApplicationContext(), VisualizaRefeicaoActivity.class);
+                    intent.putExtra("meal", topMeals.get(position));
+                    startActivity(intent);
                 }
             });
 
