@@ -2,6 +2,7 @@ package com.example.nutrionall.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,7 +34,10 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -71,35 +75,14 @@ public class HomeActivity extends AppCompatActivity
 
         retrofit = Consts.connection();
 
-        listAllMeal();
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        CarouselView carouselView = findViewById(R.id.CarouselHomeRefeicoes);
-        if(topMeals.size() < 7){
-            carouselView.setPageCount(topMeals.size());
-        }else{
-            carouselView.setPageCount(7);
-        }
-//        carouselView.setPageCount(mImages.length);
-
-        carouselView.setImageListener(new ImageListener() {
-            @Override
-            public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.get().load(topMeals.get(position).getUrlImg()).fit().centerCrop().into(imageView);
-            }
-        });
-        carouselView.setImageClickListener(new ImageClickListener() {
-            @Override
-            public void onClick(int position) {
-            }
-        });
-
-
+        ListAllMealsTask task = new ListAllMealsTask();
+        task.execute("bearer " + getPreferences().getString("token", ""));
 
         setRecycler();
     }
@@ -294,4 +277,66 @@ public class HomeActivity extends AppCompatActivity
         editor.commit();
     }
 
+
+    class ListAllMealsTask extends AsyncTask<String, Call, List<Meal>> {
+        String TAG = "listAllMealsTask";
+
+        @Override
+        protected List<Meal> doInBackground(String... strings) {
+            MealApi serviceApi = retrofit.create(MealApi.class);
+            Call<List<Meal>> call = serviceApi.listAllMeal(strings[0]);
+            Response<List<Meal>> x = null;
+
+            try {
+                x = call.execute();
+                Log.d(TAG, "doInBackground: " + x.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return x.body();
+        }
+
+        class SortByAvgEvaluation implements Comparator<Meal>
+        {
+            // Used for sorting in ascending order of
+            // roll number
+            public int compare(Meal a, Meal b)
+            {
+                return (int) (b.getAvgEvaluation() - a.getAvgEvaluation());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Meal> meals) {
+            super.onPostExecute(meals);
+            topMeals = meals;
+
+            Collections.sort(topMeals, new SortByAvgEvaluation());
+
+            for(int i = 0; i < topMeals.size(); i++){
+                Log.d(TAG, "onPostExecute: " + topMeals.get(i).getAvgEvaluation());
+            }
+
+            CarouselView carouselView = findViewById(R.id.CarouselHomeRefeicoes);
+
+            carouselView.setImageListener(new ImageListener() {
+                @Override
+                public void setImageForPosition(int position, ImageView imageView) {
+                    Picasso.get().load(topMeals.get(position).getUrlImg()).fit().centerCrop().into(imageView);
+                }
+            });
+            carouselView.setImageClickListener(new ImageClickListener() {
+                @Override
+                public void onClick(int position) {
+                }
+            });
+
+            if (topMeals.size() < 7) {
+                carouselView.setPageCount(topMeals.size());
+            } else {
+                carouselView.setPageCount(7);
+            }
+
+        }
+    }
 }

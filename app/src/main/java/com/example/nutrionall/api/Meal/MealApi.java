@@ -39,8 +39,13 @@ public interface MealApi {
             @Path("id") String id,
             @Header("Authorization") String authHeader);
 
-    @GET("/meal")
+    @GET("meal/listAll")
     Call<List<Meal>> listAllMeal(
+            @Header("Authorization") String authHeader
+    );
+
+    @GET("meal/listAllUser")
+    Call<List<Meal>> listAllMealUser(
             @Header("Authorization") String authHeader
     );
 
