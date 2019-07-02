@@ -1,5 +1,6 @@
 package com.example.nutrionall.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
     private CarouselView CarouselRefeicoesFavoritos;
     private TextView textViewFavoritosRefeicoes;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

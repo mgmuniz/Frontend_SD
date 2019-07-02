@@ -146,6 +146,13 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
         progressBar34 = v.findViewById(R.id.progressBar34);
         progressBar34.setVisibility(View.VISIBLE);
 
+        imgbuttonVisuRefeicaoLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTablePart1VisuRefeicao(null);
+            }
+        });
+
         imgbuttonVisuRefeicaoRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,40 +345,40 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
         imgbuttonVisuRefeicaoRight.setImageResource(R.drawable.ic_navigate_next_gray);
 
         txtVisuRefeicaoHumiditySodium.setText("Sódio");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valSodium) + "g");
+        txtVisuRefeicaoHumiditySodiumV.setText(Float.toString(valSodium) + "g");
 
         txtVisuRefeicaoEnergyPotassium.setText("Potássio");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valPotassium) + "g");
+        txtVisuRefeicaoEnergyPotassiumV.setText(Float.toString(valPotassium) + "g");
 
         txtVisuRefeicaoProteinCopper.setText("Cobre");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valCopper) + "g");
+        txtVisuRefeicaoProteinCopperV.setText(Float.toString(valCopper) + "g");
 
         txtVisuRefeicaoLipidsZinc.setText("Zinco");
         txtVisuRefeicaoLipidsZincV.setText(Float.toString(valZinc) + "g");
 
         txtVisuRefeicaoCholesterolRetinol.setText("Retinol");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valRetinol) + "g");
+        txtVisuRefeicaoCholesterolRetinolV.setText(Float.toString(valRetinol) + "g");
 
         txtVisuRefeicaoCarbohydrateRe.setText("RE");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valRe) + "g");
+        txtVisuRefeicaoCarbohydrateReV.setText(Float.toString(valRe) + "g");
 
         txtVisuRefeicaoFiberRae.setText("RAE");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valRae) + "g");
+        txtVisuRefeicaoFiberRaeV.setText(Float.toString(valRae) + "g");
 
         txtVisuRefeicaoAshesThiamine.setText("Tiamina");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valThiamine) + "g");
+        txtVisuRefeicaoAshesThiamineV.setText(Float.toString(valThiamine) + "g");
 
         txtVisuRefeicaoCalciumRiboflavin.setText("Riboflavina");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valRiboflavin) + "g");
+        txtVisuRefeicaoCalciumRiboflavinV.setText(Float.toString(valRiboflavin) + "g");
 
         txtVisuRefeicaoMagnesiumPyridoxine.setText("Piridoxina");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valPyridoxine) + "g");
+        txtVisuRefeicaoMagnesiumPyridoxineV.setText(Float.toString(valPyridoxine) + "g");
 
         txtVisuRefeicaoManganaseNiacin.setText("Niacina");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valNiacin) + "g");
+        txtVisuRefeicaoManganaseNiacinV.setText(Float.toString(valNiacin) + "g");
 
         txtVisuRefeicaoPhosphorusVitaminC.setText("Vitamina C");
-        txtVisuRefeicaoLipidsZincV.setText(Float.toString(valVitaminC) + "g");
+        txtVisuRefeicaoPhosphorusVitaminCV.setText(Float.toString(valVitaminC) + "g");
 
         txtVisuRefeicaoIron.setVisibility(TextView.INVISIBLE);
         txtVisuRefeicaoIronV.setVisibility(TextView.INVISIBLE);
