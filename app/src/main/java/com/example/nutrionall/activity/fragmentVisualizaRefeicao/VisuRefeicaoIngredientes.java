@@ -119,56 +119,6 @@ public class VisuRefeicaoIngredientes extends Fragment implements Methods {
         listVisualizaRefeicao.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL));
     }
 
-    private Food buscarIngredientPlus(String id) {
-        final String TAG = "buscarIngPlus";
-        Log.d(TAG, "id do objeto " + id);
-
-        FoodApi serviceApi = retrofit.create(FoodApi.class);
-        Call<Food> call = serviceApi.getFood(id, "bearer " + user.getToken());
-        final Food[] resp = new Food[1];
-
-        call.enqueue(new Callback<Food>() {
-
-            @Override
-            public void onResponse(Call<Food> call, Response<Food> response) {
-                if (user.getPremium()) {
-
-                    if (response.isSuccessful()) {
-                        // se o usuário for premium e a resposta do server for 200OK
-
-                        resp[0] = response.body();
-                        Log.d(TAG, "name: " + resp[0].getFood().getName().getValue());
-                        Log.d(TAG, "category: " + resp[0].getFood().getCategory().getValue());
-                        for (int i = 0; i < resp[0].getLstSimilars().size(); i++) {
-                            Log.d(TAG, "similar: " + resp[0].getLstSimilars().get(i).getName().getValue());
-                        }
-
-                    } else {
-                        // tratamento de erro
-                    }
-                } else {
-
-                    if (response.isSuccessful()) {
-                        // se o usuário NÃO for premium e a resposta do server for 200OK
-
-                        resp[0] = response.body();
-                        Log.d(TAG, "name: " + resp[0].getName().getValue());
-                        Log.d(TAG, "category: " + resp[0].getCategory().getValue());
-
-                    } else {
-                        // tratamento de erro
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Food> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
-        return resp[0];
-    }
-
     @Override
     public void getReferencesComponentes() {
         listVisualizaRefeicao = v.findViewById(R.id.listVisualizaRefeicao);
