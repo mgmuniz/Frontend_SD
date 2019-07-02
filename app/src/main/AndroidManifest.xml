@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.BuscaRefeicaoActivity"></activity>
+        <activity android:name=".activity.AtualizaUsuarioActivity"></activity>
+        <activity android:name=".activity.BuscaRefeicaoActivity" />
         <activity android:name=".activity.BuscaIngredientesActivity" />
         <activity android:name=".activity.InfoAlimentosActivity" />
         <activity android:name=".activity.BuscaActivity" />

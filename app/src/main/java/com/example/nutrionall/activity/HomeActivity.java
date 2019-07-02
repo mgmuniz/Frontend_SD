@@ -195,7 +195,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_user) {
-            // Handle the camera action
+            Intent intent = new Intent(HomeActivity.this, AtualizaUsuarioActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_refeicoes) {
             Intent intent = new Intent(HomeActivity.this, RefeicoesActivity.class);
             startActivity(intent);
