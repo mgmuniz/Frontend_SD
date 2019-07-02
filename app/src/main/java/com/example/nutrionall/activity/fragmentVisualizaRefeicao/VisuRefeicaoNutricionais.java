@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,6 +42,8 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
     private View v;
     private Context context;
     private Retrofit retrofit;
+    private ArrayList<Food> foods = new ArrayList<>();
+    private boolean run = true;
 
     private TableLayout tableVisuRefeicaoTableNutrientes;
     private ImageButton imgbuttonVisuRefeicaoLeft;
@@ -131,12 +135,23 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
             x.addProperty("portion", ingredients.get(i).getPortion());
             x.addProperty("qtdPortion", ingredients.get(i).getQtdPortion());
 
-            VisualizaRefeicaoIngredientesTask task = new VisualizaRefeicaoIngredientesTask();
-            task.execute(x);
+            if(run == false){
+                progressBar34.setVisibility(View.INVISIBLE);
+            }else{
+                VisualizaRefeicaoIngredientesTask task = new VisualizaRefeicaoIngredientesTask();
+                task.execute(x);
+            }
         }
 
         progressBar34 = v.findViewById(R.id.progressBar34);
         progressBar34.setVisibility(View.VISIBLE);
+
+        imgbuttonVisuRefeicaoRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTablePart2VisuRefeicao(null);
+            }
+        });
 
         setTablePart1VisuRefeicao(null);
 
@@ -375,31 +390,10 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
         return null;
     }
 
-    class VisualizaRefeicaoIngredientesTask extends AsyncTask<JsonObject, Call, Food> {
-        @Override
-        protected Food doInBackground(JsonObject... json) {
-            JsonObject food = json[0];
-            JsonElement id_ingredient = food.get("id_ingredient");
-            JsonElement token = food.get("token");
+    public void sumValues(){
 
-            FoodApi serviceApi = retrofit.create(FoodApi.class);
-            Call<Food> call = serviceApi.getFood(id_ingredient.getAsString(), "bearer " + token.getAsString());
-
-            Food resp = null;
-            try {
-                resp = call.execute().body();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return resp.getFood();
-        }
-
-        @Override
-        protected void onPostExecute(Food food_ingredient) {
-            super.onPostExecute(food_ingredient);
-            disableProgressBar++;
-
+        for(int i = 0; i < foods.size(); i++ ){
+            Food food_ingredient = foods.get(i);
             valHumidity += Float.parseFloat(checkValue(food_ingredient.getHumidity().value));
             valSodium += Float.parseFloat(checkValue(food_ingredient.getSodium().value));
             valEnergy += Float.parseFloat(checkValue(food_ingredient.getEnergy().value));
@@ -426,8 +420,39 @@ public class VisuRefeicaoNutricionais extends Fragment implements Methods {
             valVitaminC += Float.parseFloat(checkValue(food_ingredient.getVitaminc().value));
             valIron += Float.parseFloat(checkValue(food_ingredient.getIron().value));
 
+            setTablePart1VisuRefeicao(null);
+        }
+    }
+
+    class VisualizaRefeicaoIngredientesTask extends AsyncTask<JsonObject, Call, Food> {
+        @Override
+        protected Food doInBackground(JsonObject... json) {
+            JsonObject food = json[0];
+            JsonElement id_ingredient = food.get("id_ingredient");
+            JsonElement token = food.get("token");
+
+            FoodApi serviceApi = retrofit.create(FoodApi.class);
+            Call<Food> call = serviceApi.getFood(id_ingredient.getAsString(), "bearer " + token.getAsString());
+
+            Food resp = null;
+            try {
+                resp = call.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return resp.getFood();
+        }
+
+        @Override
+        protected void onPostExecute(Food food_ingredient) {
+            super.onPostExecute(food_ingredient);
+            disableProgressBar++;
+            foods.add(food_ingredient);
             // if para desativar o progress bar
-            if (disableProgressBar >= ingredients.size()) {
+            if (run && (disableProgressBar >= ingredients.size())) {
+                sumValues();
+                run = false;
                 progressBar34.setVisibility(View.INVISIBLE);
             }
         }
