@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.AdapterSearchBarHome;
+import com.example.nutrionall.api.Meal.MealApi;
+import com.example.nutrionall.models.Meal.Meal;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.example.nutrionall.utils.RecyclerItemClickListener;
@@ -32,14 +34,18 @@ import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Methods {
 
-    private String[] mImages = Consts.mImages;
+    private List<Meal> topMeals;
 
 
     private EditText editHomeBusca;
@@ -63,6 +69,10 @@ public class HomeActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
+        retrofit = Consts.connection();
+
+        listAllMeal();
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -70,12 +80,17 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         CarouselView carouselView = findViewById(R.id.CarouselHomeRefeicoes);
+        if(topMeals.size() < 7){
+            carouselView.setPageCount(topMeals.size());
+        }else{
+            carouselView.setPageCount(7);
+        }
 //        carouselView.setPageCount(mImages.length);
-        carouselView.setPageCount(5);
+
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.get().load(mImages[position]).fit().centerCrop().into(imageView);
+                Picasso.get().load(topMeals.get(position).getUrlImg()).fit().centerCrop().into(imageView);
             }
         });
         carouselView.setImageClickListener(new ImageClickListener() {
@@ -84,10 +99,41 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        retrofit = Consts.connection();
+
 
         setRecycler();
     }
+
+    public void listAllMeal() {
+        final String TAG = "listAll";
+
+        MealApi serviceApi = retrofit.create(MealApi.class);
+        Call<List<Meal>> call = serviceApi.listAllMeal("bearer " + getPreferences().getString("token", ""));
+
+
+        call.enqueue(new Callback<List<Meal>>() {
+            @Override
+            
+            public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: " + response.toString());
+                    topMeals = response.body();
+
+                    for (int i = 0; i < topMeals.size(); i++) {
+                        Log.d(TAG, "onResponse: " + topMeals.get(i).getName());
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Meal>> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+    }
+
+
 
     @Override
     public void onBackPressed() {
