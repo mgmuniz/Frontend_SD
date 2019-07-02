@@ -25,10 +25,13 @@ import android.widget.TextView;
 import com.example.nutrionall.R;
 import com.example.nutrionall.adapters.AdapterSearchBarHome;
 import com.example.nutrionall.api.Meal.MealApi;
+import com.example.nutrionall.api.User.UserService;
 import com.example.nutrionall.models.Meal.Meal;
+import com.example.nutrionall.models.User.User;
 import com.example.nutrionall.utils.Consts;
 import com.example.nutrionall.utils.Methods;
 import com.example.nutrionall.utils.RecyclerItemClickListener;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
@@ -84,6 +87,8 @@ public class HomeActivity extends AppCompatActivity
         ListAllMealsTask task = new ListAllMealsTask();
         task.execute("bearer " + getPreferences().getString("token", ""));
 
+        alterarDados();
+
         setRecycler();
     }
 
@@ -116,7 +121,31 @@ public class HomeActivity extends AppCompatActivity
         });
     }
 
+    public void alterarDados(){
+        final String TAG = "alterarDados";
 
+        User newUser = new User();
+        newUser.setPremium(true);
+
+        UserService serviceApi = retrofit.create(UserService.class);
+        Call<JsonObject> call = serviceApi.alterarDados(getPreferences().getString("_id",""), newUser, "bearer " + getPreferences().getString("token",""));
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Log.d(TAG, "onResponse: " + response.toString());
+                if(response.isSuccessful()){
+                    Log.d(TAG, "onResponse: " + response.body().get("msg").getAsString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+    }
 
     @Override
     public void onBackPressed() {
