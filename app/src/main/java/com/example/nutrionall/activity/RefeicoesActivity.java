@@ -3,7 +3,9 @@ package com.example.nutrionall.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,6 +34,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,6 +46,8 @@ import retrofit2.Retrofit;
 public class RefeicoesActivity extends AppCompatActivity implements Methods {
     private String[] mImages = Consts.mImages;
     private Retrofit retrofit;
+    private List<Meal> topMeals;
+    private ArrayList<Favorite> topFavorites;
 
     private EditText buscaRefeicao;
     private FloatingActionButton buttonCadastrarRefeicao;
@@ -57,37 +63,19 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
 
         retrofit = Consts.connection();
 
-        CarouselView carouselView = findViewById(R.id.CarouselRefeicoes);
-//        carouselView.setPageCount(mImages.length);
-        carouselView.setPageCount(5);
-        carouselView.setImageListener(new ImageListener() {
-            @Override
-            public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.get().load(mImages[position+5]).fit().centerCrop().into(imageView);
-            }
-        });
-
-
-        carouselView.setImageClickListener(new ImageClickListener() {
-            @Override
-            public void onClick(int position) {
-            }
-        });
-
-//        carouselFavoritesView.setPageCount(mImages.length);
-        CarouselRefeicoesFavoritos.setPageCount(5);
-        CarouselRefeicoesFavoritos.setImageListener(new ImageListener() {
-            @Override
-            public void setImageForPosition(int position, ImageView imageView) {
-                Picasso.get().load(mImages[position+10]).fit().centerCrop().into(imageView);
-            }
-        });
-
-        CarouselRefeicoesFavoritos.setImageClickListener(new ImageClickListener() {
-            @Override
-            public void onClick(int position) {
-            }
-        });
+//        CarouselRefeicoesFavoritos.setPageCount(5);
+//        CarouselRefeicoesFavoritos.setImageListener(new ImageListener() {
+//            @Override
+//            public void setImageForPosition(int position, ImageView imageView) {
+//                Picasso.get().load(mImages[position+10]).fit().centerCrop().into(imageView);
+//            }
+//        });
+//
+//        CarouselRefeicoesFavoritos.setImageClickListener(new ImageClickListener() {
+//            @Override
+//            public void onClick(int position) {
+//            }
+//        });
 
         if (!getPreferences().getBoolean("isPremium", false)) {
             buttonCadastrarRefeicao.setVisibility(View.INVISIBLE);
@@ -95,7 +83,12 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
             textViewFavoritosRefeicoes.setVisibility(View.INVISIBLE);
         }
 
-        listAllFavorite();
+//        listAllFavorite();
+        ListAllMealsUserTask task = new ListAllMealsUserTask();
+        task.execute("bearer " + getPreferences().getString("token",""));
+
+        ListAllFavoriteTask task2 = new ListAllFavoriteTask();
+        task2.execute("bearer " + getPreferences().getString("token",""));
     }
 
     public void buscarRefeicaoHome(View view){
@@ -260,5 +253,141 @@ public class RefeicoesActivity extends AppCompatActivity implements Methods {
     public SharedPreferences getPreferences() {
         SharedPreferences preferences = getSharedPreferences(Consts.ARQUIVO_PREFERENCIAS, 0);
         return preferences;
+    }
+
+    class ListAllMealsUserTask extends AsyncTask<String, Call, List<Meal>> {
+        String TAG = "listAllMealsUserTask";
+
+        @Override
+        protected List<Meal> doInBackground(String... strings) {
+            MealApi serviceApi = retrofit.create(MealApi.class);
+            Call<List<Meal>> call = serviceApi.listAllMealUser(strings[0]);
+            Response<List<Meal>> x = null;
+
+            try {
+                x = call.execute();
+                Log.d(TAG, "doInBackground: " + x.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return x.body();
+        }
+
+        class SortByAvgEvaluation implements Comparator<Meal>
+        {
+            // Used for sorting in ascending order of
+            // roll number
+            public int compare(Meal a, Meal b)
+            {
+                return (int) (b.getAvgEvaluation() - a.getAvgEvaluation());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Meal> meals) {
+            super.onPostExecute(meals);
+            topMeals = meals;
+
+            Log.d(TAG, "onPostExecute: " + topMeals.size());
+
+            Collections.sort(topMeals, new SortByAvgEvaluation());
+
+            for(int i = 0; i < topMeals.size(); i++){
+                Log.d(TAG, "onPostExecute: " + topMeals.get(i).getAvgEvaluation());
+            }
+
+            CarouselView carouselView = findViewById(R.id.CarouselRefeicoes);
+
+            carouselView.setImageListener(new ImageListener() {
+                @Override
+                public void setImageForPosition(int position, ImageView imageView) {
+                    Picasso.get().load(topMeals.get(position).getUrlImg()).fit().centerCrop().into(imageView);
+                }
+            });
+            carouselView.setImageClickListener(new ImageClickListener() {
+                @Override
+                public void onClick(int position) {
+                    Intent intent = new Intent(getApplicationContext(), VisualizaRefeicaoActivity.class);
+                    intent.putExtra("meal", topMeals.get(position));
+                    startActivity(intent);
+                }
+            });
+
+            if (topMeals.size() < 7) {
+                carouselView.setPageCount(topMeals.size());
+            } else {
+                carouselView.setPageCount(7);
+            }
+
+        }
+    }
+
+    class ListAllFavoriteTask extends AsyncTask<String, Call, ArrayList<Favorite>> {
+        String TAG = "ListAllFavoriteTask";
+
+        @Override
+        protected ArrayList<Favorite> doInBackground(String... strings) {
+            MealApi serviceApi = retrofit.create(MealApi.class);
+            Call<ArrayList<Favorite>> call = serviceApi.listAllFavorite(strings[0]);
+            Response<ArrayList<Favorite>> x = null;
+
+            try {
+                x = call.execute();
+                Log.d(TAG, "doInBackground: " + x.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return x.body();
+        }
+
+
+        @Override
+        protected void onPostExecute(ArrayList<Favorite> meals) {
+            super.onPostExecute(meals);
+            topFavorites = meals;
+
+            Log.d(TAG, "onPostExecute: " + topFavorites.size());
+
+            CarouselView carouselView = findViewById(R.id.CarouselRefeicoesFavoritos);
+
+            carouselView.setImageListener(new ImageListener() {
+                @Override
+                public void setImageForPosition(int position, ImageView imageView) {
+                    Picasso.get().load(topFavorites.get(position).getUrlImg()).fit().centerCrop().into(imageView);
+                }
+            });
+
+            carouselView.setImageClickListener(new ImageClickListener() {
+                @Override
+                public void onClick(int position) {
+                    // bloco para correção de erro
+                    //https://stackoverflow.com/questions/25093546/android-os-networkonmainthreadexception-at-android-os-strictmodeandroidblockgua
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                            .permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    MealApi serviceApi = retrofit.create(MealApi.class);
+                    Call<Meal> call = serviceApi.getByID(topFavorites.get(position).getIdMeal(),"bearer " +getPreferences().getString("token",""));
+                    Response<Meal> x = null;
+
+                    try {
+                        x = call.execute();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Intent intent = new Intent(getApplicationContext(), VisualizaRefeicaoActivity.class);
+                    intent.putExtra("meal", x.body());
+                    startActivity(intent);
+                }
+            });
+
+            if (topFavorites.size() < 7) {
+                carouselView.setPageCount(topFavorites.size());
+            } else {
+                carouselView.setPageCount(7);
+            }
+
+        }
     }
 }
