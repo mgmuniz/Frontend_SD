@@ -66,7 +66,8 @@
                 android:padding="3dip"
                 android:text="Umidade"
                 android:textColor="@color/colorAccent"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/txtVisuRefeicaoHumiditySodiumV"
@@ -78,7 +79,8 @@
                 android:padding="3dip"
                 android:text="50g"
                 android:textColor="@android:color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="invisible" />
         </TableRow>
 
         <TableRow

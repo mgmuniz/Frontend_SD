@@ -198,7 +198,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:text="Top 5 Refeições"
+            android:text="Suas refeições"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp"

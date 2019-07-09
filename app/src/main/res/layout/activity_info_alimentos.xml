@@ -61,7 +61,7 @@
                     android:background="@android:color/white"
                     android:gravity="center"
                     android:padding="3dip"
-                    android:text="Valores referentes a uma porção com: 50g"
+                    android:text="Valores referentes a uma porção"
                     android:textColor="#780C08"
                     android:textStyle="bold" />
             </TableRow>
