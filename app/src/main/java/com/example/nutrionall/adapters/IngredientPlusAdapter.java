@@ -34,8 +34,8 @@ public class IngredientPlusAdapter extends RecyclerView.Adapter<IngredientsPlusH
     @Override
     public void onBindViewHolder(IngredientsPlusHolder holder, final int position) {
         holder.txtVisualizarIngredienteNome.setText(mIngredientes.get(position).getNameFood());
-        holder.txtVisualizarIngredientePorcao.setText(mIngredientes.get(position).getPortion());
-        holder.txtVisualizarIngredienteQtde.setText(mIngredientes.get(position).getQtdPortion());
+        holder.txtVisualizarIngredientePorcao.setText("Porção: " + mIngredientes.get(position).getPortion() + "g");
+        holder.txtVisualizarIngredienteQtde.setText("Quantidade: " + mIngredientes.get(position).getQtdPortion());
 
         String txtCategoriaAlimento = mIngredientes.get(position).getCategory();
 
